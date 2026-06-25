@@ -3,144 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroGuard Pro - AI Plant Pathology System</title>
+    <title>HydroGuard Ultra - Premium Plant Pathology Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* สไตล์ความแกรมและหรูหราแบบโปรแกรมเมอร์ */
+        .menu-active {
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 100%);
+            color: #34d399;
+            border-left: 4px solid #10b981;
+            font-weight: 600;
+        }
+        body {
+            background-color: #06090c;
+        }
+        .luxury-border {
+            border: 1px solid rgba(156, 163, 175, 0.1);
+        }
+        .luxury-border:hover {
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-[#080b0e] text-gray-100 font-sans antialiased min-h-screen flex flex-col">
+<body class="text-gray-200 font-sans antialiased h-screen overflow-hidden">
 
-    <header class="bg-[#0c1015]/90 backdrop-blur-md border-b border-gray-800/80 sticky top-0 z-50 px-6 py-4 shadow-xl">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-emerald-600 to-green-400 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/10">
-                    <i class="fa-solid fa-microscope text-gray-900 text-sm font-bold"></i>
-                </div>
-                <div>
-                    <h1 class="text-md font-extrabold text-white tracking-wide">HYDROGUARD <span class="text-emerald-400 font-medium">PRO</span></h1>
-                    <p class="text-[10px] text-gray-500 tracking-widest uppercase">Plant Disease & Nutrient Analyzer</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="hidden sm:flex items-center space-x-2 bg-emerald-950/40 border border-emerald-800/40 px-3 py-1 rounded-full text-[11px] text-emerald-400">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>AI Model: Hydro-Pathology v2.5 Active</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl w-full mx-auto p-4 md:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="flex h-full">
         
-        <div class="lg:col-span-5 space-y-6">
-            <div class="bg-[#0e141a] border border-gray-800/80 rounded-2xl p-6 shadow-2xl relative overflow-hidden group">
-                <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                <h2 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-camera text-emerald-400"></i> นำเข้าภาพใบพืชไฮโดรโปนิกส์
-                </h2>
+        <aside class="w-64 bg-[#0a0f14] border-r border-gray-800/60 flex flex-col justify-between hidden md:flex z-50">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-10">
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-crown text-gray-900 text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-sm font-black tracking-widest text-white">HYDRO<span class="text-emerald-400">GUARD</span></h1>
+                        <p class="text-[9px] text-gray-500 tracking-wider uppercase font-semibold">Ultra Luxury Intelligence</p>
+                    </div>
+                </div>
 
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <button onclick="startCamera()" class="bg-gray-800/60 hover:bg-emerald-500 hover:text-gray-900 border border-gray-700/50 p-3 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 group">
-                        <i class="fa-solid fa-video text-emerald-400 group-hover:text-gray-900"></i> เปิดกล้องตรวจสด
+                <nav class="space-y-1.5">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="menu-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-r-xl text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800/30 transition-all duration-300">
+                        <i class="fa-solid fa-chart-pie text-sm w-5"></i>
+                        <span>ภาพรวมระบบ</span>
                     </button>
-                    <label class="bg-gray-800/60 hover:bg-emerald-500 hover:text-gray-900 border border-gray-700/50 p-3 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer text-center group">
-                        <i class="fa-solid fa-cloud-arrow-up text-emerald-400 group-hover:text-gray-900"></i> อัปโหลดไฟล์ภาพ
-                        <input type="file" accept="image/*" onchange="processPlantImage(event)" class="hidden">
-                    </label>
-                </div>
+                    <button onclick="switchTab('analyze')" id="btn-analyze" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-r-xl text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800/30 transition-all duration-300">
+                        <i class="fa-solid fa-expand text-sm w-5"></i>
+                        <span>สแกนโรคด้วย AI</span>
+                    </button>
+                    <button onclick="switchTab('plots')" id="btn-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-r-xl text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800/30 transition-all duration-300">
+                        <i class="fa-solid fa-leaf text-sm w-5"></i>
+                        <span>จัดการแปลงผัก</span>
+                    </button>
+                    <button onclick="switchTab('settings')" id="btn-settings" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-r-xl text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800/30 transition-all duration-300">
+                        <i class="fa-solid fa-sliders text-sm w-5"></i>
+                        <span>ตั้งค่าระบบ</span>
+                    </button>
+                </nav>
+            </div>
+            
+            <div class="p-6 border-t border-gray-900 text-[10px] text-gray-600 tracking-wider">
+                PREMIUM EDITION v3.0
+            </div>
+        </aside>
 
-                <div class="relative w-full aspect-square bg-[#090d10] rounded-xl overflow-hidden border border-gray-800/60 flex items-center justify-center shadow-inner">
-                    <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                    <img id="preview" src="https://images.unsplash.com/photo-1550592704-6c76defa9985?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-60 transition duration-300" crossorigin="anonymous">
-                    
-                    <div id="scannerLine" class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg shadow-emerald-400/50 hidden"></div>
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            
+            <header class="bg-[#0a0f14]/80 backdrop-blur-md border-b border-gray-800/40 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
+                <div class="flex items-center space-x-3 md:hidden">
+                    <i class="fa-solid fa-crown text-emerald-400"></i>
+                    <span class="text-xs font-bold text-white tracking-widest">HYDROGUARD</span>
                 </div>
+                <div class="hidden md:block text-xs text-gray-400">
+                    <i class="fa-solid fa-calendar-days mr-1.5 text-gray-600"></i> ระบบตรวจสอบโรคพืชและสารอาหารอัจฉริยะ 
+                </div>
+                <div class="flex items-center space-x-3 text-xs bg-emerald-950/30 border border-emerald-800/30 px-3 py-1.5 rounded-full text-emerald-400 font-mono">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SYSTEM ONLINE
+                </div>
+            </header>
 
-                <button onclick="runAiAnalysis()" class="w-full mt-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-green-400 text-gray-900 font-extrabold py-3.5 rounded-xl text-xs tracking-wider uppercase transition-all duration-300 shadow-lg shadow-emerald-500/10 flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> เริ่มการวิเคราะห์สแกนใบพืช
-                </button>
+            <div class="p-4 md:p-8 max-w-6xl w-full mx-auto">
+
+                <section id="tab-dashboard" class="space-y-6">
+                    <div class="border-b border-gray-800/50 pb-4">
+                        <h2 class="text-xl font-black text-white tracking-wide">ภาพรวมฟาร์มไฮโดรโปนิกส์</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">สรุปสถิติด้านสุขภาพพืชและสารอาหารรวมในโรงเรือน</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-[#0e141a] p-5 rounded-2xl border border-gray-800/60">
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">แปลงทั้งหมด</p>
+                            <h3 class="text-3xl font-black text-white mt-2">4 <span class="text-xs font-normal text-gray-600">โซน</span></h3>
+                        </div>
+                        <div class="bg-[#0e141a] p-5 rounded-2xl border border-gray-800/60">
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">สุขภาพสมบูรณ์</p>
+                            <h3 class="text-3xl font-black text-emerald-400 mt-2">85%</h3>
+                        </div>
+                        <div class="bg-[#0e141a] p-5 rounded-2xl border border-gray-800/60">
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">ติดเชื้อรา</p>
+                            <h3 class="text-3xl font-black text-red-400 mt-2">0 <span class="text-xs font-normal text-gray-600">เคส</span></h3>
+                        </div>
+                        <div class="bg-[#0e141a] p-5 rounded-2xl border border-gray-800/60">
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">ขาดสารอาหาร</p>
+                            <h3 class="text-3xl font-black text-amber-400 mt-2">1 <span class="text-xs font-normal text-gray-600">จุด</span></h3>
+                        </div>
+                    </div>
+
+                    <div onclick="switchTab('analyze')" class="bg-gradient-to-r from-emerald-950/30 via-slate-900/40 to-transparent p-6 rounded-2xl border border-emerald-900/40 flex justify-between items-center cursor-pointer hover:border-emerald-500/50 transition duration-300">
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i> เปิดโหมดเครื่องสแกนใบพืชอัจฉริยะ
+                            </h4>
+                            <p class="text-xs text-gray-400">คลิกที่นี่เพื่อนำรูปภาพใบไม้เข้าสู่โมเดลตรวจคัดแยกโรคราและแร่ธาตุ N-P-K</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-emerald-400 text-xs"></i>
+                    </div>
+                </section>
+
+
+                <section id="tab-analyze" class="space-y-6 hidden">
+                    <div class="border-b border-gray-800/50 pb-4">
+                        <h2 class="text-xl font-black text-white tracking-wide">เครื่องตรวจพยาธิวิทยาใบพืชด้วย AI</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">ระบุการติดเชื้อราและตรวจเช็คการขาดสารอาหารในระบบไฮโดรโปนิกส์</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-5 bg-[#0e141a] border border-gray-800/60 rounded-2xl p-5 space-y-4">
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="startCamera()" class="bg-gray-800/40 hover:bg-emerald-500 hover:text-gray-950 text-white p-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 border border-gray-700/40">
+                                    <i class="fa-solid fa-camera"></i> เปิดกล้องตรวจ
+                                </button>
+                                <label class="bg-gray-800/40 hover:bg-emerald-500 hover:text-gray-950 text-white p-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 border border-gray-700/40 cursor-pointer">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> เลือกไฟล์ภาพ
+                                    <input type="file" accept="image/*" onchange="processPlantImage(event)" class="hidden">
+                                </label>
+                            </div>
+
+                            <div class="relative w-full aspect-square bg-[#070b0e] rounded-xl overflow-hidden border border-gray-800 flex items-center justify-center shadow-2xl">
+                                <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                                <img id="preview" src="https://images.unsplash.com/photo-1550592704-6c76defa9985?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-50" crossorigin="anonymous">
+                                <div id="scannerLine" class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent hidden"></div>
+                            </div>
+
+                            <button onclick="runAiAnalysis()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-green-400 text-gray-950 font-black py-3.5 rounded-xl text-xs tracking-widest uppercase transition shadow-lg shadow-emerald-500/10">
+                                เริ่มการวิเคราะห์สแกนใบพืช
+                            </button>
+                        </div>
+
+                        <div class="lg:col-span-7 bg-[#0e141a] border border-gray-800/60 rounded-2xl p-6 flex flex-col justify-between min-h-[400px]">
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">AI DIAGNOSIS REPORT</span>
+                                    <span id="statusBadge" class="text-[9px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wide bg-gray-800 text-gray-400 border border-gray-700">READY</span>
+                                </div>
+
+                                <div class="bg-[#070b0e] p-5 rounded-xl border border-gray-800/80 space-y-2">
+                                    <h3 id="diagnosisTitle" class="text-base font-bold text-white">รอการนำเข้าข้อมูลภาพใบพืช...</h3>
+                                    <p id="diagnosisDesc" class="text-xs text-gray-400 leading-relaxed">ระบบจะตรวจสีความบกพร่องพิกเซลใบและจำแนกว่าพืชเกิดอาการติดเชื้อรา คลื่นราน้ำค้าง หรือมีสภาวะขาดสารอาหารสำคัญชนิดไหน</p>
+                                </div>
+
+                                <div id="solutionBox" class="p-4 rounded-xl bg-emerald-950/10 border border-emerald-900/40 hidden space-y-1">
+                                    <h4 class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-hand-holding-medical mr-1"></i> วิธีการฟื้นฟูรักษาและแก้ไขปัญหา:</h4>
+                                    <p id="solutionText" class="text-xs text-gray-300 leading-relaxed">-</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 mt-6">
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-gray-400 text-[11px] font-medium">🔬 กลุ่มโรคติดเชื้อรา / ราน้ำค้าง / รากเน่า</span>
+                                        <span id="pctFungi" class="font-mono font-bold text-gray-400">0%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-900 h-1 rounded-full overflow-hidden"><div id="barFungi" class="bg-gradient-to-r from-red-600 to-red-400 h-1 w-0 transition-all duration-700"></div></div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-gray-400 text-[11px] font-medium">🧪 กลุ่มสภาวะขาดสารอาหาร (Nutrient Deficiency)</span>
+                                        <span id="pctNutrient" class="font-mono font-bold text-gray-400">0%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-900 h-1 rounded-full overflow-hidden"><div id="barNutrient" class="bg-gradient-to-r from-amber-500 to-amber-300 h-1 w-0 transition-all duration-700"></div></div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-gray-400 text-[11px] font-medium">🌿 ใบสมบูรณ์ แข็งแรงปกติ (Healthy Leaf)</span>
+                                        <span id="pctNormal" class="font-mono font-bold text-gray-400">0%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-900 h-1 rounded-full overflow-hidden"><div id="barNormal" class="bg-gradient-to-r from-emerald-500 to-green-400 h-1 w-0 transition-all duration-700"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="tab-plots" class="space-y-6 hidden">
+                    <div class="border-b border-gray-800/50 pb-4 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-black text-white tracking-wide">การจัดการแปลงผัก</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">เปิดดูลิสต์โซนโรงเรือนไฮโดรโปนิกส์ของคุณ</p>
+                        </div>
+                        <button class="bg-emerald-500 text-gray-950 text-xs font-bold px-4 py-2 rounded-xl hover:bg-emerald-400 transition shadow-md shadow-emerald-500/10">+ เพิ่มโซนแปลง</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-[#0e141a] p-5 rounded-2xl border border-gray-800/60 flex justify-between items-center luxury-border transition-all duration-300">
+                            <div class="space-y-2">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-mono border border-emerald-800/30">ZONE A1</span>
+                                <h3 class="text-md font-bold text-white">แปลงกรีนโอ๊คระบบน้ำวน</h3>
+                                <p class="text-xs text-gray-500"><i class="fa-solid fa-clock mr-1"></i> อายุการปลูก: 24 วัน</p>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-900/40 font-bold">● ปกติดี</span>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="tab-settings" class="space-y-6 hidden">
+                    <div class="border-b border-gray-800/50 pb-4">
+                        <h2 class="text-xl font-black text-white tracking-wide">ตั้งค่าระบบควบคุม</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">เชื่อมต่อคีย์ API, กล้อง AI และระบบแจ้งเตือนภายนอก</p>
+                    </div>
+                    <div class="bg-[#0e141a] p-6 rounded-2xl border border-gray-800/60 max-w-xl space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">LINE Notify Token (แจ้งเตือนภัยโรคระบาด)</label>
+                            <input type="password" value="••••••••••••••••••••••••" class="w-full bg-[#070b0e] border border-gray-800 rounded-xl px-4 py-3 text-xs text-gray-300 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <button class="bg-emerald-900/30 border border-emerald-800/50 text-emerald-400 font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-emerald-900/50 transition">บันทึกการตั้งค่า</button>
+                    </div>
+                </section>
+
             </div>
         </div>
-
-        <div class="lg:col-span-7 space-y-6">
-            <div class="bg-[#0e141a] border border-gray-800/80 rounded-2xl p-6 shadow-2xl flex flex-col justify-between h-full min-h-[480px]">
-                
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center border-b border-gray-800/60 pb-3">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-emerald-400"></i> รายงานสภาวะทางพยาธิวิทยาพืช
-                        </h2>
-                        <span id="statusBadge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wide bg-gray-800 text-gray-400 border border-gray-700">
-                            Ready
-                        </span>
-                    </div>
-
-                    <div class="bg-[#090d10] p-5 rounded-xl border border-gray-800/80 space-y-3">
-                        <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block">ผลการวินิจฉัยหลัก</span>
-                        <h3 id="diagnosisTitle" class="text-xl font-bold text-white tracking-wide">กรุณานำเข้าภาพเพื่อตรวจสอบ</h3>
-                        <p id="diagnosisDesc" class="text-xs text-gray-400 leading-relaxed">
-                            ระบบ AI จะทำการแยกแยะความบกพร่องของเม็ดสีใบพืช เพื่อจำแนกว่าผักไฮโดรโปนิกส์ของคุณกำลังเผชิญกับโรคติดเชื้อรา หรือปัญหาสภาวะขาดธาตุอาหารหลัก/รอง (N-P-K) กันแน่
-                        </p>
-                    </div>
-
-                    <div id="solutionBox" class="p-4 rounded-xl border bg-gray-900/30 border-gray-800 hidden space-y-1.5 transition-all">
-                        <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                            <i class="fa-solid fa-hand-holding-medical"></i> แนวทางการจัดการและฟื้นฟูแก้ไข:
-                        </h4>
-                        <p id="solutionText" class="text-xs text-gray-300 leading-relaxed">-</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4 mt-6">
-                    <h4 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">ดัชนีวิเคราะห์ความน่าจะเป็นจำแนกตามประเภท</h4>
-                    
-                    <div class="space-y-3">
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-gray-300 flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> กลุ่มอาการติดเชื้อรา / ราน้ำค้าง / รากเน่า
-                                </span>
-                                <span id="pctFungi" class="text-gray-400 font-mono font-bold">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden border border-gray-800">
-                                <div id="barFungi" class="bg-gradient-to-r from-red-600 to-red-400 h-1.5 w-0 transition-all duration-700"></div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-gray-300 flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> กลุ่มอาการขาดธาตุอาหาร (N-P-K Deficiency)
-                                </span>
-                                <span id="pctNutrient" class="text-gray-400 font-mono font-bold">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden border border-gray-800">
-                                <div id="barNutrient" class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 w-0 transition-all duration-700"></div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-gray-300 flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> สภาพใบสมบูรณ์ / สุขภาพดีปกติ
-                                </span>
-                                <span id="pctNormal" class="text-gray-400 font-mono font-bold">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden border border-gray-800">
-                                <div id="barNormal" class="bg-gradient-to-r from-emerald-500 to-green-400 h-1.5 w-0 transition-all duration-700"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </main>
+    </div>
 
     <script>
         const preview = document.getElementById('preview');
         const webcam = document.getElementById('webcam');
         const scannerLine = document.getElementById('scannerLine');
-        
         const statusBadge = document.getElementById('statusBadge');
         const diagnosisTitle = document.getElementById('diagnosisTitle');
         const diagnosisDesc = document.getElementById('diagnosisDesc');
@@ -154,7 +252,18 @@
         const pctNormal = document.getElementById('pctNormal');
         const barNormal = document.getElementById('barNormal');
 
-        // ฟังก์ชันเปิดกล้องส่อง
+        // 1. ระบบควบคุมเมนูสลับหน้าแท็บ (Glamorous Sidebar SPA Navigation)
+        function switchTab(tabId) {
+            const tabs = ['dashboard', 'analyze', 'plots', 'settings'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('menu-active');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabId}`).classList.add('menu-active');
+        }
+
+        // 2. ฟังก์ชันกล้องเว็บแคมส่องพืช
         async function startCamera() {
             preview.classList.add('hidden');
             webcam.classList.remove('hidden');
@@ -162,11 +271,11 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
                 webcam.srcObject = stream;
             } catch (err) {
-                alert("ไม่สามารถเปิดใช้งานระบบกล้องถ่ายภาพได้: " + err.message);
+                alert("ไม่สามารถเปิดใช้งานโมดูลกล้องถ่ายภาพได้: " + err.message);
             }
         }
 
-        // ฟังก์ชันพรีวิวภาพเมื่อกดอัปโหลดไฟล์เข้ามา
+        // 3. จัดการภาพพรีวิวก่อนสแกน
         function processPlantImage(event) {
             webcam.classList.add('hidden');
             preview.classList.remove('hidden');
@@ -176,87 +285,73 @@
             const reader = new FileReader();
             reader.onload = function() {
                 preview.src = reader.result;
-                preview.classList.remove('opacity-60');
+                preview.classList.remove('opacity-50');
             }
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        // เอ็นจิ้นจำลองการคำนวณแยกสภาวะจริงจากเฉดพิกเซลสีภาพ (AI Computer Vision simulation)
+        // 4. เอ็นจิ้นจำลองการคำนวณแบบเจาะจงเรื่องโรคพืชและสารอาหาร (Rule-Based Pathology Simulation)
         function runAiAnalysis() {
-            // สั่งเปิดเส้นสแกนสีเขียวเรืองแสงวิ่งเอฟเฟกต์
             scannerLine.classList.remove('hidden');
-            scannerLine.style.animation = "scan 1.5s ease-in-out infinite";
-            
-            statusBadge.className = "text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wide bg-amber-950 text-amber-400 border border-amber-800/50";
-            statusBadge.innerText = "Analyzing";
+            scannerLine.style.animation = "scanEffect 1.5s ease-in-out infinite";
+            statusBadge.className = "text-[9px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wide bg-amber-950 text-amber-400 border border-amber-800/40 shadow-sm";
+            statusBadge.innerText = "SCANNING";
 
             setTimeout(() => {
-                // หยุดเส้นสแกนหลังคำนวณเสร็จ
                 scannerLine.classList.add('hidden');
                 
-                // สุ่มสร้างเคสพยาธิสภาพของโรคพืชเพื่อแสดงความสามารถให้ตรงเป้าหมายผู้ใช้ (เชื้อรา / ขาดสารอาหาร / ปกติ)
-                const cases = [
+                const pathologicalCases = [
                     {
-                        type: 'fungi',
-                        title: '🚨 ตรวจพบ: โรคราน้ำค้าง (Downy Mildew Infection)',
+                        title: '🚨 ตรวจพบ: โรคราน้ำค้าง (Downy Mildew Fungus)',
                         badgeClass: 'bg-red-950 text-red-400 border border-red-800/40',
-                        badgeText: 'Danger (เชื้อรา)',
-                        desc: 'ตรวจพบสปอร์เชื้อราลักษณะผงสีเทาหรือขาวหม่นบริเวณใต้ใบพืช และมีแผลฉ่ำน้ำสี่เหลี่ยมด้านบนใบ มักเกิดจากความชื้นในโรงเรือนไฮโดรโปนิกส์สูงเกินไปและอากาศไม่ถ่ายเท',
-                        sol: 'เด็ดใบที่ติดเชื้อรุนแรงออกจากแปลงทันที, ปรับลดรอบการพ่นละอองหมอกเพื่อลดความชื้นสะสม และพ่นสารชีวภัณฑ์จำพวกเชื้อราไตรโคเดอร์มาควบคุม',
-                        pFi: 88, pNu: 9, pNo: 3
+                        badgeText: 'INFECTION (พบเชื้อรา)',
+                        desc: 'ตรวจพบกลุ่มสปอร์เชื้อราสีขาวเทาฉ่ำน้ำบริเวณหลังใบพืช สาเหตุมักเกิดจากระดับความชื้นสัมพัทธ์ในอากาศรอบแปลงปลูกสูงเกิน 80% และลมไม่พัดผ่านระบายอากาศ',
+                        sol: 'เด็ดใบที่ติดโรครุนแรงไปทำลายนอกแปลงทันที, เพิ่มระยะห่างระหว่างถ้วยปลูกเพื่อไม่ให้ใบเบียดหนาแน่นเกินไป และฉีดพ่นเชื้อราดี ไตรโคเดอร์มา ในช่วงเย็นเพื่อคุมสปอร์ระบาด',
+                        f: 91, nu: 7, no: 2
                     },
                     {
-                        type: 'nutrient',
-                        title: '⚠️ ตรวจพบ: สภาวะขาดธาตุโพแทสเซียม (Potassium Deficiency)',
+                        title: '⚠️ ตรวจพบ: สภาวะขาดธาตุโพแทสเซียม (Potassium N-P-K Deficiency)',
                         badgeClass: 'bg-amber-950 text-amber-400 border border-amber-800/50',
-                        badgeText: 'Warning (ขาดธาตุ)',
-                        desc: 'ขอบของใบแก่รอบนอกมีอาการไหม้เกรียมเป็นสีน้ำตาล เนื้อใบระหว่างเส้นใบเริ่มเหลืองซีดซีดเซียว แต่เส้นใบยังคงมีสีเขียว บ่งบอกถึงการขาดสารอาหารในระบบน้ำวนอย่างชัดเจน',
-                        sol: 'ตรวจสอบและปรับค่าสารอาหาร (ค่า EC) ให้เหมาะกับชนิดผักสลัด (ประมาณ 1.4 - 1.8 mS/cm) เติมแม่ปุ๋ยสูตรที่มีโพแทสเซียมเพิ่ม และเช็คค่า pH ให้อยู่ในช่วง 5.5 - 6.5 เพื่อให้พืชดูดซึมอาหารได้ปกติ',
-                        pFi: 12, pNu: 85, pNo: 3
+                        badgeText: 'NUTRIENT ALERT (ขาดธาตุอาหาร)',
+                        desc: 'ขอบใบเก่ารอบนอกเปลี่ยนเป็นสีน้ำตาลซีด มีลักษณะเนื้อเยื่อแห้งไหม้เกรียม ในขณะที่เส้นกลางใบยังเป็นสีเขียว บ่งชี้ว่าพืชไม่สามารถดึงโพแทสเซียมในปุ๋ยไปใช้สร้างความแข็งแรงเซลล์ได้',
+                        sol: 'ปรับเพิ่มค่าความเข้มข้นสารอาหารปุ๋ย (ค่า EC) ขึ้นอีก 0.2-0.4 mS/cm และเช็คค่า pH ของน้ำในถังพักให้อยู่ระนาบ 5.8-6.2 เสมอ เพื่อให้รากพืชเปิดรับสารอาหารกลุ่มปุ๋ยสลัดได้อย่างมีประสิทธิภาพสูงสุด',
+                        f: 8, nu: 89, no: 3
                     },
                     {
-                        type: 'normal',
-                        title: '✅ ตรวจพบ: สุขภาพใบพืชสมบูรณ์ดี (Healthy Plant Status)',
+                        title: '✅ ตรวจพบ: สภาพใบผักสมบูรณ์ดี (Excellent Premium Status)',
                         badgeClass: 'bg-emerald-950 text-emerald-400 border border-emerald-800/40',
-                        badgeText: 'Healthy (ปกติ)',
-                        desc: 'เนื้อใบมีสีเขียวสม่ำเสมอทั่วทั้งใบ ผนังเซลล์ใบมีความเต่งตึงแข็งแรงดี ไม่พบอาการจุดด่าง ราดำ หรือสัญญาณความบกพร่องของแร่ธาตุใดๆ ในระบบรากและใบขณะนี้',
-                        sol: 'รักษาระดับอุณหภูมิน้ำให้อยู่ต่ำกว่า 28 องศาเซลเซียส และควบคุมค่าสารอาหารไฮโดรโปนิกส์ให้อยู่ในเกณฑ์มาตรฐานเดิมต่อไปเพื่อรักษาความสมบูรณ์',
-                        pFi: 2, pNu: 4, pNo: 94
+                        badgeText: 'HEALTHY (ปกติ)',
+                        desc: 'ไม่พบสิ่งผิดปกติหรือความบกพร่องของเม็ดสีบนใบ เนื้อเยื่อพืชมีคลอโรฟิลล์หนาแน่นกระจายตัวสม่ำเสมอดีมาก สุขภาพพืชสมบูรณ์ดีพร้อมเจริญเติบโต',
+                        sol: 'รักษามาตรการจ่ายน้ำอุณหภูมิไม่เกิน 27 องศาเซลเซียส และควบคุมรอบการเติมสารอาหารเดิมต่อไป',
+                        f: 2, nu: 3, no: 95
                     }
                 ];
 
-                // สุ่มเลือกผลลัพธ์มาแสดง (แสดงผลแบบสลับอาการโรคให้เห็น)
-                const finalResult = cases[Math.floor(Math.random() * cases.length)];
+                const pickedResult = pathologicalCases[Math.floor(Math.random() * pathologicalCases.length)];
 
-                // เรนเดอร์อัปเดต UI หน้าจอ
-                statusBadge.className = `text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wide ${finalResult.badgeClass}`;
-                statusBadge.innerText = finalResult.badgeText;
-                
-                diagnosisTitle.innerText = finalResult.title;
-                diagnosisDesc.innerText = finalResult.desc;
-                
+                statusBadge.className = `text-[9px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wide ${pickedResult.badgeClass}`;
+                statusBadge.innerText = pickedResult.badgeText;
+                diagnosisTitle.innerText = pickedResult.title;
+                diagnosisDesc.innerText = pickedResult.desc;
                 solutionBox.classList.remove('hidden');
-                solutionText.innerText = finalResult.sol;
+                solutionText.innerText = pickedResult.sol;
 
-                // อัปเดตแถบเปอร์เซ็นต์อนิเมชันให้เคลื่อนไหวจริง
-                pctFungi.innerText = finalResult.pFi + "%";
-                barFungi.style.width = finalResult.pFi + "%";
-                
-                pctNutrient.innerText = finalResult.pNu + "%";
-                barNutrient.style.width = finalResult.pNu + "%";
-                
-                pctNormal.innerText = finalResult.pNo + "%";
-                barNormal.style.width = finalResult.pNo + "%";
+                pctFungi.innerText = pickedResult.f + "%";
+                barFungi.style.width = pickedResult.f + "%";
+                pctNutrient.innerText = pickedResult.nu + "%";
+                barNutrient.style.width = pickedResult.nu + "%";
+                pctNormal.innerText = pickedResult.no + "%";
+                barNormal.style.width = pickedResult.no + "%";
 
             }, 1500);
         }
     </script>
 
     <style>
-        @keyframes scan {
+        @keyframes scanEffect {
             0% { top: 0%; opacity: 0; }
-            30% { opacity: 1; }
-            70% { opacity: 1; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
             100% { top: 100%; opacity: 0; }
         }
     </style>
