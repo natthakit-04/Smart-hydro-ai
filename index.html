@@ -52,19 +52,19 @@
 
             <nav class="space-y-1">
                 <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-item-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-grid-2 text-sm w-5"><span class="fa-solid fa-chart-simple"></span></i><span>แดชบอร์ด</span>
+                    <i class="fa-solid fa-chart-simple text-sm w-5"></i><span>แดชบอร์ด</span>
                 </button>
                 <button onclick="switchTab('plots')" id="btn-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-seedling text-sm w-5"><span class="fa-solid fa-leaf"></span></i><span>แปลงผัก</span>
+                    <i class="fa-solid fa-leaf text-sm w-5"></i><span>แปลงผัก</span>
                 </button>
                 <button onclick="switchTab('analyze')" id="btn-analyze" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-camera text-sm w-5"><span class="fa-solid fa-expand"></span></i><span>วิเคราะห์โรค AI</span>
+                    <i class="fa-solid fa-expand text-sm w-5"></i><span>วิเคราะห์โรค AI</span>
                 </button>
                 <button onclick="switchTab('history')" id="btn-history" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-history text-sm w-5"><span class="fa-solid fa-clock-rotate-left"></span></i><span>ประวัติการตรวจ</span>
+                    <i class="fa-solid fa-clock-rotate-left text-sm w-5"></i><span>ประวัติการตรวจ</span>
                 </button>
                 <button onclick="switchTab('reports')" id="btn-reports" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-file-invoice text-sm w-5"><span class="fa-solid fa-chart-line"></span></i><span>รายงานผล</span>
+                    <i class="fa-solid fa-chart-line text-sm w-5"></i><span>รายงานผล</span>
                 </button>
             </nav>
         </div>
@@ -77,7 +77,7 @@
         
         <header class="bg-[#090d16]/80 backdrop-blur-md border-b border-slate-800/40 px-8 py-5 flex justify-between items-center sticky top-0 z-40">
             <div>
-                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block mb-0.5">MANUS SPACE STATION</span>
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block mb-0.5">HYDROGUARD STATION</span>
                 <h2 id="pageTitle" class="text-base font-extrabold text-white tracking-wide">แดชบอร์ดควบคุม</h2>
             </div>
             <div class="flex items-center space-x-4">
@@ -150,12 +150,12 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ชื่อแปลง / รหัสเรียก</label>
-                                <input id="p-name" type="text" placeholder="เช่น กรีนโอ๊ค โซนฝั่งใต้" class="w-full bg-[#070b11] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <input id="p-name" type="text" placeholder="เช่น ปฟดอ, คอสโซน A" class="w-full bg-[#070b11] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">สายพันธุ์พืช</label>
-                                    <input id="p-type" type="text" placeholder="เช่น คอส, บัตเตอร์เฮด" class="w-full bg-[#070b11] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <input id="p-type" type="text" placeholder="เช่น อื่นๆ (Other), ฟิลเลย์" class="w-full bg-[#070b11] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">รหัสตำแหน่งโซน</label>
@@ -223,8 +223,8 @@
                         <i class="fa-solid fa-chart-pie text-emerald-400"></i> สัดส่วนสภาวะการระบาดพยาธิสภาพ
                     </h3>
                     <div class="space-y-3 text-xs">
-                        <div class="flex justify-between items-center"><span class="text-slate-400">🟢 แปลงที่สมบูรณ์แข็งแรงดี</span><span class="font-bold text-emerald-400">66.6%</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-400">🟡 แปลงที่มีอาการขาดสารอาหาร</span><span class="font-bold text-amber-500">33.3%</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-400">🟢 แปลงที่สมบูรณ์แข็งแรงดี</span><span id="rep-pct-healthy" class="font-bold text-emerald-400">50.0%</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-400">🟡 แปลงที่มีอาการขาดสารอาหาร</span><span id="rep-pct-warning" class="font-bold text-amber-500">50.0%</span></div>
                         <div class="flex justify-between items-center"><span class="text-slate-400">🔴 แปลงที่พบการระบาดติดเชื้อรา</span><span class="font-bold text-red-500">0.0%</span></div>
                     </div>
                 </div>
@@ -234,7 +234,6 @@
     </div>
 
     <script>
-        // บันทึกตัวแปรโครงสร้างข้อมูลภายในแอปพลิเคชัน (State)
         let datasetPlots = [
             { id: 1, name: 'ปฟดอ', type: 'อื่นๆ (Other)', zone: 'A1', date: '04 มิ.ย. 2026', status: 'สมบูรณ์ดี' }
         ];
@@ -244,7 +243,6 @@
             { id: 202, title: 'สภาวะขาดสารอาหารโพแทสเซียม (Potassium Deficiency)', plot: 'ปฟดอ', zone: 'A1', type: 'อื่นๆ (Other)', conf: '90%', desc: 'พบลักษณะขอบใบเก่ารอบนอกเกิดสีน้ำตาลไหม้เกรียม เนื้อใบซีดเซียวแต่เส้นใบหลักยังมีสีเขียว บ่งบอกถึงอาการขาดธาตุอาหารหลัก K ในถังสารละลายน้ำวนอย่างมีนัยสำคัญ', badge: 'bg-amber-950 text-amber-500 border border-amber-900/30', status: 'อาการเสี่ยง', time: '2026-06-24 16:29' }
         ];
 
-        // ฟังก์ชันสลับแท็บเมนูไร้รอยต่อ (SPA Navigation Router)
         function switchTab(tabId) {
             const sections = ['dashboard', 'plots', 'analyze', 'history', 'reports'];
             sections.forEach(s => {
@@ -256,21 +254,17 @@
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             if (document.getElementById(`btn-${tabId}`)) document.getElementById(`btn-${tabId}`).classList.add('nav-item-active');
 
-            // อัปเดต Title บาร์บนตามบริบทจริง
             const barTitles = { dashboard: 'แดชบอร์ดควบคุมฟาร์ม', plots: 'ระบบจัดการโซนแปลงพืช', analyze: 'สถานีตรวจวินิจฉัยโรคพืชด้วย AI', history: 'ล็อกประวัติการวิเคราะห์ย้อนหลัง', reports: 'รายงานดัชนีทางสถิติวิทยาศาสตร์' };
             document.getElementById('pageTitle').innerText = barTitles[tabId];
 
-            // Trigger โหลดเรนเดอร์ UI ซ้ำเมื่อเปลี่ยนหน้า
             if (tabId === 'plots' || tabId === 'dashboard') renderPlotsUi();
             if (tabId === 'history' || tabId === 'dashboard') renderHistoryUi();
             if (tabId === 'analyze') syncPlotSelectDropdown();
         }
 
-        // โมดูลเปิด-ปิดหน้าต่างลงทะเบียนแปลง
         function openModal() { document.getElementById('plotModal').classList.remove('hidden'); }
         function closeModal() { document.getElementById('plotModal').classList.add('hidden'); }
 
-        // ลงทะเบียนแปลงใหม่ลงระบบและแปรค่าอัปเดตออโต้
         function submitNewPlot() {
             const name = document.getElementById('p-name').value || 'แปลงทดสอบใหม่';
             const type = document.getElementById('p-type').value || 'ฟิลเลย์ ไอซ์เบิร์ก';
@@ -293,7 +287,6 @@
             document.getElementById('p-zone').value = '';
         }
 
-        // วาดการ์ดแปลงพืชลงบนหน้าจออินเตอร์เฟส
         function renderPlotsUi() {
             const grid = document.getElementById('plots-grid');
             const totalLbl = document.getElementById('total-plots-count');
@@ -327,7 +320,6 @@
             if (dashTotal) dashTotal.innerText = datasetPlots.length;
         }
 
-        // ซิงค์ชื่อแปลงทั้งหมดเข้าสู่กล่องเมนูเลือกหนังสแกน AI
         function syncPlotSelectDropdown() {
             const select = document.getElementById('plot-select');
             if (select) {
@@ -338,7 +330,6 @@
             }
         }
 
-        // ตัวคุม Interactive Preview ภาพพืชที่อัปโหลดเข้ากล่อง Drag & Drop
         function handleImageInput(event) {
             const file = event.target.files[0];
             if (file) {
@@ -348,7 +339,6 @@
                     document.getElementById('preview-wrapper').classList.remove('hidden');
                     document.getElementById('img-render').src = e.target.result;
 
-                    // เปิดใช้งานสิทธิ์ปุ่มสแกน
                     const btn = document.getElementById('btn-scan');
                     btn.disabled = false;
                     btn.className = "w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-pointer shadow-lg shadow-emerald-500/10 transition";
@@ -357,7 +347,6 @@
             }
         }
 
-        // สั่งประมวลผลโมเดล AI จำลองเส้นเลเซอร์และเก็บผลลัพธ์ลงประวัติจริง
         function executeAI() {
             const laser = document.getElementById('laser');
             laser.classList.remove('hidden');
@@ -367,7 +356,6 @@
                 laser.classList.remove('laser-active');
                 laser.classList.add('hidden');
 
-                // แกะข้อมูลแฝงจากแปลงที่เลือกเพื่อแอดลงฐานล็อกข้อมูล
                 const selectVal = document.getElementById('plot-select').value.split('|');
                 const plotName = selectVal[0] || 'แปลงหลัก';
                 const plotZone = selectVal[1] || 'A1';
@@ -379,7 +367,6 @@
                 ];
                 const finalPick = resultsPool[Math.floor(Math.random() * resultsPool.length)];
 
-                // แอดบันทึกใหม่เข้าสู่ State
                 scanLogs.unshift({
                     id: Date.now(),
                     title: finalPick.title,
@@ -393,20 +380,17 @@
                     time: '2026-06-25 14:35'
                 });
 
-                // รีเซ็ตการ์ดหน้าฟอร์มอัปโหลดกลับเป็นค่าว่างเริ่มต้น
                 document.getElementById('upload-prompt').classList.remove('hidden');
                 document.getElementById('preview-wrapper').classList.add('hidden');
                 const btn = document.getElementById('btn-scan');
                 btn.disabled = true;
                 btn.className = "w-full bg-slate-900 text-slate-600 font-extrabold py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed border border-slate-800";
 
-                // นำพาผู้ใช้วิ่งไปหน้ารายงานผลประวัติทันทีเพื่อความสมูทลื่นไหลของเว็บแอปพลิเคชัน
                 switchTab('history');
 
             }, 1500);
         }
 
-        // วาดและจัดการประวัติการตรวจในแต่ละหน้าอินเตอร์เฟสย่อย
         function renderHistoryUi() {
             const masterList = document.getElementById('history-container');
             const dashList = document.getElementById('dash-recent-list');
@@ -422,6 +406,10 @@
             document.getElementById('dash-healthy-count').innerText = healthyCount;
             document.getElementById('dash-warning-count').innerText = warningCount;
             document.getElementById('dash-scan-total').innerText = scanLogs.length;
+
+            const totalLogs = scanLogs.length || 1;
+            document.getElementById('rep-pct-healthy').innerText = ((healthyCount / totalLogs) * 100).toFixed(1) + '%';
+            document.getElementById('rep-pct-warning').innerText = ((warningCount / totalLogs) * 100).toFixed(1) + '%';
 
             if (masterList) {
                 masterList.innerHTML = '';
@@ -464,7 +452,6 @@
             }
         }
 
-        // สคริปต์ทำงานระบบเริ่มต้นเมื่อโหลดเว็บสำเร็จ
         window.onload = function() {
             renderPlotsUi();
             renderHistoryUi();
@@ -472,3 +459,4 @@
     </script>
 </body>
 </html>
+
