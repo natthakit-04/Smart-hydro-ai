@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroGuard Engine Core v6.0 Pro</title>
+    <title>HydroGuard Engine Core v7.0 Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +19,47 @@
 </head>
 <body class="h-screen flex flex-col lg:flex-row overflow-hidden pb-16 lg:pb-0">
 
-    <aside class="w-64 bg-[#070a12] border-r border-slate-800/80 flex flex-col justify-between hidden lg:flex z-50">
+    <div id="auth-gate-screen" class="fixed inset-0 bg-[#070a12] z-[100] flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-2xl border border-slate-800/80 space-y-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="text-center space-y-2 relative">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black mx-auto">
+                    <i class="fa-solid fa-key text-base"></i>
+                </div>
+                <div>
+                    <h2 class="text-sm font-black tracking-widest text-white uppercase">HydroGuard Access</h2>
+                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">ระบบยืนยันสิทธิ์นักพยาธิวิทยาพืช</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 font-medium">
+                <div>
+                    <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">รหัสบัญชีผู้ใช้งาน (Username)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-600 text-xs"><i class="fa-solid fa-user"></i></span>
+                        <input id="auth-username" type="text" placeholder="admin" class="w-full bg-[#0b111e] border border-slate-800 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">รหัสผ่านความปลอดภัย (Password)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-600 text-xs"><i class="fa-solid fa-lock"></i></span>
+                        <input id="auth-password" type="password" placeholder="••••••••" class="w-full bg-[#0b111e] border border-slate-800 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+                <div id="auth-error-msg" class="hidden text-[10px] text-rose-400 font-semibold bg-rose-950/40 border border-rose-900/40 p-2 rounded-lg flex items-center gap-1.5 animate-pulse">
+                    <i class="fa-solid fa-circle-exclamation"></i> สิทธิ์เข้าถึงปฏิเสธ: บัญชีหรือรหัสผ่านไม่ถูกต้อง
+                </div>
+            </div>
+
+            <button onclick="Auth.validateCredentials()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/10 transition-all">
+                ถอดรหัสผ่านเข้าสู่ระบบ <i class="fa-solid fa-arrow-right-to-bracket ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <aside id="main-sidebar-node" class="w-64 bg-[#070a12] border-r border-slate-800/80 flex flex-col justify-between hidden lg:flex z-50">
         <div class="p-6">
             <div class="flex items-center space-x-3 mb-10">
                 <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black">
@@ -37,17 +77,23 @@
                 <button onclick="Core.switchView('logs')" id="nav-logs" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-receipt w-5"></i><span>ประวัติและรายงาน</span></button>
             </nav>
         </div>
-        <div class="p-6 border-t border-slate-900 text-[10px] font-mono text-slate-600">BUILD: v6.0.2-STABLE</div>
+        <div class="p-4 border-t border-slate-900 flex justify-between items-center">
+            <div class="text-[10px] font-mono text-slate-600">v7.0.0-ENTERPRISE</div>
+            <button onclick="Auth.logout()" class="text-slate-500 hover:text-rose-400 text-xs transition" title="Log Out"><i class="fa-solid fa-power-off"></i></button>
+        </div>
     </aside>
 
-    <div class="flex-1 flex flex-col overflow-y-auto">
+    <div id="main-viewport-node" class="flex-1 flex flex-col overflow-y-auto">
         <header class="bg-[#070a12]/70 backdrop-blur-md border-b border-slate-800/60 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
             <div>
                 <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block">Core Pipeline Engine</span>
                 <h2 id="view-title" class="text-sm font-bold text-white">คอนโซลกลาง</h2>
             </div>
-            <div id="connection-badge" class="text-[10px] font-mono bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl text-emerald-400 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> LOGIC_ONLINE
+            <div class="flex items-center space-x-3">
+                <div class="text-[10px] font-mono bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl text-emerald-400 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> SECURE_SESSION
+                </div>
+                <button onclick="Auth.logout()" class="lg:hidden text-slate-400 hover:text-rose-400 text-xs p-1.5 border border-slate-800 rounded-lg bg-slate-900"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </header>
 
@@ -116,14 +162,11 @@
 
                     <div class="border-2 border-dashed border-slate-800 bg-[#070a12]/50 rounded-2xl p-4 min-h-[260px] flex flex-col items-center justify-center relative overflow-hidden group">
                         <input type="file" accept="image/*" onchange="Scanner.handleUploadFlow(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20" id="file-input-node">
-                        
                         <video id="video-feed" autoplay playsinline class="hidden w-full max-w-sm aspect-square object-cover rounded-xl border border-slate-800 bg-black"></video>
-                        
                         <div id="preview-frame" class="hidden relative w-full max-w-sm aspect-square rounded-xl overflow-hidden border border-slate-800 bg-black">
                             <img id="static-img-node" class="w-full h-full object-cover">
                             <div id="laser-line-element" class="absolute left-0 w-full h-0.5 bg-emerald-400 shadow-lg scanner-line hidden"></div>
                         </div>
-
                         <div id="placeholder-text-ui" class="text-center p-6 space-y-2 z-10 pointer-events-none">
                             <div class="w-12 h-12 bg-slate-900 border border-slate-800 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto group-hover:text-white transition-all"><i class="fa-solid fa-cloud-arrow-up text-base"></i></div>
                             <p class="text-xs font-bold text-slate-300">ลากไฟล์รูปใบพืชมาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
@@ -145,7 +188,7 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-[#070a12] border-t border-slate-800/80 grid grid-cols-4 lg:hidden z-50 h-16">
+    <div id="main-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-[#070a12] border-t border-slate-800/80 grid grid-cols-4 lg:hidden z-50 h-16 hidden">
         <button onclick="Core.switchView('dashboard')" id="m-nav-dashboard" class="nav-link-active flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-chart-pie text-base"></i><span class="text-[9px] mt-1">หน้าแรก</span></button>
         <button onclick="Core.switchView('plots')" id="m-nav-plots" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-seedling text-base"></i><span class="text-[9px] mt-1">แปลงผัก</span></button>
         <button onclick="Core.switchView('scanner')" id="m-nav-scanner" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-expand text-base"></i><span class="text-[9px] mt-1">สแกนสด</span></button>
@@ -157,17 +200,62 @@
     <script>
         const DB = {
             get: (k) => JSON.parse(localStorage.getItem(k)),
-            set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+            set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+            remove: (k) => localStorage.removeItem(k)
+        };
+
+        // โมดูลการตรวจสอบสิทธิ์ความปลอดภัยระดับเกตเวย์
+        const Auth = {
+            validateCredentials: function() {
+                const user = document.getElementById('auth-username').value.trim();
+                const pass = document.getElementById('auth-password').value;
+                const errBox = document.getElementById('auth-error-msg');
+
+                // กำหนดสิทธิ์แบบ HARD-CODED สำหรับใช้งานจริงระดับฟาร์มเดี่ยว
+                if (user === 'admin' && pass === '1234') {
+                    errBox.classList.add('hidden');
+                    DB.set('hg_session_token', 'AUTHORIZED_' + Date.now());
+                    Auth.checkState();
+                } else {
+                    errBox.classList.remove('hidden');
+                }
+            },
+            checkState: function() {
+                const session = DB.get('hg_session_token');
+                const gate = document.getElementById('auth-gate-screen');
+                const sidebar = document.getElementById('main-sidebar-node');
+                const mNav = document.getElementById('main-mobile-nav');
+
+                if (session) {
+                    gate.classList.add('hidden');
+                    if (window.innerWidth >= 1024) sidebar.classList.add('flex');
+                    mNav.classList.remove('hidden');
+                    Core.init();
+                } else {
+                    gate.classList.remove('hidden');
+                    sidebar.classList.remove('flex');
+                    sidebar.classList.add('hidden');
+                    mNav.classList.add('hidden');
+                }
+            },
+            logout: function() {
+                if (confirm('คุณต้องการตัดเซสชันและออกจากระบบใช่หรือไม่?')) {
+                    DB.remove('hg_session_token');
+                    location.reload();
+                }
+            }
         };
 
         const Core = {
             State: { plots: [], logs: [] },
             init: function() {
-                Core.State.plots = DB.get('h_v6_plots') || [{ id: 1, name: 'แปลงทดสอบพยาธิวิทยา A', type: 'กรีนโอ๊ค', zone: 'A1', currentStatus: 'ปกติ' }];
-                Core.State.logs = DB.get('h_v6_logs') || [];
+                Core.State.plots = DB.get('h_v7_plots') || [{ id: 1, name: 'แปลงทดสอบพยาธิวิทยา A', type: 'กรีนโอ๊ค', zone: 'A1', currentStatus: 'ปกติ' }];
+                Core.State.logs = DB.get('h_v7_logs') || [];
                 Core.switchView('dashboard');
             },
             switchView: function(vName) {
+                if (!DB.get('hg_session_token')) return;
+
                 ['dashboard', 'plots', 'scanner', 'logs'].forEach(t => {
                     document.getElementById(`view-${t}`).classList.add('hidden');
                     if(document.getElementById(`nav-${t}`)) document.getElementById(`nav-${t}`).classList.remove('nav-link-active');
@@ -211,7 +299,7 @@
                 const zone = document.getElementById('form-zone').value.trim() || 'Z';
 
                 Core.State.plots.unshift({ id: Date.now(), name, type, zone, currentStatus: 'ปกติ' });
-                DB.set('h_v6_plots', Core.State.plots);
+                DB.set('h_v7_plots', Core.State.plots);
                 
                 document.getElementById('form-name').value = '';
                 document.getElementById('form-type').value = '';
@@ -222,7 +310,7 @@
             delete: function(id) {
                 if(confirm('ยืนยันสิทธิ์การลบข้อมูลแปลงพืชนี้ออกจากระบบถาวร?')) {
                     Core.State.plots = Core.State.plots.filter(p => p.id !== id);
-                    DB.set('h_v6_plots', Core.State.plots);
+                    DB.set('h_v7_plots', Core.State.plots);
                     Plots.render(); Core.updateTelemetryMetrics();
                 }
             },
@@ -247,7 +335,7 @@
                             <div class="pt-2 border-t border-slate-800/60 flex"><span class="text-[8px] tracking-wider uppercase px-2.5 py-0.5 rounded-full border ${cssClass}">● ${currentStatus}</span></div>
                         </div>`;
                 });
-                document.getElementById('plots-summary').innerText = `มอนิเตอร์โรงเรือนสลัดไฮโดรโปนิกส์อยู่ทั้งหมด ${Core.State.plots.length} แปลงเพาะ`;
+                document.getElementById('plots-summary').innerText = `มอนิเตอร์โรงเรือนสลัดอยู่ทั้งหมด ${Core.State.plots.length} แปลงเพาะ`;
             }
         };
 
@@ -274,7 +362,7 @@
                     video.srcObject = Scanner.streamInstance;
                     document.getElementById('cam-switch-btn').classList.remove('hidden');
                 } catch (e) {
-                    alert('เบราว์เซอร์หรืออุปกรณ์ของคุณไม่รองรับการเปิดใช้งาน API กล้องผ่านเว็บโดยตรง กรุณาเลือกใช้วิธีอัปโหลดรูปภาพทดแทนครับ');
+                    alert('ไม่สามารถเปิดใช้งานกล้องวิดีโอได้ กรุณาใช้วิธีอัปโหลดรูปภาพทดแทนครับ');
                     Scanner.terminateStream();
                 }
             },
@@ -349,21 +437,14 @@
                     if(avgR > 115 && avgG > 105 && avgB < 95) {
                         payload = { title: 'ตรวจพบโรคราน้ำค้าง (Downy Mildew Pathogen)', status: 'พบความเสี่ยงโรค', badge: 'bg-rose-950 text-rose-400 border-rose-900/50', txtColor: 'text-rose-400', level: 'สูง (High Risk)', note: 'ตรวจพบความหนาแน่นกลุ่มพิกเซลเฉดสีเหลืองน้ำตาลเกรียมตรงขอบและแผ่นใบอย่างผิดปกติ ควรรีบตัดสลัดที่แสดงอาการออกห่างจากระบบเพื่อป้องกันสปอร์เชื้อราฟุ้งกระจายในโรงเรือน' };
                     } else if (avgR > avgG) {
-                        payload = { title: 'สภาวะใบไหม้จากการขาดธาตุโพแทสเซียม (K-Deficiency)', status: 'พบความเสี่ยงโรค', badge: 'bg-amber-950 text-amber-400 border-amber-900/50', txtColor: 'text-amber-400', level: 'ปานกลาง (Warning)', note: 'โครงสร้างเนื้อใบสูญเสียเม็ดสีคลอโรฟิลล์ช่วงบริเวณขอบใบด้านนอก ควรรีบเช็กเครื่องวัดค่าประจุไฟฟ้าน้ำปุ๋ย (ค่า EC) และรักษาระดับความเข้มข้นให้เหมาะสมตามเกณฑ์ช่วงสายพันธุ์ผักสลัดจ้า' };
+                        payload = { title: 'สภาวะใบไหม้จากการขาดธาตุโพแทสเซียม (K-Deficiency)', status: 'พบความเสี่ยงโรค', badge: 'bg-amber-950 text-amber-400 border-amber-900/50', txtColor: 'text-amber-400', level: 'ปานกลาง (Warning)', note: 'โครงสร้างเนื้อใบสูญเสียเม็ดสีคลอโรฟิลล์ช่วงบริเวณขอบใบด้านนอก ควรรีบเช็กเครื่องวัดค่าประจุไฟฟ้าน้ำปุ๋ย (ค่า EC) และรักษาระดับความเข้มข้นให้เหมาะสมตามเกณฑ์ช่วงสายพันธุ์ผักสลัด' };
                     } else {
-                        payload = { title: 'โครงสร้างใบพืชสมบูรณ์ดีมาก (Healthy Biomass Matrix)', status: 'ปกติ', badge: 'bg-emerald-950 text-emerald-400 border-emerald-900/50', txtColor: 'text-emerald-400', level: 'ไม่มี (Normal)', note: 'ดัชนีการสะท้อนรังสีเม็ดสีพืชตรวจพบคลอโรฟิลล์สีเขียวสดกระจายสม่ำเสมอ แผ่นแอนติบอดีพืชปกติดี ไม่พบคราบสปอร์ราแป้งขาวหรือเนื้อเยื่อใบทลายตัว' };
+                        payload = { title: 'โครงสร้างใบพืชสมบูรณ์ดีมาก (Healthy Biomass Matrix)', status: 'ปกติ', badge: 'bg-emerald-950 text-emerald-400 border-emerald-900/50', txtColor: 'text-emerald-400', level: 'ไม่มี (Normal)', note: 'ดัชนีการสะท้อนรังสีเม็ดสีพืชตรวจพบคลอโรฟิลล์สีเขียวสดกระจายสม่ำเสมอ แผ่นใบปกติดี ไม่พบคราบสปอร์ราแป้งขาวหรือเนื้อเยื่อใบทลายตัว' };
                     }
 
-                    Core.State.logs.unshift({
-                        id: Date.now(),
-                        plotName: document.getElementById('scan-dropdown').value,
-                        time: new Date().toLocaleString('th-TH'),
-                        vectors: `R:${avgR} G:${avgG} B:${avgB}`,
-                        ...payload
-                    });
-                    DB.set('h_v6_logs', Core.State.logs);
+                    Core.State.logs.unshift({ id: Date.now(), plotName: document.getElementById('scan-dropdown').value, time: new Date().toLocaleString('th-TH'), vectors: `R:${avgR} G:${avgG} B:${avgB}`, ...payload });
+                    DB.set('h_v7_logs', Core.State.logs);
 
-                    // Reset Core Canvas Nodes
                     document.getElementById('placeholder-text-ui').classList.remove('hidden');
                     document.getElementById('preview-frame').classList.add('hidden');
                     btn.disabled = true;
@@ -379,7 +460,7 @@
             delete: function(id) {
                 if(confirm('ต้องการลบประวัติการตรวจพยาธิสภาพชุดนี้ใช่ไหม?')) {
                     Core.State.logs = Core.State.logs.filter(l => l.id !== id);
-                    DB.set('h_v6_logs', Core.State.logs);
+                    DB.set('h_v7_logs', Core.State.logs);
                     Logs.render(); Core.updateTelemetryMetrics();
                 }
             },
@@ -426,7 +507,8 @@
             }
         };
 
-        window.onload = () => Core.init();
+        // ตรวจสอบสถานะการ Login ทันทีเมื่อหน้าเว็บโหลดเสร็จสิ้น
+        window.onload = () => Auth.checkState();
     </script>
 </body>
 </html>
