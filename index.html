@@ -1,246 +1,299 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroGuard Engine Core v7.0 Enterprise</title>
+    <title>HydroGuard Core Engine v8.0 Enterprise Next-Gen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Mitr:wght@400;500;600&display=swap');
-        :root { --font-sans: 'Plus Jakarta Sans', 'Mitr', sans-serif; }
-        body { font-family: var(--font-sans); background-color: #0b111e; color: #94a3b8; }
-        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.04); }
-        .nav-link-active { background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 0%, transparent 100%); color: #10b981; border-left: 4px solid #10b981; font-weight: 600; }
-        @media (max-width: 1023px) { .nav-link-active { background: rgba(16, 185, 129, 0.08); border-left: 0; border-top: 3px solid #10b981; } }
-        @keyframes scanEffect { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-        .scanner-line { animation: scanEffect 2s linear infinite; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mitr:wght@400;500;600&display=swap');
+        
+        :root { 
+            --font-global: 'Plus Jakarta Sans', 'Mitr', sans-serif; 
+            --font-code: 'JetBrains Mono', monospace;
+        }
+        body { 
+            font-family: var(--font-global); 
+            background: radial-gradient(125% 125% at 50% 10%, #070a12 40%, #061f14 100%);
+            color: #94a3b8; 
+        }
+        .code-syntax { font-family: var(--font-code); }
+        .cyber-glass { 
+            background: rgba(9, 15, 28, 0.65); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(16, 185, 129, 0.08); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .cyber-glass:hover {
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.05);
+        }
+        .nav-active { 
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.02) 100%); 
+            color: #10b981; 
+            border-left: 4px solid #10b981;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+        }
+        @media (max-width: 1023px) { 
+            .nav-active { 
+                background: rgba(16, 185, 129, 0.1); 
+                border-left: 0; 
+                border-top: 3px solid #10b981; 
+            } 
+        }
+        @keyframes cyberScan { 
+            0% { top: 0%; opacity: 0; } 
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; } 
+        }
+        .laser-scanner { animation: cyberScan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #070a12; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
     </style>
 </head>
 <body class="h-screen flex flex-col lg:flex-row overflow-hidden pb-16 lg:pb-0">
 
-    <div id="auth-gate-screen" class="fixed inset-0 bg-[#070a12] z-[100] flex items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full p-6 rounded-2xl border border-slate-800/80 space-y-6 shadow-2xl relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+    <div id="iam-gatekeeper" class="fixed inset-0 bg-[#04060a] z-[100] flex items-center justify-center p-4">
+        <div class="cyber-glass max-w-md w-full p-8 rounded-3xl border border-slate-800/80 space-y-6 relative overflow-hidden">
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
-            <div class="text-center space-y-2 relative">
-                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black mx-auto">
-                    <i class="fa-solid fa-key text-base"></i>
+            <div class="text-center space-y-3 relative">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-emerald-500/20 text-slate-950 font-black mx-auto">
+                    <i class="fa-solid fa-terminal text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-sm font-black tracking-widest text-white uppercase">HydroGuard Access</h2>
-                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">ระบบยืนยันสิทธิ์นักพยาธิวิทยาพืช</p>
+                    <h2 class="text-base font-black tracking-widest text-white uppercase code-syntax">HYDROGUARD OS v8.0</h2>
+                    <p class="text-[10px] text-emerald-400 font-extrabold uppercase tracking-widest">Enterprise Central Authentication Gate</p>
                 </div>
             </div>
 
-            <div class="space-y-3 font-medium">
+            <div class="space-y-4 font-medium">
                 <div>
-                    <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">รหัสบัญชีผู้ใช้งาน (Username)</label>
+                    <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Operator Credential (Username)</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-600 text-xs"><i class="fa-solid fa-user"></i></span>
-                        <input id="auth-username" type="text" placeholder="admin" class="w-full bg-[#0b111e] border border-slate-800 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500 text-xs"><i class="fa-solid fa-user-shield"></i></span>
+                        <input id="iam-user" type="text" value="admin" class="w-full bg-[#070a12] border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition duration-200 code-syntax">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">รหัสผ่านความปลอดภัย (Password)</label>
+                    <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Security Token (Password)</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-600 text-xs"><i class="fa-solid fa-lock"></i></span>
-                        <input id="auth-password" type="password" placeholder="••••••••" class="w-full bg-[#0b111e] border border-slate-800 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500 text-xs"><i class="fa-solid fa-fingerprint"></i></span>
+                        <input id="iam-pass" type="password" value="1234" class="w-full bg-[#070a12] border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition duration-200 code-syntax">
                     </div>
                 </div>
-                <div id="auth-error-msg" class="hidden text-[10px] text-rose-400 font-semibold bg-rose-950/40 border border-rose-900/40 p-2 rounded-lg flex items-center gap-1.5 animate-pulse">
-                    <i class="fa-solid fa-circle-exclamation"></i> สิทธิ์เข้าถึงปฏิเสธ: บัญชีหรือรหัสผ่านไม่ถูกต้อง
+                <div id="iam-error" class="hidden text-[11px] text-rose-400 font-medium bg-rose-950/30 border border-rose-900/30 p-3 rounded-xl flex items-center gap-2 animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation text-sm"></i> <span>Access Denied: Invalid Cryptographic Token or Operator Parameter.</span>
                 </div>
             </div>
 
-            <button onclick="Auth.validateCredentials()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/10 transition-all">
-                ถอดรหัสผ่านเข้าสู่ระบบ <i class="fa-solid fa-arrow-right-to-bracket ml-1"></i>
+            <button onclick="Auth.executeLoginPipeline()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-xl shadow-emerald-500/10 transition-all duration-300">
+                Establish Secure Connection <i class="fa-solid fa-shield-halved ml-1"></i>
             </button>
         </div>
     </div>
 
-    <aside id="main-sidebar-node" class="w-64 bg-[#070a12] border-r border-slate-800/80 flex flex-col justify-between hidden lg:flex z-50">
+    <aside id="app-sidebar" class="w-64 bg-[#05070d] border-r border-slate-900 flex flex-col justify-between hidden lg:flex z-50">
         <div class="p-6">
-            <div class="flex items-center space-x-3 mb-10">
-                <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black">
-                    <i class="fa-solid fa-microscope text-sm"></i>
+            <div class="flex items-center space-x-3 mb-10 px-1">
+                <div class="w-9 h-9 bg-gradient-to-tr from-emerald-600 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black">
+                    <i class="fa-solid fa-dna text-sm"></i>
                 </div>
                 <div>
                     <h1 class="text-xs font-black tracking-widest text-white uppercase">HydroGuard</h1>
-                    <p class="text-[9px] text-emerald-400 font-bold tracking-wider uppercase">Pathology System Pro</p>
+                    <p class="text-[9px] text-emerald-400 font-black tracking-wider uppercase code-syntax">PLANT PATHOLOGY LAB</p>
                 </div>
             </div>
             <nav class="space-y-1">
-                <button onclick="Core.switchView('dashboard')" id="nav-dashboard" class="nav-link-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>คอนโซลกลาง</span></button>
-                <button onclick="Core.switchView('plots')" id="nav-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-seedling w-5"></i><span>จัดการโซนแปลง</span></button>
-                <button onclick="Core.switchView('scanner')" id="nav-scanner" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-expand w-5"></i><span>กล้องวิเคราะห์โรค AI</span></button>
-                <button onclick="Core.switchView('logs')" id="nav-logs" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-receipt w-5"></i><span>ประวัติและรายงาน</span></button>
+                <button onclick="Core.navigate('dashboard')" id="btn-nav-dashboard" class="nav-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-layer-group w-5 text-sm"></i><span>Telemetry Telepresence</span></button>
+                <button onclick="Core.navigate('plots')" id="btn-nav-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-grid-2x2 w-5 text-sm"><i class="fa-solid fa-cubes"></i></i><span>Zone Management</span></button>
+                <button onclick="Core.navigate('scanner')" id="btn-nav-scanner" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-eye-dropper w-5 text-sm"><i class="fa-solid fa-camera"></i></i><span>Spectral Imaging AI</span></button>
+                <button onclick="Core.navigate('logs')" id="btn-nav-logs" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-server w-5 text-sm"></i><span>Analytical Ledger</span></button>
             </nav>
         </div>
-        <div class="p-4 border-t border-slate-900 flex justify-between items-center">
-            <div class="text-[10px] font-mono text-slate-600">v7.0.0-ENTERPRISE</div>
-            <button onclick="Auth.logout()" class="text-slate-500 hover:text-rose-400 text-xs transition" title="Log Out"><i class="fa-solid fa-power-off"></i></button>
+        <div class="p-4 border-t border-slate-900/60 bg-[#030508]/60 flex justify-between items-center px-6">
+            <div class="text-[9px] font-mono tracking-wider text-slate-600 code-syntax">SYS_CORE: v8.0.0-PRO</div>
+            <button onclick="Auth.executeLogoutSequence()" class="text-slate-500 hover:text-rose-400 transition text-xs p-1"><i class="fa-solid fa-power-off"></i></button>
         </div>
     </aside>
 
-    <div id="main-viewport-node" class="flex-1 flex flex-col overflow-y-auto">
-        <header class="bg-[#070a12]/70 backdrop-blur-md border-b border-slate-800/60 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
+    <div id="app-viewport" class="flex-1 flex flex-col overflow-y-auto">
+        <header class="bg-[#05070d]/80 backdrop-blur-md border-b border-slate-900/80 px-6 py-4 lg:px-8 flex justify-between items-center sticky top-0 z-40">
             <div>
-                <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block">Core Pipeline Engine</span>
-                <h2 id="view-title" class="text-sm font-bold text-white">คอนโซลกลาง</h2>
+                <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block code-syntax">SYSTEM DATA STREAM PIPELINE</span>
+                <h2 id="viewport-title" class="text-sm font-black text-white uppercase tracking-wide">Telemetry Telepresence</h2>
             </div>
             <div class="flex items-center space-x-3">
-                <div class="text-[10px] font-mono bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl text-emerald-400 flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> SECURE_SESSION
+                <div class="text-[10px] font-mono bg-[#070a12] border border-slate-800/80 px-3 py-1.5 rounded-xl text-emerald-400 flex items-center gap-2 shadow-inner">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span class="code-syntax text-[9px] hidden sm:inline">SECURE_SESSION_ALIVE</span>
                 </div>
-                <button onclick="Auth.logout()" class="lg:hidden text-slate-400 hover:text-rose-400 text-xs p-1.5 border border-slate-800 rounded-lg bg-slate-900"><i class="fa-solid fa-power-off"></i></button>
+                <button onclick="Auth.executeLogoutSequence()" class="lg:hidden text-slate-400 hover:text-rose-400 text-xs p-2 border border-slate-800 rounded-xl bg-[#070a12]"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </header>
 
-        <div class="p-4 md:p-8 max-w-4xl w-full mx-auto space-y-6">
+        <div class="p-4 md:p-8 max-w-5xl w-full mx-auto space-y-6">
 
-            <section id="view-dashboard" class="space-y-6">
+            <section id="mod-dashboard" class="space-y-6 animate-fade-in">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="glass-card p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-500 uppercase">แปลงควบคุม</p><h3 id="stat-plots" class="text-xl font-bold text-white mt-1">0</h3></div>
-                    <div class="glass-card p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-500 uppercase">ปกติ (แข็งแรง)</p><h3 id="stat-healthy" class="text-xl font-bold text-emerald-400 mt-1">0</h3></div>
-                    <div class="glass-card p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-500 uppercase">พบพยาธิสภาพ</p><h3 id="stat-sick" class="text-xl font-bold text-rose-400 mt-1">0</h3></div>
-                    <div class="glass-card p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-500 uppercase">สแกนสะสม</p><h3 id="stat-scans" class="text-xl font-bold text-teal-400 mt-1">0</h3></div>
+                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Plots</p><h3 id="m-plots" class="text-2xl font-black text-white mt-1 code-syntax">0</h3></div>
+                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Optimal Matrix</p><h3 id="m-healthy" class="text-2xl font-black text-emerald-400 mt-1 code-syntax">0</h3></div>
+                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pathology Flagged</p><h3 id="m-sick" class="text-2xl font-black text-rose-400 mt-1 code-syntax">0</h3></div>
+                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Scans</p><h3 id="m-scans" class="text-2xl font-black text-teal-400 mt-1 code-syntax">0</h3></div>
                 </div>
-                <div onclick="Core.switchView('scanner')" class="glass-card p-5 rounded-xl border border-emerald-500/20 hover:border-emerald-500/40 transition cursor-pointer flex justify-between items-center group">
-                    <div class="space-y-0.5">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider"><i class="fa-solid fa-circle-play text-emerald-400 mr-1.5"></i>เปิดกล้องวิเคราะห์พยาธิสภาพชนิดใบ</h4>
-                        <p class="text-xs text-slate-400">เข้าสู่ระเบียบวิธีวิเคราะห์พิกเซลสเปกตรัม ค้นหาเชื้อรา จุดใบไหม้ ทันที</p>
+                
+                <div onclick="Core.navigate('scanner')" class="bg-gradient-to-r from-emerald-950/20 via-[#0a0f1d] to-[#05070d] p-6 rounded-2xl border border-emerald-500/10 hover:border-emerald-500/30 transition duration-300 cursor-pointer flex justify-between items-center group shadow-xl">
+                    <div class="space-y-1">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> <i class="fa-solid fa-bolt text-emerald-400"></i> INITIALIZE MULTI-SPECTRAL REAL-TIME SCANNER</h4>
+                        <p class="text-xs text-slate-400">สั่งการระบบเปิดชุดเลนส์กล้องความละเอียดสูง เพื่อแยกแยะระดับเม็ดสีใบพืชทันที</p>
                     </div>
-                    <i class="fa-solid fa-arrow-right text-emerald-400 text-xs transform group-hover:translate-x-1 transition"></i>
+                    <div class="w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-chevron-right text-xs"></i></div>
                 </div>
-                <div class="glass-card rounded-xl p-5 border border-slate-800/80 space-y-4">
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider"><i class="fa-solid fa-wave-square text-teal-400 mr-2"></i>ประวัติการประมวลผลล่าสุด</h4>
-                    <div id="dash-logs-container" class="divide-y divide-slate-800/40"></div>
+
+                <div class="cyber-glass rounded-2xl p-6 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-900 pb-3">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> REAL-TIME ACTIVITY LEDGER FLOW</h4>
+                        <span class="text-[9px] font-mono text-slate-500 code-syntax">LATEST_3_EVENTS</span>
+                    </div>
+                    <div id="dash-log-stream" class="divide-y divide-slate-900"></div>
                 </div>
             </section>
 
-            <section id="view-plots" class="space-y-6 hidden">
+            <section id="mod-plots" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
-                    <p id="plots-summary" class="text-xs text-slate-400">กำลังดึงฐานข้อมูลฟาร์ม...</p>
-                    <button onclick="Plots.openModal()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5"><i class="fa-solid fa-circle-plus"></i>เพิ่มโซนแปลง</button>
+                    <p id="ui-summary-text" class="text-xs font-medium text-slate-400 code-syntax">Syncing Database Cluster...</p>
+                    <button onclick="Plots.toggleModalState(true)" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition shadow-lg flex items-center gap-2"><i class="fa-solid fa-plus-circle text-sm"></i> REGISTER NEW ZONE</button>
                 </div>
-                <div id="plots-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                <div id="plots-grid-dom" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
-                <div id="plotModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
-                    <div class="bg-[#0f172a] border border-slate-800 max-w-sm w-full p-5 rounded-2xl space-y-4 shadow-2xl">
-                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">📦 ลงทะเบียนพิกัดโซนแปลง</h3>
-                        <div class="space-y-3">
-                            <div><label class="block text-[10px] text-slate-400 mb-1">ชื่อหรือหมายเลขแปลง</label><input id="form-name" type="text" placeholder="เช่น กรีนโอ๊ค ถัง A" class="w-full bg-[#070a12] border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-[10px] text-slate-400 mb-1">พืชหลัก</label><input id="form-type" type="text" placeholder="เรดโอ๊ค" class="w-full bg-[#070a12] border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
-                                <div><label class="block text-[10px] text-slate-400 mb-1">พิกัดโรงเรือน</label><input id="form-zone" type="text" placeholder="Zone B1" class="w-full bg-[#070a12] border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
+                <div id="domPlotModal" class="fixed inset-0 bg-[#04060a]/90 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+                    <div class="cyber-glass max-w-md w-full p-6 rounded-2xl space-y-5 shadow-2xl relative">
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider border-b border-slate-900 pb-2">🧬 DATA INGESTION: PLANTING ZONE</h3>
+                        <div class="space-y-3.5">
+                            <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Zone Identifier (ชื่อแปลง)</label><input id="f-name" type="text" placeholder="เช่น บัตเตอร์เฮด โรงเรือน 4" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Cultivar (สายพันธุ์)</label><input id="f-type" type="text" placeholder="เรดคอส" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
+                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Matrix Coordinate (พิกัด)</label><input id="f-zone" type="text" placeholder="C-102" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
                             </div>
                         </div>
-                        <div class="flex space-x-2 pt-1">
-                            <button onclick="Plots.closeModal()" class="w-1/2 bg-slate-800 text-slate-400 text-xs py-2 rounded-xl">ยกเลิก</button>
-                            <button onclick="Plots.add()" class="w-1/2 bg-emerald-500 text-slate-950 font-bold text-xs py-2 rounded-xl">เขียนลงระบบ</button>
+                        <div class="flex space-x-3 pt-2">
+                            <button onclick="Plots.toggleModalState(false)" class="w-1/2 bg-slate-900 border border-slate-800 text-slate-400 hover:text-white text-xs py-3 rounded-xl transition">ABORT</button>
+                            <button onclick="Plots.commitToStorage()" class="w-1/2 bg-emerald-500 text-slate-950 font-bold text-xs py-3 rounded-xl hover:bg-emerald-400 transition shadow-lg">COMMIT DATA</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="view-scanner" class="space-y-6 hidden">
-                <div class="glass-card p-5 rounded-xl border border-slate-800 space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <section id="mod-scanner" class="space-y-6 hidden">
+                <div class="cyber-glass p-6 rounded-2xl space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">แปลงพืชเป้าหมาย</label>
-                            <select id="scan-dropdown" class="w-full bg-[#070a12] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></select>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Target Inspection Zone (เลือกแปลงที่จะตรวจ)</label>
+                            <select id="dom-scan-select" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 code-syntax"></select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">โหมดการนำเข้าภาพ</label>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">HARDWARE IMAGE INPUT INTERFACE</label>
                             <div class="flex gap-2">
-                                <button onclick="Scanner.initWebcam()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-2.5 rounded-xl border border-slate-700/60 transition"><i class="fa-solid fa-video mr-1.5"></i>เปิดกล้องสด</button>
-                                <button onclick="Scanner.toggleFacingMode()" id="cam-switch-btn" class="hidden bg-slate-800 hover:bg-slate-700 text-slate-300 p-2.5 rounded-xl border border-slate-700/60 transition"><i class="fa-solid fa-camera-rotate"></i></button>
+                                <button onclick="Scanner.spinUpHardwareWebcam()" class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2"><i class="fa-solid fa-video text-emerald-400"></i> INITIALIZE WEBCAM</button>
+                                <button onclick="Scanner.toggleFacingDeviceMode()" id="dom-cam-toggle" class="hidden bg-slate-900 hover:bg-slate-800 text-slate-300 p-3 rounded-xl border border-slate-800 transition"><i class="fa-solid fa-camera-rotate"></i></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="border-2 border-dashed border-slate-800 bg-[#070a12]/50 rounded-2xl p-4 min-h-[260px] flex flex-col items-center justify-center relative overflow-hidden group">
-                        <input type="file" accept="image/*" onchange="Scanner.handleUploadFlow(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20" id="file-input-node">
-                        <video id="video-feed" autoplay playsinline class="hidden w-full max-w-sm aspect-square object-cover rounded-xl border border-slate-800 bg-black"></video>
-                        <div id="preview-frame" class="hidden relative w-full max-w-sm aspect-square rounded-xl overflow-hidden border border-slate-800 bg-black">
-                            <img id="static-img-node" class="w-full h-full object-cover">
-                            <div id="laser-line-element" class="absolute left-0 w-full h-0.5 bg-emerald-400 shadow-lg scanner-line hidden"></div>
+                    <div class="border-2 border-dashed border-slate-900 bg-[#030509]/60 rounded-2xl p-4 min-h-[280px] flex flex-col items-center justify-center relative overflow-hidden group">
+                        <input type="file" accept="image/*" onchange="Scanner.pipeFileInputToMatrix(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20" id="dom-file-node">
+                        
+                        <video id="dom-webcam-node" autoplay playsinline class="hidden w-full max-w-md aspect-square object-cover rounded-xl border border-slate-900 bg-black shadow-inner transform -scale-x-100"></video>
+                        
+                        <div id="dom-preview-container" class="hidden relative w-full max-w-md aspect-square rounded-xl overflow-hidden border border-slate-900 bg-black">
+                            <img id="dom-static-img" class="w-full h-full object-cover">
+                            <div id="dom-laser-bar" class="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg laser-scanner hidden"></div>
                         </div>
-                        <div id="placeholder-text-ui" class="text-center p-6 space-y-2 z-10 pointer-events-none">
-                            <div class="w-12 h-12 bg-slate-900 border border-slate-800 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto group-hover:text-white transition-all"><i class="fa-solid fa-cloud-arrow-up text-base"></i></div>
-                            <p class="text-xs font-bold text-slate-300">ลากไฟล์รูปใบพืชมาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
-                            <p class="text-[10px] text-slate-500">หรือกดปุ่มด้านบนเพื่อสตรีมสัญญาณภาพสดจากกล้องมือถือ</p>
+
+                        <div id="dom-fallback-ui" class="text-center p-6 space-y-3 z-10 pointer-events-none">
+                            <div class="w-12 h-12 bg-slate-900 border border-slate-800/60 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-bold text-slate-200">DROP IMAGE HERE OR CLICK TO BROWSE LOCAL STORAGE</p>
+                                <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">หรือคลิกปุ่มเปิดเว็บบอร์ดกล้องด้านบนเพื่อสตรีมสดจากวิดีโอ</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex gap-2">
-                        <button id="action-capture-btn" onclick="Scanner.captureFromStream()" class="hidden flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg">📸 ล็อกภาพจากกล้อง</button>
-                        <button id="action-analyze-btn" disabled onclick="Scanner.runImagePipeline()" class="flex-1 bg-slate-900 text-slate-600 border border-slate-800 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider cursor-not-allowed transition-all">ระบบต้องการไฟล์ภาพ</button>
+                    <div class="flex gap-3">
+                        <button id="dom-btn-capture" onclick="Scanner.commitStreamSnapshot()" class="hidden flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-xl"><i class="fa-solid fa-camera mr-1"></i> LOCK SIGNAL SNAPSHOT</button>
+                        <button id="dom-btn-process" disabled onclick="Scanner.executeMatrixAnalysisPipeline()" class="flex-1 bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed transition-all duration-300">AWAITING IMAGE INPUT SOURCE</button>
                     </div>
                 </div>
             </section>
 
-            <section id="view-logs" class="space-y-4 hidden">
-                <div id="logs-master-view" class="space-y-4"></div>
+            <section id="mod-logs" class="space-y-4 hidden">
+                <div class="flex justify-between items-center border-b border-slate-900 pb-3">
+                    <span class="text-xs font-bold text-white uppercase tracking-wider code-syntax">CENTRAL DATA ARCHIVE</span>
+                    <button onclick="Logs.truncateAllData()" class="text-[10px] font-extrabold text-rose-400 hover:bg-rose-950/40 border border-rose-900/30 px-3 py-1.5 rounded-xl transition uppercase tracking-wider"><i class="fa-solid fa-dumpster-fire mr-1"></i> Wipe Ledger Archive</button>
+                </div>
+                <div id="dom-ledger-wrapper" class="space-y-4"></div>
             </section>
 
         </div>
     </div>
 
-    <div id="main-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-[#070a12] border-t border-slate-800/80 grid grid-cols-4 lg:hidden z-50 h-16 hidden">
-        <button onclick="Core.switchView('dashboard')" id="m-nav-dashboard" class="nav-link-active flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-chart-pie text-base"></i><span class="text-[9px] mt-1">หน้าแรก</span></button>
-        <button onclick="Core.switchView('plots')" id="m-nav-plots" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-seedling text-base"></i><span class="text-[9px] mt-1">แปลงผัก</span></button>
-        <button onclick="Core.switchView('scanner')" id="m-nav-scanner" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-expand text-base"></i><span class="text-[9px] mt-1">สแกนสด</span></button>
-        <button onclick="Core.switchView('logs')" id="m-nav-logs" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-receipt text-base"></i><span class="text-[9px] mt-1">รายงาน</span></button>
+    <div id="app-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-[#05070d] border-t border-slate-900 grid grid-cols-4 lg:hidden z-50 h-16 hidden">
+        <button onclick="Core.navigate('dashboard')" id="m-btn-nav-dashboard" class="nav-active flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-layer-group text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Console</span></button>
+        <button onclick="Core.navigate('plots')" id="m-btn-nav-plots" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-cubes text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Zones</span></button>
+        <button onclick="Core.navigate('scanner')" id="m-btn-nav-scanner" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-camera text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">AI Imaging</span></button>
+        <button onclick="Core.navigate('logs')" id="m-btn-nav-logs" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-server text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Ledger</span></button>
     </div>
 
-    <canvas id="virtualCanvasPipeline" class="hidden"></canvas>
+    <canvas id="virtualCanvasLayer" class="hidden"></canvas>
 
     <script>
-        const DB = {
-            get: (k) => JSON.parse(localStorage.getItem(k)),
-            set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
-            remove: (k) => localStorage.removeItem(k)
+        const EngineStore = {
+            read: (key) => JSON.parse(localStorage.getItem(key)),
+            write: (key, obj) => localStorage.setItem(key, JSON.stringify(obj)),
+            purge: (key) => localStorage.removeItem(key)
         };
 
-        // โมดูลการตรวจสอบสิทธิ์ความปลอดภัยระดับเกตเวย์
         const Auth = {
-            validateCredentials: function() {
-                const user = document.getElementById('auth-username').value.trim();
-                const pass = document.getElementById('auth-password').value;
-                const errBox = document.getElementById('auth-error-msg');
+            executeLoginPipeline: function() {
+                const u = document.getElementById('iam-user').value.trim();
+                const p = document.getElementById('iam-pass').value;
+                const err = document.getElementById('iam-error');
 
-                // กำหนดสิทธิ์แบบ HARD-CODED สำหรับใช้งานจริงระดับฟาร์มเดี่ยว
-                if (user === 'admin' && pass === '1234') {
-                    errBox.classList.add('hidden');
-                    DB.set('hg_session_token', 'AUTHORIZED_' + Date.now());
-                    Auth.checkState();
+                if (u === 'admin' && p === '1234') {
+                    err.classList.add('hidden');
+                    EngineStore.write('hg_v8_auth_token', 'TOKEN_SECURE_NODE_' + btoa(Date.now().toString()));
+                    Auth.evalSessionState();
                 } else {
-                    errBox.classList.remove('hidden');
+                    err.classList.remove('hidden');
                 }
             },
-            checkState: function() {
-                const session = DB.get('hg_session_token');
-                const gate = document.getElementById('auth-gate-screen');
-                const sidebar = document.getElementById('main-sidebar-node');
-                const mNav = document.getElementById('main-mobile-nav');
+            evalSessionState: function() {
+                const token = EngineStore.read('hg_v8_auth_token');
+                const gate = document.getElementById('iam-gatekeeper');
+                const sidebar = document.getElementById('app-sidebar');
+                const mNav = document.getElementById('app-mobile-nav');
 
-                if (session) {
+                if (token) {
                     gate.classList.add('hidden');
                     if (window.innerWidth >= 1024) sidebar.classList.add('flex');
                     mNav.classList.remove('hidden');
-                    Core.init();
+                    Core.bootRuntimeEngine();
                 } else {
                     gate.classList.remove('hidden');
-                    sidebar.classList.remove('flex');
-                    sidebar.classList.add('hidden');
+                    sidebar.classList.remove('flex'); sidebar.classList.add('hidden');
                     mNav.classList.add('hidden');
                 }
             },
-            logout: function() {
-                if (confirm('คุณต้องการตัดเซสชันและออกจากระบบใช่หรือไม่?')) {
-                    DB.remove('hg_session_token');
+            executeLogoutSequence: function() {
+                if (confirm('TERMINATE OPERATOR SECURE SESSION SYSTEM?')) {
+                    EngineStore.purge('hg_v8_auth_token');
                     location.reload();
                 }
             }
@@ -248,267 +301,264 @@
 
         const Core = {
             State: { plots: [], logs: [] },
-            init: function() {
-                Core.State.plots = DB.get('h_v7_plots') || [{ id: 1, name: 'แปลงทดสอบพยาธิวิทยา A', type: 'กรีนโอ๊ค', zone: 'A1', currentStatus: 'ปกติ' }];
-                Core.State.logs = DB.get('h_v7_logs') || [];
-                Core.switchView('dashboard');
+            bootRuntimeEngine: function() {
+                Core.State.plots = EngineStore.read('db_v8_plots') || [{ id: 1, name: 'แปลงทดลองควบคุมระบบ Core-A', type: 'กรีนโอ๊ค', zone: 'A-01', currentStatus: 'ปกติ' }];
+                Core.State.logs = EngineStore.read('db_v8_logs') || [];
+                Core.navigate('dashboard');
             },
-            switchView: function(vName) {
-                if (!DB.get('hg_session_token')) return;
+            navigate: function(targetModule) {
+                if (!EngineStore.read('hg_v8_auth_token')) return;
 
-                ['dashboard', 'plots', 'scanner', 'logs'].forEach(t => {
-                    document.getElementById(`view-${t}`).classList.add('hidden');
-                    if(document.getElementById(`nav-${t}`)) document.getElementById(`nav-${t}`).classList.remove('nav-link-active');
-                    if(document.getElementById(`m-nav-${t}`)) document.getElementById(`m-nav-${t}`).classList.remove('nav-link-active');
+                ['dashboard', 'plots', 'scanner', 'logs'].forEach(m => {
+                    document.getElementById(`mod-${m}`).classList.add('hidden');
+                    if(document.getElementById(`btn-nav-${m}`)) document.getElementById(`btn-nav-${m}`).classList.remove('nav-active');
+                    if(document.getElementById(`m-btn-nav-${m}`)) document.getElementById(`m-btn-nav-${m}`).classList.remove('nav-active');
                 });
 
-                document.getElementById(`view-${vName}`).classList.remove('hidden');
-                if(document.getElementById(`nav-${vName}`)) document.getElementById(`nav-${vName}`).classList.add('nav-link-active');
-                if(document.getElementById(`m-nav-${vName}`)) document.getElementById(`m-nav-${vName}`).classList.add('nav-link-active');
+                document.getElementById(`mod-${targetModule}`).classList.remove('hidden');
+                if(document.getElementById(`btn-nav-${targetModule}`)) document.getElementById(`btn-nav-${targetModule}`).add('nav-active');
+                if(document.getElementById(`m-btn-nav-${targetModule}`)) document.getElementById(`m-btn-nav-${targetModule}`).classList.add('nav-active');
 
-                const dict = { dashboard: '📊 คอนโซลกลางควบคุมฟาร์ม', plots: '🌱 การจัดการโซนแปลง', scanner: '🔬 กล้องวิเคราะห์โรค AI', logs: '📜 ฐานประวัติพยาธิวิทยา' };
-                document.getElementById('view-title').innerText = dict[vName];
+                const titleDict = { dashboard: 'Telemetry Telepresence Dashboard', plots: 'Plantation Zone Deployment Cluster', scanner: 'AI Multi-Spectral Pixels Imaging', logs: 'Analytical Pathology System Ledger' };
+                document.getElementById('viewport-title').innerText = titleDict[targetModule];
 
-                Scanner.terminateStream();
-                if(vName === 'dashboard' || vName === 'plots') Plots.render();
-                if(vName === 'dashboard' || vName === 'logs') Logs.render();
-                if(vName === 'scanner') Scanner.syncDropdown();
-                Core.updateTelemetryMetrics();
+                Scanner.killHardwareWebcam();
+                if(targetModule === 'dashboard' || targetModule === 'plots') Plots.renderUIComponents();
+                if(targetModule === 'dashboard' || targetModule === 'logs') Logs.renderLedgerUI();
+                if(targetModule === 'scanner') Scanner.relinkDropdownZones();
+                Core.computeTelemetryMetrics();
             },
-            updateTelemetryMetrics: function() {
-                let plotsLen = Core.State.plots.length;
-                let logsLen = Core.State.logs.length;
-                let healthy = 0, sick = 0;
+            computeTelemetryMetrics: function() {
+                let pLen = Core.State.plots.length;
+                let lLen = Core.State.logs.length;
+                let hCount = 0, sCount = 0;
 
-                Core.State.logs.forEach(l => { if (l.status === 'ปกติ') healthy++; else sick++; });
-                if (logsLen === 0 && plotsLen > 0) healthy = plotsLen;
+                Core.State.logs.forEach(l => { if (l.status === 'ปกติ') hCount++; else sCount++; });
+                if (lLen === 0 && pLen > 0) hCount = pLen;
 
-                document.getElementById('stat-plots').innerText = plotsLen;
-                document.getElementById('stat-healthy').innerText = healthy;
-                document.getElementById('stat-sick').innerText = sick;
-                document.getElementById('stat-scans').innerText = logsLen;
+                document.getElementById('m-plots').innerText = pLen;
+                document.getElementById('m-healthy').innerText = hCount;
+                document.getElementById('m-sick').innerText = sCount;
+                document.getElementById('m-scans').innerText = lLen;
             }
         };
 
         const Plots = {
-            openModal: () => document.getElementById('plotModal').classList.remove('hidden'),
-            closeModal: () => document.getElementById('plotModal').classList.add('hidden'),
-            add: function() {
-                const name = document.getElementById('form-name').value.trim() || 'แปลงไม่ระบุชื่อ';
-                const type = document.getElementById('form-type').value.trim() || 'สลัด';
-                const zone = document.getElementById('form-zone').value.trim() || 'Z';
+            toggleModalState: (open) => document.getElementById('domPlotModal').classList[open ? 'remove' : 'add']('hidden'),
+            commitToStorage: function() {
+                const name = document.getElementById('f-name').value.trim() || 'UNNAMED_NODE';
+                const type = document.getElementById('f-type').value.trim() || 'HYBRID_CULTIVAR';
+                const zone = document.getElementById('f-zone').value.trim() || 'Z-X';
 
                 Core.State.plots.unshift({ id: Date.now(), name, type, zone, currentStatus: 'ปกติ' });
-                DB.set('h_v7_plots', Core.State.plots);
-                
-                document.getElementById('form-name').value = '';
-                document.getElementById('form-type').value = '';
-                document.getElementById('form-zone').value = '';
-                
-                Plots.closeModal(); Plots.render(); Core.updateTelemetryMetrics();
+                EngineStore.write('db_v8_plots', Core.State.plots);
+
+                document.getElementById('f-name').value = '';
+                document.getElementById('f-type').value = '';
+                document.getElementById('f-zone').value = '';
+
+                Plots.toggleModalState(false); Plots.renderUIComponents(); Core.computeTelemetryMetrics();
             },
-            delete: function(id) {
-                if(confirm('ยืนยันสิทธิ์การลบข้อมูลแปลงพืชนี้ออกจากระบบถาวร?')) {
+            deleteZone: function(id) {
+                if (confirm('CRITICAL ACTION: PURGE DEPLOYED ZONE FROM REGISTRY HARD DRIVE?')) {
                     Core.State.plots = Core.State.plots.filter(p => p.id !== id);
-                    DB.set('h_v7_plots', Core.State.plots);
-                    Plots.render(); Core.updateTelemetryMetrics();
+                    EngineStore.write('db_v8_plots', Core.State.plots);
+                    Plots.renderUIComponents(); Core.computeTelemetryMetrics();
                 }
             },
-            render: function() {
-                const node = document.getElementById('plots-grid'); if(!node) return;
-                node.innerHTML = '';
+            renderUIComponents: function() {
+                const grid = document.getElementById('plots-grid-dom'); if(!grid) return;
+                grid.innerHTML = '';
                 Core.State.plots.forEach(p => {
-                    const match = Core.State.logs.find(l => l.plotName === p.name);
-                    const currentStatus = match ? match.status : p.currentStatus;
-                    const cssClass = currentStatus === 'ปกติ' ? 'bg-emerald-950/60 text-emerald-400 border-emerald-900/60' : 'bg-rose-950/60 text-rose-400 border-rose-900/60';
+                    const matchedLog = Core.State.logs.find(l => l.plotName === p.name);
+                    const status = matchedLog ? matchedLog.status : p.currentStatus;
+                    const badgeClass = status === 'ปกติ' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/40' : 'bg-rose-950/40 text-rose-400 border-rose-900/40';
 
-                    node.innerHTML += `
-                        <div class="glass-card p-4 rounded-xl space-y-3 border border-slate-800">
+                    grid.innerHTML += `
+                        <div class="cyber-glass p-5 rounded-2xl relative space-y-4 border border-slate-900">
                             <div class="flex justify-between items-center">
-                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-900 text-teal-400 border border-slate-800">🧬 ${p.type}</span>
-                                <button onclick="Plots.delete(${p.id})" class="text-slate-600 hover:text-rose-400 transition text-xs"><i class="fa-solid fa-trash-can"></i></button>
+                                <span class="text-[9px] tracking-widest font-mono font-bold px-2 py-1 bg-[#05070d] border border-slate-800 text-teal-400 rounded-lg code-syntax uppercase">${p.type}</span>
+                                <button onclick="Plots.deleteZone(${p.id})" class="text-slate-600 hover:text-rose-400 text-xs p-1 transition"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-white">${p.name}</h3>
-                                <p class="text-[10px] text-slate-500 mt-1"><i class="fa-solid fa-compass mr-1"></i> โรงเรือนพิกัด: ${p.zone}</p>
+                                <h3 class="text-xs font-black text-white uppercase tracking-wide truncate">${p.name}</h3>
+                                <p class="text-[10px] font-mono text-slate-500 mt-1.5 code-syntax"><i class="fa-solid fa-vector-square mr-1 text-slate-700"></i> MATRIX_COORD: ${p.zone}</p>
                             </div>
-                            <div class="pt-2 border-t border-slate-800/60 flex"><span class="text-[8px] tracking-wider uppercase px-2.5 py-0.5 rounded-full border ${cssClass}">● ${currentStatus}</span></div>
+                            <div class="pt-2 border-t border-slate-900 flex"><span class="text-[9px] tracking-wider uppercase font-extrabold px-2.5 py-1 rounded-full border ${badgeClass}">● SYSTEM_${status}</span></div>
                         </div>`;
                 });
-                document.getElementById('plots-summary').innerText = `มอนิเตอร์โรงเรือนสลัดอยู่ทั้งหมด ${Core.State.plots.length} แปลงเพาะ`;
+                document.getElementById('ui-summary-text').innerText = `TOTAL MONITORING CLUSTER MATRIX SENSORS: ${Core.State.plots.length} NODES`;
             }
         };
 
         const Scanner = {
-            streamInstance: null,
+            mediaStream: null,
             facingMode: 'environment',
-            syncDropdown: function() {
-                const node = document.getElementById('scan-dropdown');
-                if(node) node.innerHTML = Core.State.plots.map(p => `<option value="${p.name}">${p.name} [${p.zone}]</option>`).join('');
+            relinkDropdownZones: function() {
+                const d = document.getElementById('dom-scan-select');
+                if(d) d.innerHTML = Core.State.plots.map(p => `<option value="${p.name}">${p.name} [${p.zone}]</option>`).join('');
             },
-            initWebcam: async function() {
-                Scanner.terminateStream();
-                document.getElementById('placeholder-text-ui').classList.add('hidden');
-                document.getElementById('preview-frame').classList.add('hidden');
+            spinUpHardwareWebcam: async function() {
+                Scanner.killHardwareWebcam();
+                document.getElementById('dom-fallback-ui').classList.add('hidden');
+                document.getElementById('dom-preview-container').classList.add('hidden');
                 
-                const video = document.getElementById('video-feed');
-                video.classList.remove('hidden');
-                document.getElementById('action-capture-btn').classList.remove('hidden');
+                const v = document.getElementById('dom-webcam-node'); v.classList.remove('hidden');
+                document.getElementById('dom-btn-capture').classList.remove('hidden');
 
                 try {
-                    Scanner.streamInstance = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: Scanner.facingMode, width: { ideal: 640 }, height: { ideal: 640 } }, audio: false
+                    Scanner.mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: Scanner.facingMode, width: { ideal: 720 }, height: { ideal: 720 } }, audio: false
                     });
-                    video.srcObject = Scanner.streamInstance;
-                    document.getElementById('cam-switch-btn').classList.remove('hidden');
-                } catch (e) {
-                    alert('ไม่สามารถเปิดใช้งานกล้องวิดีโอได้ กรุณาใช้วิธีอัปโหลดรูปภาพทดแทนครับ');
-                    Scanner.terminateStream();
+                    v.srcObject = Scanner.mediaStream;
+                    document.getElementById('dom-cam-toggle').classList.remove('hidden');
+                } catch (err) {
+                    alert('HARDWARE PERMISSION REJECTED: FALLBACK TO MANUAL BUFFER INGESTION.');
+                    Scanner.killHardwareWebcam();
                 }
             },
-            toggleFacingMode: function() {
+            toggleFacingDeviceMode: function() {
                 Scanner.facingMode = Scanner.facingMode === 'user' ? 'environment' : 'user';
-                Scanner.initWebcam();
+                Scanner.spinUpHardwareWebcam();
             },
-            terminateStream: function() {
-                if(Scanner.streamInstance) {
-                    Scanner.streamInstance.getTracks().forEach(track => track.stop());
-                    Scanner.streamInstance = null;
+            killHardwareWebcam: function() {
+                if(Scanner.mediaStream) {
+                    Scanner.mediaStream.getTracks().forEach(t => t.stop()); Scanner.mediaStream = null;
                 }
-                document.getElementById('video-feed').classList.add('hidden');
-                document.getElementById('action-capture-btn').classList.add('hidden');
-                document.getElementById('cam-switch-btn').classList.add('hidden');
+                document.getElementById('dom-webcam-node').classList.add('hidden');
+                document.getElementById('dom-btn-capture').classList.add('hidden');
+                document.getElementById('dom-cam-toggle').classList.add('hidden');
             },
-            captureFromStream: function() {
-                const video = document.getElementById('video-feed');
-                const canvas = document.getElementById('virtualCanvasPipeline');
-                const ctx = canvas.getContext('2d');
+            commitStreamSnapshot: function() {
+                const v = document.getElementById('dom-webcam-node');
+                const c = document.getElementById('virtualCanvasLayer');
+                const ctx = c.getContext('2d');
 
-                canvas.width = video.videoWidth || 400;
-                canvas.height = video.videoHeight || 400;
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                c.width = v.videoWidth || 480; c.height = v.videoHeight || 480;
+                ctx.translate(c.width, 0); ctx.scale(-1, 1); // Mirror normalization
+                ctx.drawImage(v, 0, 0, c.width, c.height);
 
-                const base64 = canvas.toDataURL('image/jpeg');
-                Scanner.lockPreviewFrame(base64);
-                Scanner.terminateStream();
+                Scanner.bindStaticPreviewFrame(c.toDataURL('image/jpeg'));
+                Scanner.killHardwareWebcam();
             },
-            handleUploadFlow: function(e) {
+            pipeFileInputToMatrix: function(e) {
                 const file = e.target.files[0]; if(!file) return;
-                Scanner.terminateStream();
-                const reader = new FileReader();
-                reader.onload = (event) => Scanner.lockPreviewFrame(event.target.result);
-                reader.readAsDataURL(file);
+                Scanner.killHardwareWebcam();
+                const r = new FileReader(); r.onload = (ev) => Scanner.bindStaticPreviewFrame(ev.target.result);
+                r.readAsDataURL(file);
             },
-            lockPreviewFrame: function(src) {
-                document.getElementById('placeholder-text-ui').classList.add('hidden');
-                document.getElementById('preview-frame').classList.remove('hidden');
-                document.getElementById('static-img-node').src = src;
+            bindStaticPreviewFrame: function(base64) {
+                document.getElementById('dom-fallback-ui').classList.add('hidden');
+                document.getElementById('dom-preview-container').classList.remove('hidden');
+                document.getElementById('dom-static-img').src = base64;
 
-                const btn = document.getElementById('action-analyze-btn');
-                btn.disabled = false;
-                btn.className = "flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer shadow-lg shadow-emerald-500/20 transition-all";
-                btn.innerText = "⚡ ดำเนินกระบวนการวิเคราะห์เชิงพยาธิสภาพ";
+                const btn = document.getElementById('dom-btn-process'); btn.disabled = false;
+                btn.className = "flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-pointer shadow-lg transition-all duration-300";
+                btn.innerHTML = "<i class='fa-solid fa-microscope mr-1'></i> RUN VECTOR IMAGING SPECTRAL ANALYSIS";
             },
-            runImagePipeline: function() {
-                const laser = document.getElementById('laser-line-element');
-                const btn = document.getElementById('action-analyze-btn');
+            executeMatrixAnalysisPipeline: function() {
+                const laser = document.getElementById('dom-laser-bar');
+                const btn = document.getElementById('dom-btn-process');
                 
-                laser.classList.remove('hidden');
-                btn.disabled = true;
-                btn.innerText = "📡 กำลังตรวจเฉดสีและดัชนีคลอโรฟิลล์เนื้อใบ...";
+                laser.classList.remove('hidden'); btn.disabled = true;
+                btn.innerText = "STREAMING BUFFER: ANALYZING CHLOROPHYLL VALUE PACKETS...";
 
-                const img = document.getElementById('static-img-node');
-                const canvas = document.getElementById('virtualCanvasPipeline');
-                const ctx = canvas.getContext('2d');
+                const img = document.getElementById('dom-static-img');
+                const c = document.getElementById('virtualCanvasLayer'); const ctx = c.getContext('2d');
 
-                canvas.width = 16; canvas.height = 16;
-                ctx.drawImage(img, 0, 0, 16, 16);
+                c.width = 16; c.height = 16; ctx.drawImage(img, 0, 0, 16, 16);
 
                 setTimeout(() => {
                     laser.classList.add('hidden');
-                    const array = ctx.getImageData(0, 0, 16, 16).data;
+                    const matrixData = ctx.getImageData(0, 0, 16, 16).data;
                     let r = 0, g = 0, b = 0;
 
-                    for(let i=0; i<array.length; i+=4) { r += array[i]; g += array[i+1]; b += array[i+2]; }
-                    let totalPixels = array.length / 4;
-                    let avgR = Math.round(r/totalPixels), avgG = Math.round(g/totalPixels), avgB = Math.round(b/totalPixels);
+                    for(let i=0; i<matrixData.length; i+=4) { r += matrixData[i]; g += matrixData[i+1]; b += matrixData[i+2]; }
+                    let totalSamples = matrixData.length / 4;
+                    let avgR = Math.round(r/totalSamples), avgG = Math.round(g/totalSamples), avgB = Math.round(b/totalSamples);
 
                     let payload = {};
                     if(avgR > 115 && avgG > 105 && avgB < 95) {
-                        payload = { title: 'ตรวจพบโรคราน้ำค้าง (Downy Mildew Pathogen)', status: 'พบความเสี่ยงโรค', badge: 'bg-rose-950 text-rose-400 border-rose-900/50', txtColor: 'text-rose-400', level: 'สูง (High Risk)', note: 'ตรวจพบความหนาแน่นกลุ่มพิกเซลเฉดสีเหลืองน้ำตาลเกรียมตรงขอบและแผ่นใบอย่างผิดปกติ ควรรีบตัดสลัดที่แสดงอาการออกห่างจากระบบเพื่อป้องกันสปอร์เชื้อราฟุ้งกระจายในโรงเรือน' };
+                        payload = { title: 'CRITICAL_ALERT: Downy Mildew Pathogen Infiltration', status: 'ติดโรค', badge: 'bg-rose-950/50 text-rose-400 border-rose-900/40', textCss: 'text-rose-400', severity: 'HIGH_CRITICAL_RISK', description: 'พบสปอร์ราน้ำค้างขยายตัวทำลายเนื้อเยื่อใบในอัตราเร่ง แนะนำให้แยกรื้อถอนต้นที่มีอาการออกจากโรงเรือนและล้างฆ่าเชื้อระบบท่อน้ำวนด้วยไฮโดรเจนเปอร์ออกไซด์ทันที' };
                     } else if (avgR > avgG) {
-                        payload = { title: 'สภาวะใบไหม้จากการขาดธาตุโพแทสเซียม (K-Deficiency)', status: 'พบความเสี่ยงโรค', badge: 'bg-amber-950 text-amber-400 border-amber-900/50', txtColor: 'text-amber-400', level: 'ปานกลาง (Warning)', note: 'โครงสร้างเนื้อใบสูญเสียเม็ดสีคลอโรฟิลล์ช่วงบริเวณขอบใบด้านนอก ควรรีบเช็กเครื่องวัดค่าประจุไฟฟ้าน้ำปุ๋ย (ค่า EC) และรักษาระดับความเข้มข้นให้เหมาะสมตามเกณฑ์ช่วงสายพันธุ์ผักสลัด' };
+                        payload = { title: 'WARNING_MATRIX: K-Elemental Deficient Syndrome', status: 'เสี่ยงโรค', badge: 'bg-amber-950/50 text-amber-400 border-amber-900/40', textCss: 'text-amber-400', severity: 'WARNING_MEDIUM', description: 'เนื้อเยื่อขอบใบแสดงสภาวะไหม้กรอบเนื่องจากสัดส่วนปุ๋ยไม่สมดุล ควรปรับเพิ่มความเข้มข้นสารละลายธาตุอาหารพืช (ค่า EC) และเฝ้าระวังอุณหภูมิรากไม่ให้เกิน 28°C' };
                     } else {
-                        payload = { title: 'โครงสร้างใบพืชสมบูรณ์ดีมาก (Healthy Biomass Matrix)', status: 'ปกติ', badge: 'bg-emerald-950 text-emerald-400 border-emerald-900/50', txtColor: 'text-emerald-400', level: 'ไม่มี (Normal)', note: 'ดัชนีการสะท้อนรังสีเม็ดสีพืชตรวจพบคลอโรฟิลล์สีเขียวสดกระจายสม่ำเสมอ แผ่นใบปกติดี ไม่พบคราบสปอร์ราแป้งขาวหรือเนื้อเยื่อใบทลายตัว' };
+                        payload = { title: 'OPTIMAL_BIOMASS: Highly Stable Chlorophyll Structural Matrix', status: 'ปกติ', badge: 'bg-emerald-950/50 text-emerald-400 border-emerald-900/40', textCss: 'text-emerald-400', severity: 'ZERO_BIOPATHOLOGY', description: 'ดัชนีคลอโรฟิลล์และการสะท้อนของแผ่นใบอยู่ในเกณฑ์อุดมสมบูรณ์สูงสุด การเติบโตของเซลล์พืชปกติดี ไม่พบความหนาแน่นของกลุ่มสปอร์เชื้อราปนเปื้อน' };
                     }
 
-                    Core.State.logs.unshift({ id: Date.now(), plotName: document.getElementById('scan-dropdown').value, time: new Date().toLocaleString('th-TH'), vectors: `R:${avgR} G:${avgG} B:${avgB}`, ...payload });
-                    DB.set('h_v7_logs', Core.State.logs);
+                    Core.State.logs.unshift({ id: Date.now(), plotName: document.getElementById('dom-scan-select').value, timestamp: new Date().toLocaleString('th-TH'), signature: `HEX_RGB[#${avgR.toString(16).padStart(2,'0')}${avgG.toString(16).padStart(2,'0')}${avgB.toString(16).padStart(2,'0')}]`, ...payload });
+                    EngineStore.write('db_v8_logs', Core.State.logs);
 
-                    document.getElementById('placeholder-text-ui').classList.remove('hidden');
-                    document.getElementById('preview-frame').classList.add('hidden');
-                    btn.disabled = true;
-                    btn.className = "w-full bg-slate-900 text-slate-600 border border-slate-800 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider cursor-not-allowed";
-                    btn.innerText = "ระบบต้องการไฟล์ภาพ";
+                    // Reset Form Elements State
+                    document.getElementById('dom-fallback-ui').classList.remove('hidden');
+                    document.getElementById('dom-preview-container').classList.add('hidden');
+                    btn.disabled = true; btn.className = "w-full bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed";
+                    btn.innerText = "AWAITING IMAGE INPUT SOURCE";
 
-                    Core.switchView('logs');
-                }, 1500);
+                    Core.navigate('logs');
+                }, 1600);
             }
         };
 
         const Logs = {
-            delete: function(id) {
-                if(confirm('ต้องการลบประวัติการตรวจพยาธิสภาพชุดนี้ใช่ไหม?')) {
+            deleteLogEntry: function(id) {
+                if(confirm('PURGE PHENOTYPE LOG ENTRY TRANSACTION?')) {
                     Core.State.logs = Core.State.logs.filter(l => l.id !== id);
-                    DB.set('h_v7_logs', Core.State.logs);
-                    Logs.render(); Core.updateTelemetryMetrics();
+                    EngineStore.write('db_v8_logs', Core.State.logs);
+                    Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
                 }
             },
-            render: function() {
-                const master = document.getElementById('logs-master-view');
-                const dash = document.getElementById('dash-logs-container');
+            truncateAllData: function() {
+                if(confirm('🚨 CRITICAL WIPEOUT: PURGE ALL ANALYTICAL LOG TRANSACTIONS PERMANENTLY FROM OPERATING SYSTEM?')) {
+                    Core.State.logs = []; EngineStore.write('db_v8_logs', Core.State.logs);
+                    Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
+                }
+            },
+            renderLedgerUI: function() {
+                const master = document.getElementById('dom-ledger-wrapper');
+                const stream = document.getElementById('dash-log-stream');
 
                 if (master) {
                     if(Core.State.logs.length === 0) {
-                        master.innerHTML = `<div class="glass-card p-6 rounded-xl text-center text-xs text-slate-500">ฐานข้อมูลประวัติวิทยาศาสตร์ฟาร์มยังว่างเปล่า เริ่มต้นเก็บข้อมูลสแกนเป็นเคสแรกได้เลยครับ</div>`;
+                        master.innerHTML = `<div class="cyber-glass p-8 rounded-2xl text-center text-xs text-slate-500 font-mono code-syntax uppercase tracking-wider">Empty Data Cache Cluster. Execute Spectral Scanner Pipeline to Collect Matrix Analytics.</div>`;
                     } else {
                         master.innerHTML = Core.State.logs.map(l => `
-                            <div class="glass-card p-4 rounded-xl space-y-2 border border-slate-800/80">
+                            <div class="cyber-glass p-5 rounded-2xl space-y-3 border border-slate-900">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="text-xs font-bold text-white ${l.txtColor}">${l.title}</h4>
-                                        <p class="text-[10px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-crosshairs mr-1"></i>หน่วยรับตรวจ: ${l.plotName}</p>
+                                        <h4 class="text-xs font-black text-white tracking-wide uppercase ${l.textCss}">${l.title}</h4>
+                                        <p class="text-[10px] font-mono text-slate-500 mt-1 code-syntax"><i class="fa-solid fa-crosshairs text-slate-700 mr-1"></i> INSPECTION_TARGET: ${l.plotName}</p>
                                     </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="text-[8px] font-bold border rounded-full px-2.5 py-0.5 ${l.badge}">${l.status}</span>
-                                        <button onclick="Logs.delete(${l.id})" class="text-slate-600 hover:text-rose-400 transition text-xs px-1"><i class="fa-solid fa-trash-can"></i></button>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-[8px] font-mono font-black border rounded-md px-2 py-0.5 code-syntax uppercase ${l.badge}">${l.status}</span>
+                                        <button onclick="Logs.deleteLogEntry(${l.id})" class="text-slate-600 hover:text-rose-400 transition text-xs px-1"><i class="fa-solid fa-trash-can"></i></button>
                                     </div>
                                 </div>
-                                <p class="text-xs text-slate-400 leading-relaxed">${l.note}</p>
-                                <p class="text-[9px] font-mono text-slate-600 border-t border-slate-800/60 pt-1.5 mt-2">⏱️ TIMESTAMP: ${l.time} | VECTOR_SIGN: ${l.vectors} | SEVERITY: ${l.level}</p>
+                                <p class="text-xs text-slate-400 leading-relaxed">${l.description}</p>
+                                <p class="text-[9px] font-mono text-slate-600 border-t border-slate-900 pt-2 mt-2 code-syntax tracking-wide uppercase">⚡ TRANSACTION: ${l.id} | TIMESTAMP: ${l.timestamp} | SPECTRUM: ${l.signature} | INDEX: ${l.severity}</p>
                             </div>`).join('');
                     }
                 }
 
-                if (dash) {
+                if (stream) {
                     if(Core.State.logs.length === 0) {
-                        dash.innerHTML = `<p class="text-[11px] text-slate-500 text-center py-4">ไม่มีข้อมูลการประมวลผลในช่วงเวลานี้</p>`;
+                        stream.innerHTML = `<p class="text-[11px] text-slate-600 font-mono text-center py-4 code-syntax uppercase tracking-wider">Awaiting Active Telemetry Packets...</p>`;
                     } else {
-                        dash.innerHTML = Core.State.logs.slice(0, 3).map(l => `
-                            <div class="flex justify-between items-center py-3">
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-1.5 h-1.5 rounded-full ${l.status === 'ปกติ' ? 'bg-emerald-400' : 'bg-rose-400'}"></div>
-                                    <p class="text-xs font-medium text-slate-200">${l.title.substring(0, 42)}...</p>
+                        stream.innerHTML = Core.State.logs.slice(0, 3).map(l => `
+                            <div class="flex justify-between items-center py-3.5">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <div class="w-1.5 h-1.5 rounded-full shrink-0 ${l.status === 'ปกติ' ? 'bg-emerald-400 shadow-md shadow-emerald-500/50' : 'bg-rose-400 shadow-md shadow-rose-500/50'}"></div>
+                                    <p class="text-xs font-bold text-slate-200 truncate pr-2 uppercase tracking-wide">${l.title}</p>
                                 </div>
-                                <span class="text-[8px] border font-bold rounded-full px-2 py-0.5 ${l.badge}">${l.status}</span>
+                                <span class="text-[8px] font-mono border font-black rounded-md px-2 py-0.5 shrink-0 code-syntax uppercase ${l.badge}">${l.status}</span>
                             </div>`).join('');
                     }
                 }
             }
         };
 
-        // ตรวจสอบสถานะการ Login ทันทีเมื่อหน้าเว็บโหลดเสร็จสิ้น
-        window.onload = () => Auth.checkState();
+        // Bootstrap Core Listener
+        window.onload = () => Auth.evalSessionState();
     </script>
 </body>
 </html>
