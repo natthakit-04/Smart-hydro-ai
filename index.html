@@ -51,10 +51,6 @@
             100% { top: 100%; opacity: 0; } 
         }
         .laser-scanner { animation: cyberScan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #070a12; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
     </style>
 </head>
 <body class="h-screen flex flex-col lg:flex-row overflow-hidden pb-16 lg:pb-0">
@@ -90,7 +86,7 @@
                     </div>
                 </div>
                 <div id="iam-error" class="hidden text-[11px] text-rose-400 font-medium bg-rose-950/30 border border-rose-900/30 p-3 rounded-xl flex items-center gap-2 animate-pulse">
-                    <i class="fa-solid fa-triangle-exclamation text-sm"></i> <span>Access Denied: Invalid Cryptographic Token or Operator Parameter.</span>
+                    <i class="fa-solid fa-triangle-exclamation text-sm"></i> <span>Access Denied: Invalid Token.</span>
                 </div>
             </div>
 
@@ -112,9 +108,9 @@
                 </div>
             </div>
             <nav class="space-y-1">
-                <button onclick="Core.navigate('dashboard')" id="btn-nav-dashboard" class="nav-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-layer-group w-5 text-sm"></i><span>Telemetry Telepresence</span></button>
-                <button onclick="Core.navigate('plots')" id="btn-nav-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-grid-2x2 w-5 text-sm"><i class="fa-solid fa-cubes"></i></i><span>Zone Management</span></button>
-                <button onclick="Core.navigate('scanner')" id="btn-nav-scanner" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-eye-dropper w-5 text-sm"><i class="fa-solid fa-camera"></i></i><span>Spectral Imaging AI</span></button>
+                <button onclick="Core.navigate('dashboard')" id="btn-nav-dashboard" class="nav-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-layer-group w-5 text-sm"></i><span>Telemetry Dashboard</span></button>
+                <button onclick="Core.navigate('plots')" id="btn-nav-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-cubes w-5 text-sm"></i><span>Zone Management</span></button>
+                <button onclick="Core.navigate('scanner')" id="btn-nav-scanner" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-camera w-5 text-sm"></i><span>Spectral Imaging AI</span></button>
                 <button onclick="Core.navigate('logs')" id="btn-nav-logs" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-server w-5 text-sm"></i><span>Analytical Ledger</span></button>
             </nav>
         </div>
@@ -128,7 +124,7 @@
         <header class="bg-[#05070d]/80 backdrop-blur-md border-b border-slate-900/80 px-6 py-4 lg:px-8 flex justify-between items-center sticky top-0 z-40">
             <div>
                 <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block code-syntax">SYSTEM DATA STREAM PIPELINE</span>
-                <h2 id="viewport-title" class="text-sm font-black text-white uppercase tracking-wide">Telemetry Telepresence</h2>
+                <h2 id="viewport-title" class="text-sm font-black text-white uppercase tracking-wide">Telemetry Dashboard</h2>
             </div>
             <div class="flex items-center space-x-3">
                 <div class="text-[10px] font-mono bg-[#070a12] border border-slate-800/80 px-3 py-1.5 rounded-xl text-emerald-400 flex items-center gap-2 shadow-inner">
@@ -141,7 +137,7 @@
 
         <div class="p-4 md:p-8 max-w-5xl w-full mx-auto space-y-6">
 
-            <section id="mod-dashboard" class="space-y-6 animate-fade-in">
+            <section id="mod-dashboard" class="space-y-6">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Plots</p><h3 id="m-plots" class="text-2xl font-black text-white mt-1 code-syntax">0</h3></div>
                     <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Optimal Matrix</p><h3 id="m-healthy" class="text-2xl font-black text-emerald-400 mt-1 code-syntax">0</h3></div>
@@ -151,7 +147,7 @@
                 
                 <div onclick="Core.navigate('scanner')" class="bg-gradient-to-r from-emerald-950/20 via-[#0a0f1d] to-[#05070d] p-6 rounded-2xl border border-emerald-500/10 hover:border-emerald-500/30 transition duration-300 cursor-pointer flex justify-between items-center group shadow-xl">
                     <div class="space-y-1">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> <i class="fa-solid fa-bolt text-emerald-400"></i> INITIALIZE MULTI-SPECTRAL REAL-TIME SCANNER</h4>
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> INITIALIZE REAL-TIME SCANNER</h4>
                         <p class="text-xs text-slate-400">สั่งการระบบเปิดชุดเลนส์กล้องความละเอียดสูง เพื่อแยกแยะระดับเม็ดสีใบพืชทันที</p>
                     </div>
                     <div class="w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-chevron-right text-xs"></i></div>
@@ -160,7 +156,6 @@
                 <div class="cyber-glass rounded-2xl p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-900 pb-3">
                         <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> REAL-TIME ACTIVITY LEDGER FLOW</h4>
-                        <span class="text-[9px] font-mono text-slate-500 code-syntax">LATEST_3_EVENTS</span>
                     </div>
                     <div id="dash-log-stream" class="divide-y divide-slate-900"></div>
                 </div>
@@ -177,10 +172,10 @@
                     <div class="cyber-glass max-w-md w-full p-6 rounded-2xl space-y-5 shadow-2xl relative">
                         <h3 class="text-xs font-bold text-white uppercase tracking-wider border-b border-slate-900 pb-2">🧬 DATA INGESTION: PLANTING ZONE</h3>
                         <div class="space-y-3.5">
-                            <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Zone Identifier (ชื่อแปลง)</label><input id="f-name" type="text" placeholder="เช่น บัตเตอร์เฮด โรงเรือน 4" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
+                            <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Zone Identifier (ชื่อแปลง)</label><input id="f-name" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
                             <div class="grid grid-cols-2 gap-3">
-                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Cultivar (สายพันธุ์)</label><input id="f-type" type="text" placeholder="เรดคอส" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
-                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Matrix Coordinate (พิกัด)</label><input id="f-zone" type="text" placeholder="C-102" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
+                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Cultivar (สายพันธุ์)</label><input id="f-type" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
+                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Matrix Coordinate (พิกัด)</label><input id="f-zone" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
                             </div>
                         </div>
                         <div class="flex space-x-3 pt-2">
@@ -195,7 +190,7 @@
                 <div class="cyber-glass p-6 rounded-2xl space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Target Inspection Zone (เลือกแปลงที่จะตรวจ)</label>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Target Inspection Zone</label>
                             <select id="dom-scan-select" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 code-syntax"></select>
                         </div>
                         <div>
@@ -209,26 +204,20 @@
 
                     <div class="border-2 border-dashed border-slate-900 bg-[#030509]/60 rounded-2xl p-4 min-h-[280px] flex flex-col items-center justify-center relative overflow-hidden group">
                         <input type="file" accept="image/*" onchange="Scanner.pipeFileInputToMatrix(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20" id="dom-file-node">
-                        
                         <video id="dom-webcam-node" autoplay playsinline class="hidden w-full max-w-md aspect-square object-cover rounded-xl border border-slate-900 bg-black shadow-inner transform -scale-x-100"></video>
-                        
                         <div id="dom-preview-container" class="hidden relative w-full max-w-md aspect-square rounded-xl overflow-hidden border border-slate-900 bg-black">
                             <img id="dom-static-img" class="w-full h-full object-cover">
                             <div id="dom-laser-bar" class="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg laser-scanner hidden"></div>
                         </div>
-
                         <div id="dom-fallback-ui" class="text-center p-6 space-y-3 z-10 pointer-events-none">
-                            <div class="w-12 h-12 bg-slate-900 border border-slate-800/60 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
-                            <div class="space-y-1">
-                                <p class="text-xs font-bold text-slate-200">DROP IMAGE HERE OR CLICK TO BROWSE LOCAL STORAGE</p>
-                                <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">หรือคลิกปุ่มเปิดเว็บบอร์ดกล้องด้านบนเพื่อสตรีมสดจากวิดีโอ</p>
-                            </div>
+                            <div class="w-12 h-12 bg-slate-900 border border-slate-800/60 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto transition-all"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                            <p class="text-xs font-bold text-slate-200">DROP IMAGE HERE OR CLICK TO BROWSE</p>
                         </div>
                     </div>
 
                     <div class="flex gap-3">
-                        <button id="dom-btn-capture" onclick="Scanner.commitStreamSnapshot()" class="hidden flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-xl"><i class="fa-solid fa-camera mr-1"></i> LOCK SIGNAL SNAPSHOT</button>
-                        <button id="dom-btn-process" disabled onclick="Scanner.executeMatrixAnalysisPipeline()" class="flex-1 bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed transition-all duration-300">AWAITING IMAGE INPUT SOURCE</button>
+                        <button id="dom-btn-capture" onclick="Scanner.commitStreamSnapshot()" class="hidden flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest transition"><i class="fa-solid fa-camera mr-1"></i> LOCK SNAPSHOT</button>
+                        <button id="dom-btn-process" disabled onclick="Scanner.executeMatrixAnalysisPipeline()" class="flex-1 bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed transition-all">AWAITING IMAGE INPUT SOURCE</button>
                     </div>
                 </div>
             </section>
@@ -236,7 +225,7 @@
             <section id="mod-logs" class="space-y-4 hidden">
                 <div class="flex justify-between items-center border-b border-slate-900 pb-3">
                     <span class="text-xs font-bold text-white uppercase tracking-wider code-syntax">CENTRAL DATA ARCHIVE</span>
-                    <button onclick="Logs.truncateAllData()" class="text-[10px] font-extrabold text-rose-400 hover:bg-rose-950/40 border border-rose-900/30 px-3 py-1.5 rounded-xl transition uppercase tracking-wider"><i class="fa-solid fa-dumpster-fire mr-1"></i> Wipe Ledger Archive</button>
+                    <button onclick="Logs.truncateAllData()" class="text-[10px] font-extrabold text-rose-400 hover:bg-rose-950/40 border border-rose-900/30 px-3 py-1.5 rounded-xl transition"><i class="fa-solid fa-dumpster-fire mr-1"></i> Wipe Ledger Archive</button>
                 </div>
                 <div id="dom-ledger-wrapper" class="space-y-4"></div>
             </section>
@@ -245,10 +234,10 @@
     </div>
 
     <div id="app-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-[#05070d] border-t border-slate-900 grid grid-cols-4 lg:hidden z-50 h-16 hidden">
-        <button onclick="Core.navigate('dashboard')" id="m-btn-nav-dashboard" class="nav-active flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-layer-group text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Console</span></button>
-        <button onclick="Core.navigate('plots')" id="m-btn-nav-plots" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-cubes text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Zones</span></button>
-        <button onclick="Core.navigate('scanner')" id="m-btn-nav-scanner" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-camera text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">AI Imaging</span></button>
-        <button onclick="Core.navigate('logs')" id="m-btn-nav-logs" class="flex flex-col items-center justify-center transition-all"><i class="fa-solid fa-server text-base"></i><span class="text-[9px] mt-1 uppercase font-bold tracking-wider">Ledger</span></button>
+        <button onclick="Core.navigate('dashboard')" id="m-btn-nav-dashboard" class="nav-active flex flex-col items-center justify-center"><i class="fa-solid fa-layer-group text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Console</span></button>
+        <button onclick="Core.navigate('plots')" id="m-btn-nav-plots" class="flex flex-col items-center justify-center"><i class="fa-solid fa-cubes text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Zones</span></button>
+        <button onclick="Core.navigate('scanner')" id="m-btn-nav-scanner" class="flex flex-col items-center justify-center"><i class="fa-solid fa-camera text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">AI Scan</span></button>
+        <button onclick="Core.navigate('logs')" id="m-btn-nav-logs" class="flex flex-col items-center justify-center"><i class="fa-solid fa-server text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Ledger</span></button>
     </div>
 
     <canvas id="virtualCanvasLayer" class="hidden"></canvas>
@@ -292,7 +281,7 @@
                 }
             },
             executeLogoutSequence: function() {
-                if (confirm('TERMINATE OPERATOR SECURE SESSION SYSTEM?')) {
+                if (confirm('TERMINATE OPERATOR SECURE SESSION?')) {
                     EngineStore.purge('hg_v8_auth_token');
                     location.reload();
                 }
@@ -316,7 +305,7 @@
                 });
 
                 document.getElementById(`mod-${targetModule}`).classList.remove('hidden');
-                if(document.getElementById(`btn-nav-${targetModule}`)) document.getElementById(`btn-nav-${targetModule}`).add('nav-active');
+                if(document.getElementById(`btn-nav-${targetModule}`)) document.getElementById(`btn-nav-${targetModule}`).classList.add('nav-active');
                 if(document.getElementById(`m-btn-nav-${targetModule}`)) document.getElementById(`m-btn-nav-${targetModule}`).classList.add('nav-active');
 
                 const titleDict = { dashboard: 'Telemetry Telepresence Dashboard', plots: 'Plantation Zone Deployment Cluster', scanner: 'AI Multi-Spectral Pixels Imaging', logs: 'Analytical Pathology System Ledger' };
@@ -360,7 +349,7 @@
                 Plots.toggleModalState(false); Plots.renderUIComponents(); Core.computeTelemetryMetrics();
             },
             deleteZone: function(id) {
-                if (confirm('CRITICAL ACTION: PURGE DEPLOYED ZONE FROM REGISTRY HARD DRIVE?')) {
+                if (confirm('PURGE DEPLOYED ZONE FROM REGISTRY?')) {
                     Core.State.plots = Core.State.plots.filter(p => p.id !== id);
                     EngineStore.write('db_v8_plots', Core.State.plots);
                     Plots.renderUIComponents(); Core.computeTelemetryMetrics();
@@ -382,12 +371,12 @@
                             </div>
                             <div>
                                 <h3 class="text-xs font-black text-white uppercase tracking-wide truncate">${p.name}</h3>
-                                <p class="text-[10px] font-mono text-slate-500 mt-1.5 code-syntax"><i class="fa-solid fa-vector-square mr-1 text-slate-700"></i> MATRIX_COORD: ${p.zone}</p>
+                                <p class="text-[10px] font-mono text-slate-500 mt-1.5 code-syntax">COORD: ${p.zone}</p>
                             </div>
                             <div class="pt-2 border-t border-slate-900 flex"><span class="text-[9px] tracking-wider uppercase font-extrabold px-2.5 py-1 rounded-full border ${badgeClass}">● SYSTEM_${status}</span></div>
                         </div>`;
                 });
-                document.getElementById('ui-summary-text').innerText = `TOTAL MONITORING CLUSTER MATRIX SENSORS: ${Core.State.plots.length} NODES`;
+                document.getElementById('ui-summary-text').innerText = `TOTAL MONITORING NODES: ${Core.State.plots.length}`;
             }
         };
 
@@ -413,7 +402,7 @@
                     v.srcObject = Scanner.mediaStream;
                     document.getElementById('dom-cam-toggle').classList.remove('hidden');
                 } catch (err) {
-                    alert('HARDWARE PERMISSION REJECTED: FALLBACK TO MANUAL BUFFER INGESTION.');
+                    alert('HARDWARE REJECTED: FALLBACK TO MANUAL UPLOAD.');
                     Scanner.killHardwareWebcam();
                 }
             },
@@ -435,7 +424,7 @@
                 const ctx = c.getContext('2d');
 
                 c.width = v.videoWidth || 480; c.height = v.videoHeight || 480;
-                ctx.translate(c.width, 0); ctx.scale(-1, 1); // Mirror normalization
+                ctx.translate(c.width, 0); ctx.scale(-1, 1);
                 ctx.drawImage(v, 0, 0, c.width, c.height);
 
                 Scanner.bindStaticPreviewFrame(c.toDataURL('image/jpeg'));
@@ -454,14 +443,14 @@
 
                 const btn = document.getElementById('dom-btn-process'); btn.disabled = false;
                 btn.className = "flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-pointer shadow-lg transition-all duration-300";
-                btn.innerHTML = "<i class='fa-solid fa-microscope mr-1'></i> RUN VECTOR IMAGING SPECTRAL ANALYSIS";
+                btn.innerHTML = "<i class='fa-solid fa-microscope mr-1'></i> RUN SPECTRUM ANALYSIS";
             },
             executeMatrixAnalysisPipeline: function() {
                 const laser = document.getElementById('dom-laser-bar');
                 const btn = document.getElementById('dom-btn-process');
                 
                 laser.classList.remove('hidden'); btn.disabled = true;
-                btn.innerText = "STREAMING BUFFER: ANALYZING CHLOROPHYLL VALUE PACKETS...";
+                btn.innerText = "STREAMING BUFFER: ANALYZING...";
 
                 const img = document.getElementById('dom-static-img');
                 const c = document.getElementById('virtualCanvasLayer'); const ctx = c.getContext('2d');
@@ -479,17 +468,16 @@
 
                     let payload = {};
                     if(avgR > 115 && avgG > 105 && avgB < 95) {
-                        payload = { title: 'CRITICAL_ALERT: Downy Mildew Pathogen Infiltration', status: 'ติดโรค', badge: 'bg-rose-950/50 text-rose-400 border-rose-900/40', textCss: 'text-rose-400', severity: 'HIGH_CRITICAL_RISK', description: 'พบสปอร์ราน้ำค้างขยายตัวทำลายเนื้อเยื่อใบในอัตราเร่ง แนะนำให้แยกรื้อถอนต้นที่มีอาการออกจากโรงเรือนและล้างฆ่าเชื้อระบบท่อน้ำวนด้วยไฮโดรเจนเปอร์ออกไซด์ทันที' };
+                        payload = { title: 'CRITICAL: Downy Mildew Pathogen Infiltration', status: 'ติดโรค', badge: 'bg-rose-950/50 text-rose-400 border-rose-900/40', textCss: 'text-rose-400', severity: 'HIGH_CRITICAL_RISK', description: 'พบสปอร์ราน้ำค้างขยายตัวทำลายเนื้อเยื่อใบในอัตราเร่ง แนะนำให้แยกรื้อถอนต้นที่มีอาการออกทันที' };
                     } else if (avgR > avgG) {
-                        payload = { title: 'WARNING_MATRIX: K-Elemental Deficient Syndrome', status: 'เสี่ยงโรค', badge: 'bg-amber-950/50 text-amber-400 border-amber-900/40', textCss: 'text-amber-400', severity: 'WARNING_MEDIUM', description: 'เนื้อเยื่อขอบใบแสดงสภาวะไหม้กรอบเนื่องจากสัดส่วนปุ๋ยไม่สมดุล ควรปรับเพิ่มความเข้มข้นสารละลายธาตุอาหารพืช (ค่า EC) และเฝ้าระวังอุณหภูมิรากไม่ให้เกิน 28°C' };
+                        payload = { title: 'WARNING: K-Elemental Deficient Syndrome', status: 'เสี่ยงโรค', badge: 'bg-amber-950/50 text-amber-400 border-amber-900/40', textCss: 'text-amber-400', severity: 'WARNING_MEDIUM', description: 'เนื้อเยื่อขอบใบแสดงสภาวะไหม้กรอบเนื่องจากสัดส่วนปุ๋ยไม่สมดุล ควรปรับเพิ่มความเข้มข้นสารละลายธาตุอาหารพืช' };
                     } else {
-                        payload = { title: 'OPTIMAL_BIOMASS: Highly Stable Chlorophyll Structural Matrix', status: 'ปกติ', badge: 'bg-emerald-950/50 text-emerald-400 border-emerald-900/40', textCss: 'text-emerald-400', severity: 'ZERO_BIOPATHOLOGY', description: 'ดัชนีคลอโรฟิลล์และการสะท้อนของแผ่นใบอยู่ในเกณฑ์อุดมสมบูรณ์สูงสุด การเติบโตของเซลล์พืชปกติดี ไม่พบความหนาแน่นของกลุ่มสปอร์เชื้อราปนเปื้อน' };
+                        payload = { title: 'OPTIMAL: Stable Chlorophyll Structural Matrix', status: 'ปกติ', badge: 'bg-emerald-950/50 text-emerald-400 border-emerald-900/40', textCss: 'text-emerald-400', severity: 'ZERO_BIOPATHOLOGY', description: 'ดัชนีคลอโรฟิลล์และการสะท้อนของแผ่นใบอยู่ในเกณฑ์อุดมสมบูรณ์สูงสุด การเติบโตของเซลล์พืชปกดี' };
                     }
 
                     Core.State.logs.unshift({ id: Date.now(), plotName: document.getElementById('dom-scan-select').value, timestamp: new Date().toLocaleString('th-TH'), signature: `HEX_RGB[#${avgR.toString(16).padStart(2,'0')}${avgG.toString(16).padStart(2,'0')}${avgB.toString(16).padStart(2,'0')}]`, ...payload });
                     EngineStore.write('db_v8_logs', Core.State.logs);
 
-                    // Reset Form Elements State
                     document.getElementById('dom-fallback-ui').classList.remove('hidden');
                     document.getElementById('dom-preview-container').classList.add('hidden');
                     btn.disabled = true; btn.className = "w-full bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed";
@@ -502,14 +490,14 @@
 
         const Logs = {
             deleteLogEntry: function(id) {
-                if(confirm('PURGE PHENOTYPE LOG ENTRY TRANSACTION?')) {
+                if(confirm('PURGE TRANSACTION?')) {
                     Core.State.logs = Core.State.logs.filter(l => l.id !== id);
                     EngineStore.write('db_v8_logs', Core.State.logs);
                     Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
                 }
             },
             truncateAllData: function() {
-                if(confirm('🚨 CRITICAL WIPEOUT: PURGE ALL ANALYTICAL LOG TRANSACTIONS PERMANENTLY FROM OPERATING SYSTEM?')) {
+                if(confirm('🚨 PURGE ALL TRANSACTION PERMANENTLY?')) {
                     Core.State.logs = []; EngineStore.write('db_v8_logs', Core.State.logs);
                     Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
                 }
@@ -520,14 +508,14 @@
 
                 if (master) {
                     if(Core.State.logs.length === 0) {
-                        master.innerHTML = `<div class="cyber-glass p-8 rounded-2xl text-center text-xs text-slate-500 font-mono code-syntax uppercase tracking-wider">Empty Data Cache Cluster. Execute Spectral Scanner Pipeline to Collect Matrix Analytics.</div>`;
+                        master.innerHTML = `<div class="cyber-glass p-8 rounded-2xl text-center text-xs text-slate-500 font-mono code-syntax uppercase tracking-wider">Empty Data Cache Cluster.</div>`;
                     } else {
                         master.innerHTML = Core.State.logs.map(l => `
                             <div class="cyber-glass p-5 rounded-2xl space-y-3 border border-slate-900">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h4 class="text-xs font-black text-white tracking-wide uppercase ${l.textCss}">${l.title}</h4>
-                                        <p class="text-[10px] font-mono text-slate-500 mt-1 code-syntax"><i class="fa-solid fa-crosshairs text-slate-700 mr-1"></i> INSPECTION_TARGET: ${l.plotName}</p>
+                                        <p class="text-[10px] font-mono text-slate-500 mt-1 code-syntax">TARGET: ${l.plotName}</p>
                                     </div>
                                     <div class="flex items-center space-x-3">
                                         <span class="text-[8px] font-mono font-black border rounded-md px-2 py-0.5 code-syntax uppercase ${l.badge}">${l.status}</span>
@@ -535,7 +523,7 @@
                                     </div>
                                 </div>
                                 <p class="text-xs text-slate-400 leading-relaxed">${l.description}</p>
-                                <p class="text-[9px] font-mono text-slate-600 border-t border-slate-900 pt-2 mt-2 code-syntax tracking-wide uppercase">⚡ TRANSACTION: ${l.id} | TIMESTAMP: ${l.timestamp} | SPECTRUM: ${l.signature} | INDEX: ${l.severity}</p>
+                                <p class="text-[9px] font-mono text-slate-600 border-t border-slate-900 pt-2 mt-2 code-syntax tracking-wide uppercase">TIME: ${l.timestamp} | SPECTRUM: ${l.signature}</p>
                             </div>`).join('');
                     }
                 }
@@ -547,7 +535,7 @@
                         stream.innerHTML = Core.State.logs.slice(0, 3).map(l => `
                             <div class="flex justify-between items-center py-3.5">
                                 <div class="flex items-center space-x-3 min-w-0">
-                                    <div class="w-1.5 h-1.5 rounded-full shrink-0 ${l.status === 'ปกติ' ? 'bg-emerald-400 shadow-md shadow-emerald-500/50' : 'bg-rose-400 shadow-md shadow-rose-500/50'}"></div>
+                                    <div class="w-1.5 h-1.5 rounded-full shrink-0 ${l.status === 'ปกติ' ? 'bg-emerald-400' : 'bg-rose-400'}"></div>
                                     <p class="text-xs font-bold text-slate-200 truncate pr-2 uppercase tracking-wide">${l.title}</p>
                                 </div>
                                 <span class="text-[8px] font-mono border font-black rounded-md px-2 py-0.5 shrink-0 code-syntax uppercase ${l.badge}">${l.status}</span>
@@ -557,7 +545,6 @@
             }
         };
 
-        // Bootstrap Core Listener
         window.onload = () => Auth.evalSessionState();
     </script>
 </body>
