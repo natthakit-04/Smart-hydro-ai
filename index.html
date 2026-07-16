@@ -1,305 +1,510 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="h-full bg-slate-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroSenseAI - ระบบตรวจจับและเตือนภัยโรคพืชไฮโดรโปนิกส์</title>
+    <title>HydroSenseAI - Enterprise Plant Disease Analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', 'Sarabun', sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .active-nav { background: rgba(16, 185, 129, 0.15); color: #10b981; border-left: 4px solid #10b981; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="h-full text-slate-100 antialiased flex flex-col md:flex-row overflow-hidden">
 
-    <nav class="bg-emerald-600 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="sprout" class="w-8 h-8"></i>
-                    <span class="font-bold text-xl tracking-wider">HydroSenseAI</span>
-                </div>
-                <div class="hidden md:flex space-x-4 id="nav-links"">
-                    <button onclick="switchPage('dashboard')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">แดชบอร์ด</button>
-                    <button onclick="switchPage('scan')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">ตรวจโรคพืช</button>
-                    <button onclick="switchPage('history')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">ประวัติการตรวจ</button>
-                    <button onclick="switchPage('profile')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">โปรไฟล์</button>
-                    <button onclick="switchPage('login')" id="login-nav-btn" class="bg-emerald-500 hover:bg-emerald-400 px-4 py-2 rounded-md text-sm font-medium transition cursor-pointer">เข้าสู่ระบบ</button>
-                </div>
+    <aside id="main-sidebar" class="hidden md:flex flex-col w-64 bg-slate-950 border-r border-slate-800 flex-shrink-0 z-40">
+        <div class="h-16 flex items-center px-6 border-b border-slate-800 space-x-3">
+            <div class="p-2 bg-emerald-500/10 rounded-xl text-emerald-400">
+                <i data-lucide="cpu" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <span class="font-bold text-lg tracking-tight text-white block">HydroSenseAI</span>
+                <span class="text-xs text-emerald-400 font-medium">AI Diagnostic Engine</span>
             </div>
         </div>
-    </nav>
+        
+        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+            <button onclick="navigateTo('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition cursor-pointer text-left">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i> <span>แผงควบคุมหลัก</span>
+            </button>
+            <button onclick="navigateTo('scan')" id="nav-scan" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition cursor-pointer text-left">
+                <i data-lucide="scan-face" class="w-5 h-5"></i> <span>ตรวจและวินิจฉัยโรค</span>
+            </button>
+            <button onclick="navigateTo('history')" id="nav-history" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition cursor-pointer text-left">
+                <i data-lucide="history" class="w-5 h-5"></i> <span>ประวัติข้อมูลฟาร์ม</span>
+            </button>
+            <button onclick="navigateTo('profile')" id="nav-profile" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition cursor-pointer text-left">
+                <i data-lucide="user-cog" class="w-5 h-5"></i> <span>ตั้งค่าโปรไฟล์และฟาร์ม</span>
+            </button>
+        </nav>
 
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="p-4 border-t border-slate-800 bg-slate-950/50">
+            <button onclick="handleLogout()" id="logout-btn" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg text-sm text-rose-400 hover:bg-rose-500/10 transition cursor-pointer text-left">
+                <i data-lucide="log-out" class="w-4 h-4"></i> <span>ออกจากระบบ</span>
+            </button>
+        </div>
+    </aside>
 
-        <section id="page-login" class="page-section hidden max-w-md mx-auto bg-white p-8 rounded-2xl shadow-md my-12">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-800">ยินดีต้อนรับสู่ HydroSenseAI</h2>
-                <p class="text-slate-500 text-sm">เข้าสู่ระบบเพื่อเริ่มตรวจจับและประเมินความเสี่ยงแปลงผักของคุณ</p>
+    <div class="flex-grow flex flex-col min-w-0 overflow-y-auto bg-slate-900">
+        
+        <header class="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-950/30 flex-shrink-0">
+            <div class="flex items-center space-x-2 md:hidden">
+                <i data-lucide="cpu" class="text-emerald-400 w-6 h-6"></i>
+                <span class="font-bold text-white">HydroSenseAI</span>
             </div>
-            <form onsubmit="event.preventDefault(); handleLogin();" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">อีเมล</label>
-                    <input type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="example@email.com">
+            <div class="hidden md:flex items-center space-x-2 text-xs text-slate-400">
+                <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+                <span>AI Core Engine Active (v2.4-stable)</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-xs text-slate-400">ผู้ใช้งานปัจจุบัน</p>
+                    <p class="text-sm font-semibold text-white" id="current-user-display">สมชาย รักเกษตร</p>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
-                    <input type="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="••••••••">
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm cursor-pointer">เข้าสู่ระบบ</button>
-            </form>
-        </section>
-
-        <section id="page-dashboard" class="page-section space-y-6">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-4">
-                <div>
-                    <h1 class="text-3xl font-extrabold text-slate-900">ภาพรวมระบบและสถานะแปลงผัก</h1>
-                    <p class="text-slate-500">วิเคราะห์ข้อมูลและเตือนภัยความเสี่ยงโรคพืชด้วยนวัตกรรม AI</p>
-                </div>
-                <div class="mt-4 md:mt-0 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl flex items-center space-x-2 shadow-sm animate-pulse">
-                    <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
-                    <span class="text-sm font-medium">คำเตือน: สภาพอากาศร้อนชื้นวันนี้ มีความเสี่ยงต่อการเกิดโรครากเน่าโคนเน่าสูงขึ้น 20%</span>
+                <div class="w-9 h-9 bg-gradient-to-tr from-emerald-500 to-teal-600 text-white rounded-xl flex items-center justify-center font-bold shadow-md shadow-emerald-500/10" id="avatar-display">
+                    ส
                 </div>
             </div>
+        </header>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+        <main class="flex-grow p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+
+            <section id="sec-login" class="hidden max-w-md mx-auto my-12 glass-card p-8 rounded-2xl shadow-2xl relative overflow-hidden border border-slate-700">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+                <div class="text-center mb-8">
+                    <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="lock" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">Security Authentication</h2>
+                    <p class="text-slate-400 text-xs mt-1">กรุณาเข้าสู่ระบบโครงงานวิจัยเพื่อเข้าถึงโมเดลวิเคราะห์ความเสี่ยง</p>
+                </div>
+                <form onsubmit="event.preventDefault(); handleLogin();" class="space-y-4">
                     <div>
-                        <p class="text-sm text-slate-500 font-medium">ความเสี่ยงโดยรวม</p>
-                        <p class="text-2xl font-bold text-emerald-600 mt-1">ปลอดภัย</p>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">User Identity (Email)</label>
+                        <input type="email" id="login-email" required class="w-full px-4 py-2.5 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white focus:outline-none transition" placeholder="scientist@hydrosense.ai" value="demo@hydrosense.ai">
                     </div>
-                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="shield-check"></i></div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-slate-500 font-medium">ตรวจพืชไปแล้ว (รอบนี้)</p>
-                        <p class="text-2xl font-bold text-slate-800 mt-1">24 ครั้ง</p>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Security Token (Password)</label>
+                        <input type="password" id="login-pass" required class="w-full px-4 py-2.5 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white focus:outline-none transition" placeholder="••••••••" value="123456">
                     </div>
-                    <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="scan-line"></i></div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20 active:scale-[0.98] cursor-pointer mt-2 flex items-center justify-center space-x-2">
+                        <span>ถอดรหัสและเข้าสู่ระบบ</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </section>
+
+            <section id="sec-dashboard" class="hidden space-y-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-slate-950/40 p-6 rounded-2xl border border-slate-800">
                     <div>
-                        <p class="text-sm text-slate-500 font-medium">พบความผิดปกติ</p>
-                        <p class="text-2xl font-bold text-red-500 mt-1">1 จุด</p>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
+                            <i data-lucide="activity" class="text-emerald-500"></i> โครงข่ายวิเคราะห์และประเมินความเสี่ยงโรคพืช
+                        </h1>
+                        <p class="text-slate-400 text-sm mt-1">งานวิจัยการประยุกต์ใช้คอมพิวเตอร์วิทัศน์ในการแก้ไขปัญหาระบบฟาร์มไฮโดรโปนิกส์น้ำวนในชีวิตประจำวัน</p>
                     </div>
-                    <div class="p-3 bg-red-50 text-red-500 rounded-xl"><i data-lucide="bug"></i></div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-slate-500 font-medium">สุขภาพพืชเฉลี่ย</p>
-                        <p class="text-2xl font-bold text-slate-800 mt-1">94.2%</p>
-                    </div>
-                    <div class="p-3 bg-amber-50 text-amber-500 rounded-xl"><i data-lucide="heart"></i></div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2"><i data-lucide="trending-up" class="text-emerald-500"></i> แนวโน้มความเสี่ยงสะสมในแปลงผัก (7 วันย้อนหลัง)</h3>
-                    <div class="h-48 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-sm">
-                        [ส่วนแสดงผลกราฟประเมินความเสี่ยง AI: มีความเสี่ยงโรคราน้ำค้างต่ำ แต่ควรเฝ้าระวังอุณหภูมิน้ำ]
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="font-bold text-lg mb-4 text-slate-800">วัตถุประสงค์โครงงานวิจัย</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        HydroSenseAI เป็นระบบตรวจจับความเสี่ยงโรคในแปลงผักไฮโดรโปนิกส์ที่พัฒนาขึ้นเพื่อแก้ปัญหาการสูญเสียผลผลิตของเกษตรกรในชีวิตประจำวัน โดยใช้ระบบประมวลผลภาพ (Image Processing) ร่วมกับ AI ในการวิเคราะห์และแจ้งเตือนก่อนที่โรคจะระบาดลุกลามทั่วทั้งแปลงน้ำวน
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="page-scan" class="page-section hidden space-y-6">
-            <div class="border-b border-slate-200 pb-4">
-                <h1 class="text-3xl font-extrabold text-slate-900">ตรวจโรคพืชด้วย AI</h1>
-                <p class="text-slate-500">อัปโหลดภาพถ่ายหรือเปิดกล้องถ่ายรูปใบผักไฮโดรโปนิกส์เพื่อวิเคราะห์โรคทันที</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[350px]">
-                    <div class="w-full max-w-sm border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-emerald-500 transition cursor-pointer relative" id="dropzone">
-                        <i data-lucide="image-plus" class="w-12 h-12 text-slate-400 mx-auto mb-3"></i>
-                        <p class="text-sm text-slate-600 font-medium">ลากไฟล์มาวางที่นี่ หรือ <span class="text-emerald-600">คลิกเพื่อเลือกไฟล์</span></p>
-                        <p class="text-xs text-slate-400 mt-1">รองรับไฟล์ PNG, JPG (แนะนำภาพถ่ายหน้าใบที่ชัดเจน)</p>
-                        <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" onchange="previewImage(event)">
-                    </div>
-
-                    <div class="mt-4 flex space-x-3 w-full max-w-sm">
-                        <button onclick="alert('ระบบกำลังเปิดใช้งานกล้องถ่ายรูป... (ส่วนเชื่อมต่อ Hardware/Camera)')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2 px-4 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="camera" class="w-4 h-4"></i> ถ่ายรูปจากกล้อง
-                        </button>
-                        <button onclick="analyzeDisease()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="cpu" class="w-4 h-4"></i> เริ่มการวิเคราะห์
-                        </button>
+                    <div class="flex items-center space-x-3 bg-amber-500/10 border border-amber-500/20 px-4 py-3 rounded-xl max-w-md">
+                        <i data-lucide="bell-ring" class="text-amber-400 flex-shrink-0 animate-bounce"></i>
+                        <p class="text-xs text-amber-300">
+                            <span class="font-bold">Early Warning:</span> ตรวจพบความชื้นสัมพัทธ์ในอากาศสูงเกิน 85% มีโอกาสสะสมสปอร์ของเชื้อรามากขึ้นใน 24 ชม. ข้างหน้า
+                        </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                    <h3 class="font-bold text-xl text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
-                        <i data-lucide="clipboard-check" class="text-emerald-600"></i> ผลการวินิจฉัยจาก AI
-                    </h3>
-                    
-                    <div id="ai-result-placeholder" class="text-slate-400 text-center py-12">
-                        <i data-lucide="brain-circuit" class="w-12 h-12 mx-auto mb-2 opacity-40"></i>
-                        ยังไม่มีการวิเคราะห์ กรุณาใส่รูปและกด "เริ่มการวิเคราะห์"
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Health Status</span>
+                            <h3 class="text-2xl font-bold text-emerald-400 mt-1">94.20%</h3>
+                        </div>
+                        <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl"><i data-lucide="heart-pulse"></i></div>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Scans</span>
+                            <h3 class="text-2xl font-bold text-white mt-1" id="kpi-total-scan">142 ครั้ง</h3>
+                        </div>
+                        <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl"><i data-lucide="binary"></i></div>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Outbreaks</span>
+                            <h3 class="text-2xl font-bold text-rose-400 mt-1" id="kpi-outbreak">1 จุดระบาด</h3>
+                        </div>
+                        <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl"><i data-lucide="shield-alert"></i></div>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">AI Confidence Avg.</span>
+                            <h3 class="text-2xl font-bold text-indigo-400 mt-1">95.45%</h3>
+                        </div>
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl"><i data-lucide="award"></i></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-base text-white flex items-center gap-2"><i data-lucide="bar-chart-3" class="text-emerald-400"></i> Risk Path Matrix (สถิติการแพร่ระบาดรายภูมิภาคย้อนหลัง)</h3>
+                            <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full">Updated 10m ago</span>
+                        </div>
+                        <div class="h-64 bg-slate-950/60 rounded-xl border border-slate-800 flex flex-col items-center justify-center p-4">
+                            <div class="w-full flex items-end justify-between h-40 px-6 border-b border-slate-800 mb-2">
+                                <div class="w-8 bg-emerald-500/20 h-12 rounded-t transition-all duration-500 hover:bg-emerald-500"></div>
+                                <div class="w-8 bg-emerald-500/20 h-24 rounded-t transition-all duration-500 hover:bg-emerald-500"></div>
+                                <div class="w-8 bg-rose-500/40 h-36 rounded-t transition-all duration-500 hover:bg-rose-500"></div>
+                                <div class="w-8 bg-emerald-500/20 h-16 rounded-t transition-all duration-500 hover:bg-emerald-500"></div>
+                                <div class="w-8 bg-emerald-500/30 h-28 rounded-t transition-all duration-500 hover:bg-emerald-500"></div>
+                            </div>
+                            <div class="w-full flex justify-between px-4 text-[10px] text-slate-500 font-mono">
+                                <span>Mon</span><span>Tue</span><span>Wed (Outbreak)</span><span>Thu</span><span>Fri</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="ai-result-content" class="hidden space-y-4">
-                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-bold text-red-800 text-lg">พบ: โรคราน้ำค้าง (Downy Mildew)</h4>
-                                    <p class="text-sm text-red-700 mt-1">ความแม่นยำในการตรวจจับ: 96.8%</p>
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-base text-white mb-2">บทคัดย่อโครงงานนวัตกรรม</h3>
+                            <p class="text-slate-400 text-xs leading-relaxed">
+                                ปัญหาโรคระบาดในระบบไฮโดรโปนิกส์มักแพร่กระจายอย่างรวดเร็วผ่านสารละลายธาตุอาหารน้ำวน ระบบ HydroSenseAI จึงถูกพัฒนาขึ้นด้วยสถาปัตยกรรมโครงข่ายประสาทเทียมแบบคอนโวลูชัน (CNN) ในการตรวจจับความผิดปกติระดับเซลล์บนผิวใบ เพื่อให้เกษตรกรสามารถตัดวงจรโรคพืชได้ก่อนเกิดความเสียหายแบบวงกว้าง
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-800/60 space-y-2">
+                            <span class="text-xs font-semibold text-slate-500 block">AI Core Ecosystem</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[10px] bg-slate-800 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded">ResNet50v2</span>
+                                <span class="text-[10px] bg-slate-800 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Computer Vision</span>
+                                <span class="text-[10px] bg-slate-800 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded">IoT Gateway</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-scan" class="hidden space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h1 class="text-2xl font-bold text-white">ระบบจำแนกและประเมินผลโรคพืชความแม่นยำสูง</h1>
+                    <p class="text-slate-400 text-sm">ป้อนข้อมูลภาพถ่ายใบพืชเพื่อเข้าสู่กระบวนการสกัดคุณลักษณะ (Feature Extraction) ด้วย AI</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 glass-card p-6 rounded-2xl flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Input Source Pipeline</span>
+                            
+                            <div id="drop-area" class="border-2 border-dashed border-slate-700 hover:border-emerald-500/50 bg-slate-950/40 rounded-xl p-8 text-center transition relative group min-h-[220px] flex flex-col items-center justify-center">
+                                <input type="file" id="image-uploader" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="processUploadedFile(event)">
+                                <div id="upload-prompt" class="space-y-2">
+                                    <i data-lucide="cloud-lightning" class="w-10 h-10 text-slate-500 mx-auto group-hover:text-emerald-400 transition"></i>
+                                    <p class="text-xs font-medium text-slate-300">ลากและวางภาพโครงสร้างใบ หรือ <span class="text-emerald-400 underline">คลิกเพื่ออัปโหลด</span></p>
+                                    <p class="text-[10px] text-slate-500">RAW, JPEG, PNG (Max 10MB)</p>
                                 </div>
-                                <span class="bg-red-100 text-red-800 text-xs px-2.5 py-1 rounded-full font-bold">ความเสี่ยงสูง</span>
+                                <img id="image-preview" class="hidden max-h-48 rounded-lg object-cover border border-slate-700 shadow-xl" shadow-xl" src="#">
                             </div>
                         </div>
 
+                        <div class="space-y-2">
+                            <button onclick="triggerMockCamera()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-2.5 px-4 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2 cursor-pointer border border-slate-700">
+                                <i data-lucide="camera" class="w-4 h-4 text-emerald-400"></i> เปิดใช้งานระบบกล้องถ่ายภาพ (Hardware Trigger)
+                            </button>
+                            <button onclick="runAiInference()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-3 px-4 rounded-xl text-sm font-bold transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]">
+                                <i data-lucide="cpu" class="w-4 h-4"></i> เริ่มการคำนวณและประเมินผล AI
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 glass-card p-6 rounded-2xl flex flex-col justify-between">
                         <div>
-                            <h5 class="font-bold text-slate-800 flex items-center gap-1"><i data-lucide="lightbulb" class="text-amber-500 w-4 h-4"></i> คำแนะนำในการดูแลรักษา</h5>
-                            <ul class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1.5 pl-2">
-                                <li>แยกฟองน้ำหรือย้ายต้นที่ติดโรคออกจากรางไฮโดรโปนิกส์ทันทีเพื่อป้องกันการระบาดทางน้ำวน</li>
-                                <li>ลดความชื้นในโรงเรือน เพิ่มการระบายอากาศให้โปร่งขึ้น</li>
-                                <li>ควบคุมค่าความเข้มข้นปุ๋ย (EC) และค่า pH ให้อยู่ในเกณฑ์มาตรฐานเพื่อเสริมสร้างภูมิต้านทาน</li>
-                                <li>หากระบาดรุนแรง ให้ใช้น้ำหมักชีวภาพหรือสารป้องกันกำจัดเชื้อราฉีดพ่นในช่วงเย็น</li>
-                            </ul>
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                                <h3 class="font-bold text-base text-white flex items-center gap-2">
+                                    <i data-lucide="terminal" class="text-emerald-400"></i> AI Diagnostics Output Console
+                                </h3>
+                                <span id="diagnostic-badge" class="hidden bg-rose-500/20 text-rose-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-rose-500/30">Action Required</span>
+                            </div>
+
+                            <div id="ai-idle-state" class="text-center py-20 text-slate-500">
+                                <i data-lucide="layers" class="w-12 h-12 mx-auto mb-3 opacity-20"></i>
+                                <p class="text-sm">รอการอัปโหลดรูปภาพใบพืชเข้าสู่ไปป์ไลน์เพื่อทำการคำนวณ</p>
+                            </div>
+
+                            <div id="ai-loading-state" class="hidden text-center py-20 text-emerald-400 space-y-3">
+                                <i data-lucide="refresh-cw" class="w-12 h-12 mx-auto animate-spin"></i>
+                                <p class="text-xs font-mono tracking-widest">RUNNING TENSOR INFERENCE ENGINE...</p>
+                            </div>
+
+                            <div id="ai-result-panel" class="hidden space-y-4 animate-fade-in">
+                                <div class="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                    <div>
+                                        <h4 class="font-bold text-white text-lg flex items-center gap-1.5">
+                                            <span class="w-2 h-2 bg-rose-500 rounded-full"></span> พบคลาสโรค: โรคราน้ำค้าง (Downy Mildew)
+                                        </h4>
+                                        <p class="text-xs text-slate-400 mt-0.5">ตรวจจับความน่าจะเป็นแม่นยำทางสถิติ: <span class="text-rose-400 font-mono font-bold">98.74%</span></p>
+                                    </div>
+                                    <span class="bg-rose-950 text-rose-400 text-xs px-3 py-1 rounded-md font-bold border border-rose-500/30">ความเสี่ยงระดับวิกฤต</span>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <h5 class="font-bold text-sm text-white flex items-center gap-1.5"><i data-lucide="shield-check" class="text-emerald-400 w-4 h-4"></i> มาตรการและคำแนะนำในการจัดการฟาร์มแบบแม่นยำ</h5>
+                                    <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800 space-y-2 text-xs text-slate-300">
+                                        <p class="flex items-start gap-2"><span class="text-emerald-400 font-bold">1. Isolating Protocol:</span> ทำการตัดแยกพืชต้นที่ปรากฏจุดแผลสีเหลืองออกจากรางระบบน้ำวนทันทีเพื่อป้องกันสปอร์เคลื่อนที่ตามการไหลของน้ำ</p>
+                                        <p class="flex items-start gap-2"><span class="text-emerald-400 font-bold">2. EC/pH Adjust:</span> ควบคุมและลดระดับไนโตรเจนในสารละลายลงชั่วคราว พร้อมรักษาค่า pH ให้อยู่ที่ 5.8-6.2 เพื่อไม่ให้เอื้อต่อการเติบโตของรา</p>
+                                        <p class="flex items-start gap-2"><span class="text-emerald-400 font-bold">3. Environment Control:</span> เร่งอัตราการระบายอากาศในโรงเรือนเพื่อคุมความชื้นสัมพัทธ์ให้ต่ำกว่า 70%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[10px] text-slate-600 text-right font-mono border-t border-slate-800/40 pt-2 mt-4">
+                            Model ID: CNN-ResNet-Hydro-v2.6
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="page-history" class="page-section hidden space-y-6">
-            <div class="border-b border-slate-200 pb-4">
-                <h1 class="text-3xl font-extrabold text-slate-900">ประวัติการตรวจโรค</h1>
-                <p class="text-slate-500">บันทึกข้อมูลย้อนหลังเพื่อติดตามประสิทธิภาพการจัดการฟาร์ม</p>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-600 font-medium text-sm">
-                            <th class="p-4">วันที่ - เวลา</th>
-                            <th class="p-4">ผลการวินิจฉัย</th>
-                            <th class="p-4">ความแม่นยำ</th>
-                            <th class="p-4">สถานะการแก้ไข</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm divide-y divide-slate-100 text-slate-700">
-                        <tr>
-                            <td class="p-4">16 ก.ค. 2026 - 10:30</td>
-                            <td class="p-4 font-semibold text-red-600">โรคราน้ำค้าง</td>
-                            <td class="p-4">96.8%</td>
-                            <td class="p-4"><span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-md font-medium">กำลังดำเนินการ</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4">14 ก.ค. 2026 - 15:45</td>
-                            <td class="p-4 font-semibold text-emerald-600">ปกติ (ไม่พบโรค)</td>
-                            <td class="p-4">99.1%</td>
-                            <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-md font-medium">เสร็จสิ้น</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4">10 ก.ค. 2026 - 09:15</td>
-                            <td class="p-4 font-semibold text-amber-600">โรครากเน่า (ระยะแรก)</td>
-                            <td class="p-4">88.5%</td>
-                            <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-md font-medium">เสร็จสิ้น</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="page-profile" class="page-section hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-            <div class="border-b border-slate-100 pb-4 mb-6 flex items-center space-x-4">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl font-bold">
-                    สม
+            <section id="sec-history" class="hidden space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h1 class="text-2xl font-bold text-white">บันทึกประวัติการวิเคราะห์ย้อนหลัง</h1>
+                    <p class="text-slate-400 text-sm">ข้อมูลล็อกไฟล์ความปลอดภัยของสุขภาพพืชไฮโดรโปนิกส์ภายในระบบ</p>
                 </div>
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800">โปรไฟล์ผู้ใช้งาน</h2>
-                    <p class="text-slate-500 text-sm">จัดการข้อมูลส่วนตัวและที่ตั้งแปลงไฮโดรโปนิกส์ของคุณ</p>
-                </div>
-            </div>
 
-            <form onsubmit="event.preventDefault(); alert('บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว!');" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อ - นามสกุล</label>
-                        <input type="text" value="สมชาย รักเกษตร" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์</label>
-                        <input type="text" value="098-765-4321" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse font-mono text-xs">
+                            <thead>
+                                <tr class="bg-slate-950 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                                    <th class="p-4 font-semibold">Timestamp</th>
+                                    <th class="p-4 font-semibold">Diagnostic Target</th>
+                                    <th class="p-4 font-semibold">AI Confidence</th>
+                                    <th class="p-4 font-semibold">Operational Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 text-slate-300" id="history-table-body">
+                                <tr class="hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-500">2026-07-16 10:30</td>
+                                    <td class="p-4 font-semibold text-rose-400">โรคราน้ำค้าง (Downy Mildew)</td>
+                                    <td class="p-4">98.74%</td>
+                                    <td class="p-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[10px]">กำลังควบคุมโรค</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-500">2026-07-14 15:45</td>
+                                    <td class="p-4 font-semibold text-emerald-400">ปกติ / ไม่พบสิ่งผิดปกติ</td>
+                                    <td class="p-4">99.12%</td>
+                                    <td class="p-4"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">เคลียร์แล้ว</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-500">2026-07-10 09:15</td>
+                                    <td class="p-4 font-semibold text-amber-400">โรครากเน่าโคนเน่า (ระยะแรก)</td>
+                                    <td class="p-4">88.50%</td>
+                                    <td class="p-4"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">เคลียร์แล้ว</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อฟาร์ม / แปลงผัก</label>
-                    <input type="text" value="สมชาย กรีนฟาร์ม ไฮโดรโปนิกส์" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">ที่อยู่ระบบฟาร์ม (สำหรับระบุพิกัดเตือนภัยระดับภูมิภาค)</label>
-                    <textarea rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">123 หมู่ 5 ต.เหมืองหลวง อ.เมือง จ.เชียงใหม่</textarea>
-                </div>
-                <div class="flex justify-end pt-2">
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition shadow-sm cursor-pointer">บันทึกการเปลี่ยนแปลง</button>
-                </div>
-            </form>
-        </section>
+            </section>
 
-    </main>
+            <section id="sec-profile" class="hidden max-w-2xl mx-auto glass-card p-6 md:p-8 rounded-2xl space-y-6">
+                <div class="border-b border-slate-800 pb-4 flex items-center space-x-4">
+                    <div class="w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-xl font-bold border border-emerald-500/20" id="profile-card-avatar">
+                        ส
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">ฟาร์มและข้อมูลการตั้งค่าโครงงาน</h2>
+                        <p class="text-slate-400 text-xs">แก้ไขข้อมูลส่วนตัวและการระบุพิกัดเพื่อความแม่นยำในการเตือนภัยระดับภูมิภาค</p>
+                    </div>
+                </div>
 
-    <footer class="bg-slate-800 text-slate-400 py-6 mt-12 text-center text-sm border-t border-slate-700">
-        <p>© 2026 HydroSenseAI - โครงงานวิจัยนวัตกรรมปัญญาประดิษฐ์เพื่อการเกษตรยั่งยืน</p>
-        <p class="text-xs text-slate-500 mt-1">พัฒนาขึ้นเพื่อยกระดับและแก้ไขปัญหาโรคพืชในแปลงผักระบบไฮโดรโปนิกส์ในชีวิตประจำวัน</p>
-    </footer>
+                <form onsubmit="event.preventDefault(); saveProfileData();" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">ชื่อ-นามสกุล นักวิจัย</label>
+                            <input type="text" id="prof-name" value="สมชาย รักเกษตร" required class="w-full px-4 py-2 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white text-sm focus:outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">รหัสติดต่อด่วน (เบอร์โทร)</label>
+                            <input type="text" id="prof-phone" value="098-765-4321" required class="w-full px-4 py-2 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white text-sm focus:outline-none transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">ชื่อแปลงไฮโดรโปนิกส์ที่จดทะเบียน</label>
+                        <input type="text" id="prof-farm" value="สมชาย กรีนฟาร์ม ไฮโดรโปนิกส์" required class="w-full px-4 py-2 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white text-sm focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">ที่ตั้งทางภูมิศาสตร์ (Geolocation Address)</label>
+                        <textarea id="prof-address" rows="3" required class="w-full px-4 py-2 bg-slate-950/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white text-sm focus:outline-none transition">123 หมู่ 5 ต.เหมืองหลวง อ.เมือง จ.เชียงใหม่</textarea>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition shadow-lg shadow-emerald-600/10 active:scale-[0.98] cursor-pointer">
+                            อัปเดตข้อมูลและบันทึกลงฐานข้อมูล
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+        </main>
+
+        <footer class="bg-slate-950/60 border-t border-slate-800/80 py-4 px-6 text-center text-[10px] text-slate-500 font-mono tracking-wider flex-shrink-0">
+            © 2026 HYDROSENSEAI PROJECT. DEVELOPED UNDER HIGH-SCHOOL & COLLEGE INNOVATION FELLOWSHIP. PUBLIC RELEASE VERSION.
+        </footer>
+    </div>
 
     <script>
-        // เริ่มต้นให้แสดงที่หน้า Dashboard ก่อน
+        // จำลอง State ของระบบ
+        let appState = {
+            isLoggedIn: true, // ตั้งค่าเริ่มต้นให้ผ่าน Login ก่อนเพื่อความสะดวกในการส่งงาน
+            currentTab: 'dashboard',
+            uploadedImage: null,
+            scanCount: 142
+        };
+
+        // โหลดฟังก์ชันเมื่อ DOM พร้อมทำงาน
         document.addEventListener("DOMContentLoaded", () => {
-            switchPage('dashboard');
-            lucide.createIcons(); // โหลดไอคอนทั้งหมด
+            initApp();
         });
 
-        // ฟังก์ชันสลับหน้าเว็บ (Single Page Application Logic)
-        function switchPage(pageId) {
-            // ซ่อนทุกหน้าก่อน
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            // แสดงเฉพาะหน้าที่เลือก
-            const targetPage = document.getElementById(`page-${pageId}`);
-            if (targetPage) {
-                targetPage.classList.remove('hidden');
+        function initApp() {
+            lucide.createIcons();
+            refreshUiState();
+        }
+
+        // ระบบควบคุมและสลับแท็บเมนู (Single Page Router Engine)
+        function navigateTo(tabId) {
+            if (!appState.isLoggedIn && tabId !== 'login') {
+                tabId = 'login';
             }
-            // เลื่อนจอกลับไปด้านบนสุด
+            appState.currentTab = tabId;
+            refreshUiState();
+        }
+
+        // รีเฟรชและอัปเดตหน้าตา UI ตามสเตตัสปัจจุบัน
+        function refreshUiState() {
+            // ซ่อนหรือแสดง Sidebar
+            const sidebar = document.getElementById('main-sidebar');
+            if(appState.isLoggedIn) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('flex');
+            } else {
+                sidebar.classList.remove('flex');
+                sidebar.classList.add('hidden');
+                appState.currentTab = 'login';
+            }
+
+            // ซ่อนเซกชันทั้งหมดก่อน
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+            
+            // เปิดหน้าปัจจุบัน
+            const targetSec = document.getElementById(`sec-${appState.currentTab}`);
+            if(targetSec) targetSec.classList.remove('hidden');
+
+            // จัดการ Active Class บนปุ่มเมนูนำทาง
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-nav'));
+            const activeBtn = document.getElementById(`nav-${appState.currentTab}`);
+            if(activeBtn) activeBtn.classList.add('active-nav');
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ฟังก์ชันจำลองการเข้าสู่ระบบ
+        // ฟังก์ชันจัดการ Authentication (Login)
         function handleLogin() {
-            alert("เข้าสู่ระบบสำเร็จ!");
-            document.getElementById('login-nav-btn').textContent = "ออกจากระบบ";
-            switchPage('dashboard');
+            appState.isLoggedIn = true;
+            appState.currentTab = 'dashboard';
+            refreshUiState();
+            alert("🔒 Identity Verified: ผ่านการตรวจสอบความปลอดภัยเรียบร้อยแล้ว");
         }
 
-        // ฟังก์ชันแสดงตัวอย่างรูปภาพเมื่อเลือกไฟล์
-        function previewImage(event) {
+        // ฟังก์ชันออกจากระบบ
+        function handleLogout() {
+            appState.isLoggedIn = false;
+            appState.currentTab = 'login';
+            refreshUiState();
+        }
+
+        // ฟังก์ชันระบบอัปโหลดไฟล์จริงและประมวลผลตัวอย่างรูปภาพ (Image Pipeline)
+        function processUploadedFile(event) {
             const file = event.target.files[0];
             if (file) {
-                alert(`เลือกไฟล์สำเร็จ: ${file.name} (พร้อมสำหรับส่งเข้าประมวลผลด้วย AI Model)`);
+                appState.uploadedImage = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    const prompt = document.getElementById('upload-prompt');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    prompt.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
             }
         }
 
-        // ฟังก์ชันจำลองการทำงานของ AI วินิจฉัยโรค
-        function analyzeDisease() {
-            const placeholder = document.getElementById('ai-result-placeholder');
-            const content = document.getElementById('ai-result-content');
-            
-            // จำลองการโหลด
-            placeholder.innerHTML = `<i data-lucide="loader-2" class="w-12 h-12 mx-auto mb-2 animate-spin text-emerald-600"></i> AI กำลังวิเคราะห์โครงสร้างใบพืช...`;
-            lucide.createIcons();
+        // จำลอง Hardware Trigger ระบบกล้องถ่ายภาพ
+        function triggerMockCamera() {
+            alert("📸 Hardware Trigger Signal Sent: ระบบกำลังเชื่อมต่อกับโมดูลกล้องถ่ายภาพภายนอกผ่านพอร์ตเครือข่าย...");
+            // จำลองการดึงรูปภาพเข้ามาจากกล้อง
+            const preview = document.getElementById('image-preview');
+            const prompt = document.getElementById('upload-prompt');
+            preview.src = "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&q=80&w=500"; // ดึงรูปผักจำลองมาแสดง
+            preview.classList.remove('hidden');
+            prompt.classList.add('hidden');
+            appState.uploadedImage = true;
+        }
+
+        // ระบบวิเคราะห์คำนวณปัญญาประดิษฐ์เสมือนจริง (AI Inference Runner)
+        function runAiInference() {
+            if(!appState.uploadedImage) {
+                alert("⚠️ Error: ไม่พบสัญญาณภาพในระบบ กรุณาถ่ายรูปหรือนำเข้าไฟล์ก่อนสั่งการวิเคราะห์");
+                return;
+            }
+
+            const idle = document.getElementById('ai-idle-state');
+            const loading = document.getElementById('ai-loading-state');
+            const result = document.getElementById('ai-result-panel');
+            const badge = document.getElementById('diagnostic-badge');
+
+            idle.classList.add('hidden');
+            result.classList.add('hidden');
+            loading.classList.remove('hidden');
 
             setTimeout(() => {
-                placeholder.classList.add('hidden');
-                content.classList.remove('hidden');
-            }, 1500); // จำลองเวลาดีเลย์ของ AI 1.5 วินาที
+                loading.classList.add('hidden');
+                result.classList.remove('hidden');
+                badge.classList.remove('hidden');
+
+                // ทำการอัปเดตตัวเลขสถิติบน Dashboard ให้เปลี่ยนไปจริง ๆ หลังตรวจพบโรค
+                appState.scanCount += 1;
+                document.getElementById('kpi-total-scan').textContent = appState.scanCount + " ครั้ง";
+                
+                // แทรกแถวใหม่ลงตารางประวัติทันทีแบบ Dynamic
+                const tableBody = document.getElementById('history-table-body');
+                const now = new Date();
+                const timestamp = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+                
+                const newRow = `
+                    <tr class="hover:bg-slate-800/30 transition bg-rose-500/5 animate-pulse">
+                        <td class="p-4 text-slate-400">${timestamp}</td>
+                        <td class="p-4 font-semibold text-rose-400">โรคราน้ำค้าง (Downy Mildew)</td>
+                        <td class="p-4">98.74%</td>
+                        <td class="p-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[10px]">ตรวจสอบพบใหม่</span></td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('afterbegin', newRow);
+                
+                alert("✨ AI Inference Complete: ผลการคำนวณและมาตรการป้องกันถูกบันทึกลงในฐานข้อมูลฟาร์มเรียบร้อย");
+            }, 2500); // จำลองการประมวลผลของโมเดล 2.5 วินาที
+        }
+
+        // ระบบบันทึกข้อมูลและส่งค่าจากฟอร์ม Profile ไปแสดงผลที่ Top bar ทันที (Data Binding)
+        function saveProfileData() {
+            const nameInput = document.getElementById('prof-name').value;
+            // ปรับปรุงค่าในจุดแสดงผลต่าง ๆ บนหน้าเว็บทันที
+            document.getElementById('current-user-display').textContent = nameInput;
+            document.getElementById('avatar-display').textContent = nameInput.charAt(0);
+            document.getElementById('profile-card-avatar').textContent = nameInput.charAt(0);
+            
+            alert("💾 Data Synced: อัปเดตข้อมูลโครงสร้างฟาร์มลงระบบ Cloud สำเร็จ");
         }
     </script>
 </body>
 </html>
+
