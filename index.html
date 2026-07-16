@@ -1,551 +1,305 @@
 <!DOCTYPE html>
-<html lang="th" class="dark">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroGuard Core Engine v8.0 Enterprise Next-Gen</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mitr:wght@400;500;600&display=swap');
-        
-        :root { 
-            --font-global: 'Plus Jakarta Sans', 'Mitr', sans-serif; 
-            --font-code: 'JetBrains Mono', monospace;
-        }
-        body { 
-            font-family: var(--font-global); 
-            background: radial-gradient(125% 125% at 50% 10%, #070a12 40%, #061f14 100%);
-            color: #94a3b8; 
-        }
-        .code-syntax { font-family: var(--font-code); }
-        .cyber-glass { 
-            background: rgba(9, 15, 28, 0.65); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(16, 185, 129, 0.08); 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .cyber-glass:hover {
-            border-color: rgba(16, 185, 129, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.05);
-        }
-        .nav-active { 
-            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.02) 100%); 
-            color: #10b981; 
-            border-left: 4px solid #10b981;
-            font-weight: 700;
-            letter-spacing: 0.025em;
-        }
-        @media (max-width: 1023px) { 
-            .nav-active { 
-                background: rgba(16, 185, 129, 0.1); 
-                border-left: 0; 
-                border-top: 3px solid #10b981; 
-            } 
-        }
-        @keyframes cyberScan { 
-            0% { top: 0%; opacity: 0; } 
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; } 
-        }
-        .laser-scanner { animation: cyberScan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-    </style>
+    <title>HydroSenseAI - ระบบตรวจจับและเตือนภัยโรคพืชไฮโดรโปนิกส์</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="h-screen flex flex-col lg:flex-row overflow-hidden pb-16 lg:pb-0">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <div id="iam-gatekeeper" class="fixed inset-0 bg-[#04060a] z-[100] flex items-center justify-center p-4">
-        <div class="cyber-glass max-w-md w-full p-8 rounded-3xl border border-slate-800/80 space-y-6 relative overflow-hidden">
-            <div class="absolute -top-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="text-center space-y-3 relative">
-                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-emerald-500/20 text-slate-950 font-black mx-auto">
-                    <i class="fa-solid fa-terminal text-lg"></i>
+    <nav class="bg-emerald-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="sprout" class="w-8 h-8"></i>
+                    <span class="font-bold text-xl tracking-wider">HydroSenseAI</span>
                 </div>
-                <div>
-                    <h2 class="text-base font-black tracking-widest text-white uppercase code-syntax">HYDROGUARD OS v8.0</h2>
-                    <p class="text-[10px] text-emerald-400 font-extrabold uppercase tracking-widest">Enterprise Central Authentication Gate</p>
+                <div class="hidden md:flex space-x-4 id="nav-links"">
+                    <button onclick="switchPage('dashboard')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">แดชบอร์ด</button>
+                    <button onclick="switchPage('scan')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">ตรวจโรคพืช</button>
+                    <button onclick="switchPage('history')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">ประวัติการตรวจ</button>
+                    <button onclick="switchPage('profile')" class="hover:bg-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition cursor-pointer">โปรไฟล์</button>
+                    <button onclick="switchPage('login')" id="login-nav-btn" class="bg-emerald-500 hover:bg-emerald-400 px-4 py-2 rounded-md text-sm font-medium transition cursor-pointer">เข้าสู่ระบบ</button>
                 </div>
             </div>
-
-            <div class="space-y-4 font-medium">
-                <div>
-                    <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Operator Credential (Username)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500 text-xs"><i class="fa-solid fa-user-shield"></i></span>
-                        <input id="iam-user" type="text" value="admin" class="w-full bg-[#070a12] border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition duration-200 code-syntax">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Security Token (Password)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500 text-xs"><i class="fa-solid fa-fingerprint"></i></span>
-                        <input id="iam-pass" type="password" value="1234" class="w-full bg-[#070a12] border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition duration-200 code-syntax">
-                    </div>
-                </div>
-                <div id="iam-error" class="hidden text-[11px] text-rose-400 font-medium bg-rose-950/30 border border-rose-900/30 p-3 rounded-xl flex items-center gap-2 animate-pulse">
-                    <i class="fa-solid fa-triangle-exclamation text-sm"></i> <span>Access Denied: Invalid Token.</span>
-                </div>
-            </div>
-
-            <button onclick="Auth.executeLoginPipeline()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-xl shadow-emerald-500/10 transition-all duration-300">
-                Establish Secure Connection <i class="fa-solid fa-shield-halved ml-1"></i>
-            </button>
         </div>
-    </div>
+    </nav>
 
-    <aside id="app-sidebar" class="w-64 bg-[#05070d] border-r border-slate-900 flex flex-col justify-between hidden lg:flex z-50">
-        <div class="p-6">
-            <div class="flex items-center space-x-3 mb-10 px-1">
-                <div class="w-9 h-9 bg-gradient-to-tr from-emerald-600 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black">
-                    <i class="fa-solid fa-dna text-sm"></i>
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="page-login" class="page-section hidden max-w-md mx-auto bg-white p-8 rounded-2xl shadow-md my-12">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">ยินดีต้อนรับสู่ HydroSenseAI</h2>
+                <p class="text-slate-500 text-sm">เข้าสู่ระบบเพื่อเริ่มตรวจจับและประเมินความเสี่ยงแปลงผักของคุณ</p>
+            </div>
+            <form onsubmit="event.preventDefault(); handleLogin();" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">อีเมล</label>
+                    <input type="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="example@email.com">
                 </div>
                 <div>
-                    <h1 class="text-xs font-black tracking-widest text-white uppercase">HydroGuard</h1>
-                    <p class="text-[9px] text-emerald-400 font-black tracking-wider uppercase code-syntax">PLANT PATHOLOGY LAB</p>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
+                    <input type="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm cursor-pointer">เข้าสู่ระบบ</button>
+            </form>
+        </section>
+
+        <section id="page-dashboard" class="page-section space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-slate-900">ภาพรวมระบบและสถานะแปลงผัก</h1>
+                    <p class="text-slate-500">วิเคราะห์ข้อมูลและเตือนภัยความเสี่ยงโรคพืชด้วยนวัตกรรม AI</p>
+                </div>
+                <div class="mt-4 md:mt-0 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl flex items-center space-x-2 shadow-sm animate-pulse">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
+                    <span class="text-sm font-medium">คำเตือน: สภาพอากาศร้อนชื้นวันนี้ มีความเสี่ยงต่อการเกิดโรครากเน่าโคนเน่าสูงขึ้น 20%</span>
                 </div>
             </div>
-            <nav class="space-y-1">
-                <button onclick="Core.navigate('dashboard')" id="btn-nav-dashboard" class="nav-active w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-layer-group w-5 text-sm"></i><span>Telemetry Dashboard</span></button>
-                <button onclick="Core.navigate('plots')" id="btn-nav-plots" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-cubes w-5 text-sm"></i><span>Zone Management</span></button>
-                <button onclick="Core.navigate('scanner')" id="btn-nav-scanner" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-camera w-5 text-sm"></i><span>Spectral Imaging AI</span></button>
-                <button onclick="Core.navigate('logs')" id="btn-nav-logs" class="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs transition-all"><i class="fa-solid fa-server w-5 text-sm"></i><span>Analytical Ledger</span></button>
-            </nav>
-        </div>
-        <div class="p-4 border-t border-slate-900/60 bg-[#030508]/60 flex justify-between items-center px-6">
-            <div class="text-[9px] font-mono tracking-wider text-slate-600 code-syntax">SYS_CORE: v8.0.0-PRO</div>
-            <button onclick="Auth.executeLogoutSequence()" class="text-slate-500 hover:text-rose-400 transition text-xs p-1"><i class="fa-solid fa-power-off"></i></button>
-        </div>
-    </aside>
 
-    <div id="app-viewport" class="flex-1 flex flex-col overflow-y-auto">
-        <header class="bg-[#05070d]/80 backdrop-blur-md border-b border-slate-900/80 px-6 py-4 lg:px-8 flex justify-between items-center sticky top-0 z-40">
-            <div>
-                <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block code-syntax">SYSTEM DATA STREAM PIPELINE</span>
-                <h2 id="viewport-title" class="text-sm font-black text-white uppercase tracking-wide">Telemetry Dashboard</h2>
-            </div>
-            <div class="flex items-center space-x-3">
-                <div class="text-[10px] font-mono bg-[#070a12] border border-slate-800/80 px-3 py-1.5 rounded-xl text-emerald-400 flex items-center gap-2 shadow-inner">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span class="code-syntax text-[9px] hidden sm:inline">SECURE_SESSION_ALIVE</span>
-                </div>
-                <button onclick="Auth.executeLogoutSequence()" class="lg:hidden text-slate-400 hover:text-rose-400 text-xs p-2 border border-slate-800 rounded-xl bg-[#070a12]"><i class="fa-solid fa-power-off"></i></button>
-            </div>
-        </header>
-
-        <div class="p-4 md:p-8 max-w-5xl w-full mx-auto space-y-6">
-
-            <section id="mod-dashboard" class="space-y-6">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Plots</p><h3 id="m-plots" class="text-2xl font-black text-white mt-1 code-syntax">0</h3></div>
-                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Optimal Matrix</p><h3 id="m-healthy" class="text-2xl font-black text-emerald-400 mt-1 code-syntax">0</h3></div>
-                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pathology Flagged</p><h3 id="m-sick" class="text-2xl font-black text-rose-400 mt-1 code-syntax">0</h3></div>
-                    <div class="cyber-glass p-5 rounded-2xl"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Scans</p><h3 id="m-scans" class="text-2xl font-black text-teal-400 mt-1 code-syntax">0</h3></div>
-                </div>
-                
-                <div onclick="Core.navigate('scanner')" class="bg-gradient-to-r from-emerald-950/20 via-[#0a0f1d] to-[#05070d] p-6 rounded-2xl border border-emerald-500/10 hover:border-emerald-500/30 transition duration-300 cursor-pointer flex justify-between items-center group shadow-xl">
-                    <div class="space-y-1">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> INITIALIZE REAL-TIME SCANNER</h4>
-                        <p class="text-xs text-slate-400">สั่งการระบบเปิดชุดเลนส์กล้องความละเอียดสูง เพื่อแยกแยะระดับเม็ดสีใบพืชทันที</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">ความเสี่ยงโดยรวม</p>
+                        <p class="text-2xl font-bold text-emerald-600 mt-1">ปลอดภัย</p>
                     </div>
-                    <div class="w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-chevron-right text-xs"></i></div>
+                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="shield-check"></i></div>
                 </div>
-
-                <div class="cyber-glass rounded-2xl p-6 space-y-4">
-                    <div class="flex justify-between items-center border-b border-slate-900 pb-3">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> REAL-TIME ACTIVITY LEDGER FLOW</h4>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">ตรวจพืชไปแล้ว (รอบนี้)</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-1">24 ครั้ง</p>
                     </div>
-                    <div id="dash-log-stream" class="divide-y divide-slate-900"></div>
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="scan-line"></i></div>
                 </div>
-            </section>
-
-            <section id="mod-plots" class="space-y-6 hidden">
-                <div class="flex justify-between items-center">
-                    <p id="ui-summary-text" class="text-xs font-medium text-slate-400 code-syntax">Syncing Database Cluster...</p>
-                    <button onclick="Plots.toggleModalState(true)" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition shadow-lg flex items-center gap-2"><i class="fa-solid fa-plus-circle text-sm"></i> REGISTER NEW ZONE</button>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">พบความผิดปกติ</p>
+                        <p class="text-2xl font-bold text-red-500 mt-1">1 จุด</p>
+                    </div>
+                    <div class="p-3 bg-red-50 text-red-500 rounded-xl"><i data-lucide="bug"></i></div>
                 </div>
-                <div id="plots-grid-dom" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500 font-medium">สุขภาพพืชเฉลี่ย</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-1">94.2%</p>
+                    </div>
+                    <div class="p-3 bg-amber-50 text-amber-500 rounded-xl"><i data-lucide="heart"></i></div>
+                </div>
+            </div>
 
-                <div id="domPlotModal" class="fixed inset-0 bg-[#04060a]/90 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
-                    <div class="cyber-glass max-w-md w-full p-6 rounded-2xl space-y-5 shadow-2xl relative">
-                        <h3 class="text-xs font-bold text-white uppercase tracking-wider border-b border-slate-900 pb-2">🧬 DATA INGESTION: PLANTING ZONE</h3>
-                        <div class="space-y-3.5">
-                            <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Zone Identifier (ชื่อแปลง)</label><input id="f-name" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Cultivar (สายพันธุ์)</label><input id="f-type" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></div>
-                                <div><label class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Matrix Coordinate (พิกัด)</label><input id="f-zone" type="text" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 code-syntax"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2"><i data-lucide="trending-up" class="text-emerald-500"></i> แนวโน้มความเสี่ยงสะสมในแปลงผัก (7 วันย้อนหลัง)</h3>
+                    <div class="h-48 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-sm">
+                        [ส่วนแสดงผลกราฟประเมินความเสี่ยง AI: มีความเสี่ยงโรคราน้ำค้างต่ำ แต่ควรเฝ้าระวังอุณหภูมิน้ำ]
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-lg mb-4 text-slate-800">วัตถุประสงค์โครงงานวิจัย</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        HydroSenseAI เป็นระบบตรวจจับความเสี่ยงโรคในแปลงผักไฮโดรโปนิกส์ที่พัฒนาขึ้นเพื่อแก้ปัญหาการสูญเสียผลผลิตของเกษตรกรในชีวิตประจำวัน โดยใช้ระบบประมวลผลภาพ (Image Processing) ร่วมกับ AI ในการวิเคราะห์และแจ้งเตือนก่อนที่โรคจะระบาดลุกลามทั่วทั้งแปลงน้ำวน
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-scan" class="page-section hidden space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <h1 class="text-3xl font-extrabold text-slate-900">ตรวจโรคพืชด้วย AI</h1>
+                <p class="text-slate-500">อัปโหลดภาพถ่ายหรือเปิดกล้องถ่ายรูปใบผักไฮโดรโปนิกส์เพื่อวิเคราะห์โรคทันที</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[350px]">
+                    <div class="w-full max-w-sm border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-emerald-500 transition cursor-pointer relative" id="dropzone">
+                        <i data-lucide="image-plus" class="w-12 h-12 text-slate-400 mx-auto mb-3"></i>
+                        <p class="text-sm text-slate-600 font-medium">ลากไฟล์มาวางที่นี่ หรือ <span class="text-emerald-600">คลิกเพื่อเลือกไฟล์</span></p>
+                        <p class="text-xs text-slate-400 mt-1">รองรับไฟล์ PNG, JPG (แนะนำภาพถ่ายหน้าใบที่ชัดเจน)</p>
+                        <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer" onchange="previewImage(event)">
+                    </div>
+
+                    <div class="mt-4 flex space-x-3 w-full max-w-sm">
+                        <button onclick="alert('ระบบกำลังเปิดใช้งานกล้องถ่ายรูป... (ส่วนเชื่อมต่อ Hardware/Camera)')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2 px-4 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="camera" class="w-4 h-4"></i> ถ่ายรูปจากกล้อง
+                        </button>
+                        <button onclick="analyzeDisease()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="cpu" class="w-4 h-4"></i> เริ่มการวิเคราะห์
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                    <h3 class="font-bold text-xl text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
+                        <i data-lucide="clipboard-check" class="text-emerald-600"></i> ผลการวินิจฉัยจาก AI
+                    </h3>
+                    
+                    <div id="ai-result-placeholder" class="text-slate-400 text-center py-12">
+                        <i data-lucide="brain-circuit" class="w-12 h-12 mx-auto mb-2 opacity-40"></i>
+                        ยังไม่มีการวิเคราะห์ กรุณาใส่รูปและกด "เริ่มการวิเคราะห์"
+                    </div>
+
+                    <div id="ai-result-content" class="hidden space-y-4">
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-red-800 text-lg">พบ: โรคราน้ำค้าง (Downy Mildew)</h4>
+                                    <p class="text-sm text-red-700 mt-1">ความแม่นยำในการตรวจจับ: 96.8%</p>
+                                </div>
+                                <span class="bg-red-100 text-red-800 text-xs px-2.5 py-1 rounded-full font-bold">ความเสี่ยงสูง</span>
                             </div>
                         </div>
-                        <div class="flex space-x-3 pt-2">
-                            <button onclick="Plots.toggleModalState(false)" class="w-1/2 bg-slate-900 border border-slate-800 text-slate-400 hover:text-white text-xs py-3 rounded-xl transition">ABORT</button>
-                            <button onclick="Plots.commitToStorage()" class="w-1/2 bg-emerald-500 text-slate-950 font-bold text-xs py-3 rounded-xl hover:bg-emerald-400 transition shadow-lg">COMMIT DATA</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <section id="mod-scanner" class="space-y-6 hidden">
-                <div class="cyber-glass p-6 rounded-2xl space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Target Inspection Zone</label>
-                            <select id="dom-scan-select" class="w-full bg-[#05070d] border border-slate-800 rounded-xl px-3 py-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 code-syntax"></select>
+                            <h5 class="font-bold text-slate-800 flex items-center gap-1"><i data-lucide="lightbulb" class="text-amber-500 w-4 h-4"></i> คำแนะนำในการดูแลรักษา</h5>
+                            <ul class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1.5 pl-2">
+                                <li>แยกฟองน้ำหรือย้ายต้นที่ติดโรคออกจากรางไฮโดรโปนิกส์ทันทีเพื่อป้องกันการระบาดทางน้ำวน</li>
+                                <li>ลดความชื้นในโรงเรือน เพิ่มการระบายอากาศให้โปร่งขึ้น</li>
+                                <li>ควบคุมค่าความเข้มข้นปุ๋ย (EC) และค่า pH ให้อยู่ในเกณฑ์มาตรฐานเพื่อเสริมสร้างภูมิต้านทาน</li>
+                                <li>หากระบาดรุนแรง ให้ใช้น้ำหมักชีวภาพหรือสารป้องกันกำจัดเชื้อราฉีดพ่นในช่วงเย็น</li>
+                            </ul>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">HARDWARE IMAGE INPUT INTERFACE</label>
-                            <div class="flex gap-2">
-                                <button onclick="Scanner.spinUpHardwareWebcam()" class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2"><i class="fa-solid fa-video text-emerald-400"></i> INITIALIZE WEBCAM</button>
-                                <button onclick="Scanner.toggleFacingDeviceMode()" id="dom-cam-toggle" class="hidden bg-slate-900 hover:bg-slate-800 text-slate-300 p-3 rounded-xl border border-slate-800 transition"><i class="fa-solid fa-camera-rotate"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-2 border-dashed border-slate-900 bg-[#030509]/60 rounded-2xl p-4 min-h-[280px] flex flex-col items-center justify-center relative overflow-hidden group">
-                        <input type="file" accept="image/*" onchange="Scanner.pipeFileInputToMatrix(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20" id="dom-file-node">
-                        <video id="dom-webcam-node" autoplay playsinline class="hidden w-full max-w-md aspect-square object-cover rounded-xl border border-slate-900 bg-black shadow-inner transform -scale-x-100"></video>
-                        <div id="dom-preview-container" class="hidden relative w-full max-w-md aspect-square rounded-xl overflow-hidden border border-slate-900 bg-black">
-                            <img id="dom-static-img" class="w-full h-full object-cover">
-                            <div id="dom-laser-bar" class="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg laser-scanner hidden"></div>
-                        </div>
-                        <div id="dom-fallback-ui" class="text-center p-6 space-y-3 z-10 pointer-events-none">
-                            <div class="w-12 h-12 bg-slate-900 border border-slate-800/60 rounded-2xl text-emerald-400 flex items-center justify-center mx-auto transition-all"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
-                            <p class="text-xs font-bold text-slate-200">DROP IMAGE HERE OR CLICK TO BROWSE</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3">
-                        <button id="dom-btn-capture" onclick="Scanner.commitStreamSnapshot()" class="hidden flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest transition"><i class="fa-solid fa-camera mr-1"></i> LOCK SNAPSHOT</button>
-                        <button id="dom-btn-process" disabled onclick="Scanner.executeMatrixAnalysisPipeline()" class="flex-1 bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed transition-all">AWAITING IMAGE INPUT SOURCE</button>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="mod-logs" class="space-y-4 hidden">
-                <div class="flex justify-between items-center border-b border-slate-900 pb-3">
-                    <span class="text-xs font-bold text-white uppercase tracking-wider code-syntax">CENTRAL DATA ARCHIVE</span>
-                    <button onclick="Logs.truncateAllData()" class="text-[10px] font-extrabold text-rose-400 hover:bg-rose-950/40 border border-rose-900/30 px-3 py-1.5 rounded-xl transition"><i class="fa-solid fa-dumpster-fire mr-1"></i> Wipe Ledger Archive</button>
+        <section id="page-history" class="page-section hidden space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <h1 class="text-3xl font-extrabold text-slate-900">ประวัติการตรวจโรค</h1>
+                <p class="text-slate-500">บันทึกข้อมูลย้อนหลังเพื่อติดตามประสิทธิภาพการจัดการฟาร์ม</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-600 font-medium text-sm">
+                            <th class="p-4">วันที่ - เวลา</th>
+                            <th class="p-4">ผลการวินิจฉัย</th>
+                            <th class="p-4">ความแม่นยำ</th>
+                            <th class="p-4">สถานะการแก้ไข</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-slate-100 text-slate-700">
+                        <tr>
+                            <td class="p-4">16 ก.ค. 2026 - 10:30</td>
+                            <td class="p-4 font-semibold text-red-600">โรคราน้ำค้าง</td>
+                            <td class="p-4">96.8%</td>
+                            <td class="p-4"><span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-md font-medium">กำลังดำเนินการ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">14 ก.ค. 2026 - 15:45</td>
+                            <td class="p-4 font-semibold text-emerald-600">ปกติ (ไม่พบโรค)</td>
+                            <td class="p-4">99.1%</td>
+                            <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-md font-medium">เสร็จสิ้น</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">10 ก.ค. 2026 - 09:15</td>
+                            <td class="p-4 font-semibold text-amber-600">โรครากเน่า (ระยะแรก)</td>
+                            <td class="p-4">88.5%</td>
+                            <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-md font-medium">เสร็จสิ้น</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="page-profile" class="page-section hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <div class="border-b border-slate-100 pb-4 mb-6 flex items-center space-x-4">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl font-bold">
+                    สม
                 </div>
-                <div id="dom-ledger-wrapper" class="space-y-4"></div>
-            </section>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">โปรไฟล์ผู้ใช้งาน</h2>
+                    <p class="text-slate-500 text-sm">จัดการข้อมูลส่วนตัวและที่ตั้งแปลงไฮโดรโปนิกส์ของคุณ</p>
+                </div>
+            </div>
 
-        </div>
-    </div>
+            <form onsubmit="event.preventDefault(); alert('บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว!');" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อ - นามสกุล</label>
+                        <input type="text" value="สมชาย รักเกษตร" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์</label>
+                        <input type="text" value="098-765-4321" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อฟาร์ม / แปลงผัก</label>
+                    <input type="text" value="สมชาย กรีนฟาร์ม ไฮโดรโปนิกส์" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">ที่อยู่ระบบฟาร์ม (สำหรับระบุพิกัดเตือนภัยระดับภูมิภาค)</label>
+                    <textarea rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">123 หมู่ 5 ต.เหมืองหลวง อ.เมือง จ.เชียงใหม่</textarea>
+                </div>
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition shadow-sm cursor-pointer">บันทึกการเปลี่ยนแปลง</button>
+                </div>
+            </form>
+        </section>
 
-    <div id="app-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-[#05070d] border-t border-slate-900 grid grid-cols-4 lg:hidden z-50 h-16 hidden">
-        <button onclick="Core.navigate('dashboard')" id="m-btn-nav-dashboard" class="nav-active flex flex-col items-center justify-center"><i class="fa-solid fa-layer-group text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Console</span></button>
-        <button onclick="Core.navigate('plots')" id="m-btn-nav-plots" class="flex flex-col items-center justify-center"><i class="fa-solid fa-cubes text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Zones</span></button>
-        <button onclick="Core.navigate('scanner')" id="m-btn-nav-scanner" class="flex flex-col items-center justify-center"><i class="fa-solid fa-camera text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">AI Scan</span></button>
-        <button onclick="Core.navigate('logs')" id="m-btn-nav-logs" class="flex flex-col items-center justify-center"><i class="fa-solid fa-server text-base"></i><span class="text-[9px] mt-1 uppercase font-bold">Ledger</span></button>
-    </div>
+    </main>
 
-    <canvas id="virtualCanvasLayer" class="hidden"></canvas>
+    <footer class="bg-slate-800 text-slate-400 py-6 mt-12 text-center text-sm border-t border-slate-700">
+        <p>© 2026 HydroSenseAI - โครงงานวิจัยนวัตกรรมปัญญาประดิษฐ์เพื่อการเกษตรยั่งยืน</p>
+        <p class="text-xs text-slate-500 mt-1">พัฒนาขึ้นเพื่อยกระดับและแก้ไขปัญหาโรคพืชในแปลงผักระบบไฮโดรโปนิกส์ในชีวิตประจำวัน</p>
+    </footer>
 
     <script>
-        const EngineStore = {
-            read: (key) => JSON.parse(localStorage.getItem(key)),
-            write: (key, obj) => localStorage.setItem(key, JSON.stringify(obj)),
-            purge: (key) => localStorage.removeItem(key)
-        };
+        // เริ่มต้นให้แสดงที่หน้า Dashboard ก่อน
+        document.addEventListener("DOMContentLoaded", () => {
+            switchPage('dashboard');
+            lucide.createIcons(); // โหลดไอคอนทั้งหมด
+        });
 
-        const Auth = {
-            executeLoginPipeline: function() {
-                const u = document.getElementById('iam-user').value.trim();
-                const p = document.getElementById('iam-pass').value;
-                const err = document.getElementById('iam-error');
-
-                if (u === 'admin' && p === '1234') {
-                    err.classList.add('hidden');
-                    EngineStore.write('hg_v8_auth_token', 'TOKEN_SECURE_NODE_' + btoa(Date.now().toString()));
-                    Auth.evalSessionState();
-                } else {
-                    err.classList.remove('hidden');
-                }
-            },
-            evalSessionState: function() {
-                const token = EngineStore.read('hg_v8_auth_token');
-                const gate = document.getElementById('iam-gatekeeper');
-                const sidebar = document.getElementById('app-sidebar');
-                const mNav = document.getElementById('app-mobile-nav');
-
-                if (token) {
-                    gate.classList.add('hidden');
-                    if (window.innerWidth >= 1024) sidebar.classList.add('flex');
-                    mNav.classList.remove('hidden');
-                    Core.bootRuntimeEngine();
-                } else {
-                    gate.classList.remove('hidden');
-                    sidebar.classList.remove('flex'); sidebar.classList.add('hidden');
-                    mNav.classList.add('hidden');
-                }
-            },
-            executeLogoutSequence: function() {
-                if (confirm('TERMINATE OPERATOR SECURE SESSION?')) {
-                    EngineStore.purge('hg_v8_auth_token');
-                    location.reload();
-                }
+        // ฟังก์ชันสลับหน้าเว็บ (Single Page Application Logic)
+        function switchPage(pageId) {
+            // ซ่อนทุกหน้าก่อน
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            // แสดงเฉพาะหน้าที่เลือก
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
             }
-        };
+            // เลื่อนจอกลับไปด้านบนสุด
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        const Core = {
-            State: { plots: [], logs: [] },
-            bootRuntimeEngine: function() {
-                Core.State.plots = EngineStore.read('db_v8_plots') || [{ id: 1, name: 'แปลงทดลองควบคุมระบบ Core-A', type: 'กรีนโอ๊ค', zone: 'A-01', currentStatus: 'ปกติ' }];
-                Core.State.logs = EngineStore.read('db_v8_logs') || [];
-                Core.navigate('dashboard');
-            },
-            navigate: function(targetModule) {
-                if (!EngineStore.read('hg_v8_auth_token')) return;
+        // ฟังก์ชันจำลองการเข้าสู่ระบบ
+        function handleLogin() {
+            alert("เข้าสู่ระบบสำเร็จ!");
+            document.getElementById('login-nav-btn').textContent = "ออกจากระบบ";
+            switchPage('dashboard');
+        }
 
-                ['dashboard', 'plots', 'scanner', 'logs'].forEach(m => {
-                    document.getElementById(`mod-${m}`).classList.add('hidden');
-                    if(document.getElementById(`btn-nav-${m}`)) document.getElementById(`btn-nav-${m}`).classList.remove('nav-active');
-                    if(document.getElementById(`m-btn-nav-${m}`)) document.getElementById(`m-btn-nav-${m}`).classList.remove('nav-active');
-                });
-
-                document.getElementById(`mod-${targetModule}`).classList.remove('hidden');
-                if(document.getElementById(`btn-nav-${targetModule}`)) document.getElementById(`btn-nav-${targetModule}`).classList.add('nav-active');
-                if(document.getElementById(`m-btn-nav-${targetModule}`)) document.getElementById(`m-btn-nav-${targetModule}`).classList.add('nav-active');
-
-                const titleDict = { dashboard: 'Telemetry Telepresence Dashboard', plots: 'Plantation Zone Deployment Cluster', scanner: 'AI Multi-Spectral Pixels Imaging', logs: 'Analytical Pathology System Ledger' };
-                document.getElementById('viewport-title').innerText = titleDict[targetModule];
-
-                Scanner.killHardwareWebcam();
-                if(targetModule === 'dashboard' || targetModule === 'plots') Plots.renderUIComponents();
-                if(targetModule === 'dashboard' || targetModule === 'logs') Logs.renderLedgerUI();
-                if(targetModule === 'scanner') Scanner.relinkDropdownZones();
-                Core.computeTelemetryMetrics();
-            },
-            computeTelemetryMetrics: function() {
-                let pLen = Core.State.plots.length;
-                let lLen = Core.State.logs.length;
-                let hCount = 0, sCount = 0;
-
-                Core.State.logs.forEach(l => { if (l.status === 'ปกติ') hCount++; else sCount++; });
-                if (lLen === 0 && pLen > 0) hCount = pLen;
-
-                document.getElementById('m-plots').innerText = pLen;
-                document.getElementById('m-healthy').innerText = hCount;
-                document.getElementById('m-sick').innerText = sCount;
-                document.getElementById('m-scans').innerText = lLen;
+        // ฟังก์ชันแสดงตัวอย่างรูปภาพเมื่อเลือกไฟล์
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                alert(`เลือกไฟล์สำเร็จ: ${file.name} (พร้อมสำหรับส่งเข้าประมวลผลด้วย AI Model)`);
             }
-        };
+        }
 
-        const Plots = {
-            toggleModalState: (open) => document.getElementById('domPlotModal').classList[open ? 'remove' : 'add']('hidden'),
-            commitToStorage: function() {
-                const name = document.getElementById('f-name').value.trim() || 'UNNAMED_NODE';
-                const type = document.getElementById('f-type').value.trim() || 'HYBRID_CULTIVAR';
-                const zone = document.getElementById('f-zone').value.trim() || 'Z-X';
+        // ฟังก์ชันจำลองการทำงานของ AI วินิจฉัยโรค
+        function analyzeDisease() {
+            const placeholder = document.getElementById('ai-result-placeholder');
+            const content = document.getElementById('ai-result-content');
+            
+            // จำลองการโหลด
+            placeholder.innerHTML = `<i data-lucide="loader-2" class="w-12 h-12 mx-auto mb-2 animate-spin text-emerald-600"></i> AI กำลังวิเคราะห์โครงสร้างใบพืช...`;
+            lucide.createIcons();
 
-                Core.State.plots.unshift({ id: Date.now(), name, type, zone, currentStatus: 'ปกติ' });
-                EngineStore.write('db_v8_plots', Core.State.plots);
-
-                document.getElementById('f-name').value = '';
-                document.getElementById('f-type').value = '';
-                document.getElementById('f-zone').value = '';
-
-                Plots.toggleModalState(false); Plots.renderUIComponents(); Core.computeTelemetryMetrics();
-            },
-            deleteZone: function(id) {
-                if (confirm('PURGE DEPLOYED ZONE FROM REGISTRY?')) {
-                    Core.State.plots = Core.State.plots.filter(p => p.id !== id);
-                    EngineStore.write('db_v8_plots', Core.State.plots);
-                    Plots.renderUIComponents(); Core.computeTelemetryMetrics();
-                }
-            },
-            renderUIComponents: function() {
-                const grid = document.getElementById('plots-grid-dom'); if(!grid) return;
-                grid.innerHTML = '';
-                Core.State.plots.forEach(p => {
-                    const matchedLog = Core.State.logs.find(l => l.plotName === p.name);
-                    const status = matchedLog ? matchedLog.status : p.currentStatus;
-                    const badgeClass = status === 'ปกติ' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/40' : 'bg-rose-950/40 text-rose-400 border-rose-900/40';
-
-                    grid.innerHTML += `
-                        <div class="cyber-glass p-5 rounded-2xl relative space-y-4 border border-slate-900">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[9px] tracking-widest font-mono font-bold px-2 py-1 bg-[#05070d] border border-slate-800 text-teal-400 rounded-lg code-syntax uppercase">${p.type}</span>
-                                <button onclick="Plots.deleteZone(${p.id})" class="text-slate-600 hover:text-rose-400 text-xs p-1 transition"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                            <div>
-                                <h3 class="text-xs font-black text-white uppercase tracking-wide truncate">${p.name}</h3>
-                                <p class="text-[10px] font-mono text-slate-500 mt-1.5 code-syntax">COORD: ${p.zone}</p>
-                            </div>
-                            <div class="pt-2 border-t border-slate-900 flex"><span class="text-[9px] tracking-wider uppercase font-extrabold px-2.5 py-1 rounded-full border ${badgeClass}">● SYSTEM_${status}</span></div>
-                        </div>`;
-                });
-                document.getElementById('ui-summary-text').innerText = `TOTAL MONITORING NODES: ${Core.State.plots.length}`;
-            }
-        };
-
-        const Scanner = {
-            mediaStream: null,
-            facingMode: 'environment',
-            relinkDropdownZones: function() {
-                const d = document.getElementById('dom-scan-select');
-                if(d) d.innerHTML = Core.State.plots.map(p => `<option value="${p.name}">${p.name} [${p.zone}]</option>`).join('');
-            },
-            spinUpHardwareWebcam: async function() {
-                Scanner.killHardwareWebcam();
-                document.getElementById('dom-fallback-ui').classList.add('hidden');
-                document.getElementById('dom-preview-container').classList.add('hidden');
-                
-                const v = document.getElementById('dom-webcam-node'); v.classList.remove('hidden');
-                document.getElementById('dom-btn-capture').classList.remove('hidden');
-
-                try {
-                    Scanner.mediaStream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: Scanner.facingMode, width: { ideal: 720 }, height: { ideal: 720 } }, audio: false
-                    });
-                    v.srcObject = Scanner.mediaStream;
-                    document.getElementById('dom-cam-toggle').classList.remove('hidden');
-                } catch (err) {
-                    alert('HARDWARE REJECTED: FALLBACK TO MANUAL UPLOAD.');
-                    Scanner.killHardwareWebcam();
-                }
-            },
-            toggleFacingDeviceMode: function() {
-                Scanner.facingMode = Scanner.facingMode === 'user' ? 'environment' : 'user';
-                Scanner.spinUpHardwareWebcam();
-            },
-            killHardwareWebcam: function() {
-                if(Scanner.mediaStream) {
-                    Scanner.mediaStream.getTracks().forEach(t => t.stop()); Scanner.mediaStream = null;
-                }
-                document.getElementById('dom-webcam-node').classList.add('hidden');
-                document.getElementById('dom-btn-capture').classList.add('hidden');
-                document.getElementById('dom-cam-toggle').classList.add('hidden');
-            },
-            commitStreamSnapshot: function() {
-                const v = document.getElementById('dom-webcam-node');
-                const c = document.getElementById('virtualCanvasLayer');
-                const ctx = c.getContext('2d');
-
-                c.width = v.videoWidth || 480; c.height = v.videoHeight || 480;
-                ctx.translate(c.width, 0); ctx.scale(-1, 1);
-                ctx.drawImage(v, 0, 0, c.width, c.height);
-
-                Scanner.bindStaticPreviewFrame(c.toDataURL('image/jpeg'));
-                Scanner.killHardwareWebcam();
-            },
-            pipeFileInputToMatrix: function(e) {
-                const file = e.target.files[0]; if(!file) return;
-                Scanner.killHardwareWebcam();
-                const r = new FileReader(); r.onload = (ev) => Scanner.bindStaticPreviewFrame(ev.target.result);
-                r.readAsDataURL(file);
-            },
-            bindStaticPreviewFrame: function(base64) {
-                document.getElementById('dom-fallback-ui').classList.add('hidden');
-                document.getElementById('dom-preview-container').classList.remove('hidden');
-                document.getElementById('dom-static-img').src = base64;
-
-                const btn = document.getElementById('dom-btn-process'); btn.disabled = false;
-                btn.className = "flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-pointer shadow-lg transition-all duration-300";
-                btn.innerHTML = "<i class='fa-solid fa-microscope mr-1'></i> RUN SPECTRUM ANALYSIS";
-            },
-            executeMatrixAnalysisPipeline: function() {
-                const laser = document.getElementById('dom-laser-bar');
-                const btn = document.getElementById('dom-btn-process');
-                
-                laser.classList.remove('hidden'); btn.disabled = true;
-                btn.innerText = "STREAMING BUFFER: ANALYZING...";
-
-                const img = document.getElementById('dom-static-img');
-                const c = document.getElementById('virtualCanvasLayer'); const ctx = c.getContext('2d');
-
-                c.width = 16; c.height = 16; ctx.drawImage(img, 0, 0, 16, 16);
-
-                setTimeout(() => {
-                    laser.classList.add('hidden');
-                    const matrixData = ctx.getImageData(0, 0, 16, 16).data;
-                    let r = 0, g = 0, b = 0;
-
-                    for(let i=0; i<matrixData.length; i+=4) { r += matrixData[i]; g += matrixData[i+1]; b += matrixData[i+2]; }
-                    let totalSamples = matrixData.length / 4;
-                    let avgR = Math.round(r/totalSamples), avgG = Math.round(g/totalSamples), avgB = Math.round(b/totalSamples);
-
-                    let payload = {};
-                    if(avgR > 115 && avgG > 105 && avgB < 95) {
-                        payload = { title: 'CRITICAL: Downy Mildew Pathogen Infiltration', status: 'ติดโรค', badge: 'bg-rose-950/50 text-rose-400 border-rose-900/40', textCss: 'text-rose-400', severity: 'HIGH_CRITICAL_RISK', description: 'พบสปอร์ราน้ำค้างขยายตัวทำลายเนื้อเยื่อใบในอัตราเร่ง แนะนำให้แยกรื้อถอนต้นที่มีอาการออกทันที' };
-                    } else if (avgR > avgG) {
-                        payload = { title: 'WARNING: K-Elemental Deficient Syndrome', status: 'เสี่ยงโรค', badge: 'bg-amber-950/50 text-amber-400 border-amber-900/40', textCss: 'text-amber-400', severity: 'WARNING_MEDIUM', description: 'เนื้อเยื่อขอบใบแสดงสภาวะไหม้กรอบเนื่องจากสัดส่วนปุ๋ยไม่สมดุล ควรปรับเพิ่มความเข้มข้นสารละลายธาตุอาหารพืช' };
-                    } else {
-                        payload = { title: 'OPTIMAL: Stable Chlorophyll Structural Matrix', status: 'ปกติ', badge: 'bg-emerald-950/50 text-emerald-400 border-emerald-900/40', textCss: 'text-emerald-400', severity: 'ZERO_BIOPATHOLOGY', description: 'ดัชนีคลอโรฟิลล์และการสะท้อนของแผ่นใบอยู่ในเกณฑ์อุดมสมบูรณ์สูงสุด การเติบโตของเซลล์พืชปกดี' };
-                    }
-
-                    Core.State.logs.unshift({ id: Date.now(), plotName: document.getElementById('dom-scan-select').value, timestamp: new Date().toLocaleString('th-TH'), signature: `HEX_RGB[#${avgR.toString(16).padStart(2,'0')}${avgG.toString(16).padStart(2,'0')}${avgB.toString(16).padStart(2,'0')}]`, ...payload });
-                    EngineStore.write('db_v8_logs', Core.State.logs);
-
-                    document.getElementById('dom-fallback-ui').classList.remove('hidden');
-                    document.getElementById('dom-preview-container').classList.add('hidden');
-                    btn.disabled = true; btn.className = "w-full bg-slate-900 text-slate-600 border border-slate-800/80 font-black py-4 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed";
-                    btn.innerText = "AWAITING IMAGE INPUT SOURCE";
-
-                    Core.navigate('logs');
-                }, 1600);
-            }
-        };
-
-        const Logs = {
-            deleteLogEntry: function(id) {
-                if(confirm('PURGE TRANSACTION?')) {
-                    Core.State.logs = Core.State.logs.filter(l => l.id !== id);
-                    EngineStore.write('db_v8_logs', Core.State.logs);
-                    Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
-                }
-            },
-            truncateAllData: function() {
-                if(confirm('🚨 PURGE ALL TRANSACTION PERMANENTLY?')) {
-                    Core.State.logs = []; EngineStore.write('db_v8_logs', Core.State.logs);
-                    Logs.renderLedgerUI(); Core.computeTelemetryMetrics();
-                }
-            },
-            renderLedgerUI: function() {
-                const master = document.getElementById('dom-ledger-wrapper');
-                const stream = document.getElementById('dash-log-stream');
-
-                if (master) {
-                    if(Core.State.logs.length === 0) {
-                        master.innerHTML = `<div class="cyber-glass p-8 rounded-2xl text-center text-xs text-slate-500 font-mono code-syntax uppercase tracking-wider">Empty Data Cache Cluster.</div>`;
-                    } else {
-                        master.innerHTML = Core.State.logs.map(l => `
-                            <div class="cyber-glass p-5 rounded-2xl space-y-3 border border-slate-900">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="text-xs font-black text-white tracking-wide uppercase ${l.textCss}">${l.title}</h4>
-                                        <p class="text-[10px] font-mono text-slate-500 mt-1 code-syntax">TARGET: ${l.plotName}</p>
-                                    </div>
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-[8px] font-mono font-black border rounded-md px-2 py-0.5 code-syntax uppercase ${l.badge}">${l.status}</span>
-                                        <button onclick="Logs.deleteLogEntry(${l.id})" class="text-slate-600 hover:text-rose-400 transition text-xs px-1"><i class="fa-solid fa-trash-can"></i></button>
-                                    </div>
-                                </div>
-                                <p class="text-xs text-slate-400 leading-relaxed">${l.description}</p>
-                                <p class="text-[9px] font-mono text-slate-600 border-t border-slate-900 pt-2 mt-2 code-syntax tracking-wide uppercase">TIME: ${l.timestamp} | SPECTRUM: ${l.signature}</p>
-                            </div>`).join('');
-                    }
-                }
-
-                if (stream) {
-                    if(Core.State.logs.length === 0) {
-                        stream.innerHTML = `<p class="text-[11px] text-slate-600 font-mono text-center py-4 code-syntax uppercase tracking-wider">Awaiting Active Telemetry Packets...</p>`;
-                    } else {
-                        stream.innerHTML = Core.State.logs.slice(0, 3).map(l => `
-                            <div class="flex justify-between items-center py-3.5">
-                                <div class="flex items-center space-x-3 min-w-0">
-                                    <div class="w-1.5 h-1.5 rounded-full shrink-0 ${l.status === 'ปกติ' ? 'bg-emerald-400' : 'bg-rose-400'}"></div>
-                                    <p class="text-xs font-bold text-slate-200 truncate pr-2 uppercase tracking-wide">${l.title}</p>
-                                </div>
-                                <span class="text-[8px] font-mono border font-black rounded-md px-2 py-0.5 shrink-0 code-syntax uppercase ${l.badge}">${l.status}</span>
-                            </div>`).join('');
-                    }
-                }
-            }
-        };
-
-        window.onload = () => Auth.evalSessionState();
+            setTimeout(() => {
+                placeholder.classList.add('hidden');
+                content.classList.remove('hidden');
+            }, 1500); // จำลองเวลาดีเลย์ของ AI 1.5 วินาที
+        }
     </script>
 </body>
 </html>
