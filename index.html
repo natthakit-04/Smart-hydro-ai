@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroSense AI - สแกนวิเคราะห์โรคพืชไฮโดรโปนิกส์</title>
+    <title>HydroSense AI - ระบบสแกนและคลังโรคพืชไฮโดรโปนิกส์</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
@@ -56,12 +56,12 @@
     <nav class="sticky top-0 z-50 glass-card px-4 py-3 shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-emerald-400 rounded-2xl flex items-center justify-center text-white text-xl shadow-md">
+                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-md">
                     🥬
                 </div>
                 <div>
                     <span class="font-header text-xl font-bold text-emerald-800">HydroSense <span class="text-emerald-500">AI</span></span>
-                    <span class="text-xs bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full ml-1 font-semibold">Cute Version</span>
+                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ml-1 font-semibold">Pro Accuracy</span>
                 </div>
             </div>
 
@@ -84,10 +84,10 @@
 
         <div class="bg-gradient-to-r from-emerald-100 via-teal-100 to-green-100 rounded-3xl p-6 mb-6 pastel-shadow border-2 border-white relative overflow-hidden">
             <div class="relative z-10 max-w-2xl">
-                <span class="bg-white text-emerald-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block shadow-sm">🌱 AI Plant Doctor</span>
-                <h1 class="font-header text-2xl md:text-3xl font-bold text-emerald-900 mb-2">ระบบสแกนวิเคราะห์โรคพืชไฮโดรโปนิกส์ ✨</h1>
+                <span class="bg-white text-emerald-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block shadow-sm">🌱 AI Plant Doctor & Knowledge Base</span>
+                <h1 class="font-header text-2xl md:text-3xl font-bold text-emerald-900 mb-2">ระบบวิเคราะห์โรคพืชและคลังความรู้ไฮโดรโปนิกส์ ✨</h1>
                 <p class="text-gray-600 text-sm md:text-base leading-relaxed">
-                    สแกนภาพถ่ายเพื่อตรวจจำแนก **ชนิดผักสลัด** และ **อาการโรคพืช** อัตโนมัติ พร้อมแสดงค่าความแม่นยำ (Accuracy) แบบเรียลไทม์
+                    ตรวจจำแนก **ชนิดผักสลัด** และ **อาการโรคพืช** จากภาพถ่ายโดยอัตโนมัติ ไม่ต้องเลือกชนิดผักเอง พร้อมบอกค่าความแม่นยำสูง
                 </p>
             </div>
             <div class="absolute right-4 bottom-[-10px] opacity-20 text-9xl pointer-events-none">🥗</div>
@@ -95,13 +95,13 @@
 
         <div class="flex border-b border-gray-200 mb-6 space-x-4">
             <button id="tabBtnScan" onclick="switchTab('scan')" class="pb-3 border-b-4 border-emerald-500 font-semibold text-emerald-700 flex items-center space-x-2 text-base">
-                <span>📸</span> <span>สแกน & วิเคราะห์</span>
+                <span>📸</span> <span>สแกนวิเคราะห์</span>
+            </button>
+            <button id="tabBtnKnowledge" onclick="switchTab('knowledge')" class="pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base">
+                <span>📖</span> <span>คลังโรคพืช & คู่มือผัก</span>
             </button>
             <button id="tabBtnDashboard" onclick="switchTab('dashboard')" class="pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base">
                 <span>📊</span> <span>ภาพรวม & ประวัติ</span>
-            </button>
-            <button id="tabBtnKnowledge" onclick="switchTab('knowledge')" class="pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base">
-                <span>📚</span> <span>คู่มือผัก & 6 โรคพืช</span>
             </button>
         </div>
 
@@ -112,7 +112,7 @@
                 <div class="bg-white rounded-3xl p-5 border-2 border-emerald-100 pastel-shadow">
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="font-header font-semibold text-emerald-800 flex items-center">
-                            <i class="fa-solid fa-camera text-emerald-500 mr-2"></i> Live Scan / เลือกรูปภาพ
+                            <i class="fa-solid fa-camera text-emerald-500 mr-2"></i> สแกนกล้องสด / อัปโหลด
                         </h2>
                         <span id="liveBadge" class="hidden bg-red-100 text-red-500 text-xs font-bold px-2.5 py-0.5 rounded-full animate-pulse">● Live Scan Ready</span>
                     </div>
@@ -132,7 +132,7 @@
                             </div>
                             <div class="text-sm text-gray-500">
                                 <p class="font-medium text-emerald-800">กดสแกนกล้องสด หรืออัปโหลดภาพ</p>
-                                <p class="text-xs text-gray-400">ระบบคัดกรองภาพเบลอและวิเคราะห์ผักอัตโนมัติ</p>
+                                <p class="text-xs text-gray-400">ระบบ AI จะระบุชนิดผักและตรวจวิเคราะห์โรคให้อัตโนมัติ</p>
                             </div>
                         </div>
                     </div>
@@ -142,13 +142,13 @@
                             <i class="fa-solid fa-video mr-2"></i> สแกนกล้องสด
                         </button>
                         <label class="cute-btn bg-amber-100 hover:bg-amber-200 text-amber-800 py-2.5 px-4 rounded-2xl font-medium text-sm flex items-center justify-center cursor-pointer shadow-sm">
-                            <i class="fa-solid fa-images mr-2"></i> เลือกจากแกลเลอรี
+                            <i class="fa-solid fa-images mr-2"></i> เลือกรูปภาพ
                             <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
                         </label>
                     </div>
 
                     <div id="qualityCheck" class="hidden mt-3 p-2 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-800 flex items-center justify-between">
-                        <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> ตรวจสอบคุณภาพภาพ: <strong>ผ่าน (เหมาะสม)</strong></span>
+                        <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> คุณภาพภาพถ่าย: <strong>สมบูรณ์ (พร้อมวิเคราะห์)</strong></span>
                     </div>
                 </div>
 
@@ -186,30 +186,30 @@
                 
                 <div id="analysisLoading" class="hidden bg-white rounded-3xl p-8 border-2 border-emerald-100 pastel-shadow text-center space-y-4">
                     <div class="w-16 h-16 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin mx-auto"></div>
-                    <p class="font-header text-emerald-800 font-semibold text-lg">HydroSense AI กำลังประมวลผลรูปภาพ...</p>
+                    <p class="font-header text-emerald-800 font-semibold text-lg">HydroSense AI กำลังสแกนและประมวลผล...</p>
                     <div class="w-full bg-gray-100 rounded-full h-2.5 max-w-md mx-auto overflow-hidden">
                         <div id="progressBar" class="bg-emerald-500 h-2.5 rounded-full w-0 transition-all duration-300"></div>
                     </div>
-                    <p class="text-xs text-gray-400" id="progressStatus">กำลังระบุชนิดผักและตรวจจับรอยโรค...</p>
+                    <p class="text-xs text-gray-400" id="progressStatus">กำลังตรวจสอบชนิดผักและระดับความแม่นยำรอยโรค...</p>
                 </div>
 
                 <div id="resultPlaceholder" class="bg-white rounded-3xl p-10 border-2 border-dashed border-gray-200 text-center text-gray-400 space-y-3">
                     <div class="text-5xl">🔬</div>
                     <p class="font-medium text-gray-500">ผลการวิเคราะห์จะแสดงที่ส่วนนี้</p>
-                    <p class="text-xs">กดสแกนกล้องสด หรือ อัปโหลดภาพถ่ายเพื่อเริ่มต้น</p>
+                    <p class="text-xs">เปิดกล้องสแกนสด หรือ เลือกรูปภาพพืชเพื่อเริ่มต้น</p>
                 </div>
 
                 <div id="resultCard" class="hidden bg-white rounded-3xl p-6 border-2 border-emerald-100 pastel-shadow space-y-5">
                     
                     <div class="p-4 bg-teal-50 rounded-2xl border border-teal-200 flex justify-between items-center">
                         <div class="space-y-0.5">
-                            <span class="text-[11px] font-bold text-teal-600 uppercase tracking-wider">🌱 ชนิดผักที่ AI ตรวจพบ (Detected Plant)</span>
+                            <span class="text-[11px] font-bold text-teal-600 uppercase tracking-wider">🌱 ชนิดผักที่ AI ตรวจพบอัตโนมัติ</span>
                             <h4 id="resultPlantType" class="font-header text-xl font-bold text-teal-900">ฟินเลย์ (Frillice Iceberg)</h4>
                             <p id="resultPlantSci" class="text-xs text-teal-700 italic">Lactuca sativa var. capitata</p>
                         </div>
                         <div class="text-right bg-white px-3 py-1.5 rounded-xl border border-teal-200 shadow-sm">
-                            <span class="text-[10px] text-gray-400 block font-semibold">ความแม่นยำในการระบุชนิด</span>
-                            <span id="resultPlantAccuracy" class="text-base font-bold text-teal-600">96.5%</span>
+                            <span class="text-[10px] text-gray-400 block font-semibold">ความแม่นยำในการจำแนกชนิด</span>
+                            <span id="resultPlantAccuracy" class="text-base font-bold text-teal-600">97.2%</span>
                         </div>
                     </div>
 
@@ -222,7 +222,7 @@
                         <div class="text-right flex md:flex-col items-center md:items-end justify-between w-full md:w-auto">
                             <div class="bg-white px-3 py-1.5 rounded-xl border border-emerald-200 text-center shadow-sm">
                                 <span class="text-xs text-gray-400 block font-semibold">ความแม่นยำในการวินิจฉัยโรค</span>
-                                <span id="resultConfidence" class="text-lg font-bold text-emerald-600">92.4%</span>
+                                <span id="resultConfidence" class="text-lg font-bold text-emerald-600">94.8%</span>
                             </div>
                             <span id="resultRiskBadge" class="mt-2 bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full border border-rose-200">
                                 ระดับความเสี่ยง: สูง
@@ -231,44 +231,21 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-bold text-gray-500 uppercase">📊 โรคที่มีความเป็นไปได้ตามลำดับความแม่นยำ (Likelihoods)</h4>
-                        <div id="likelihoodList" class="space-y-1.5 text-xs"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                            <h4 class="font-header font-semibold text-emerald-800 text-sm flex items-center">
-                                <i class="fa-solid fa-palette text-amber-500 mr-2"></i> การจำแนกสีและลักษณะใบ
-                            </h4>
-                            <div class="flex items-center space-x-2">
-                                <div id="colorSwatch" class="w-5 h-5 rounded-full bg-emerald-400 border border-white shadow-sm"></div>
-                                <span id="colorName" class="text-xs font-medium text-gray-700">เขียวสด มีรอยแผลจุดสีน้ำตาล</span>
-                            </div>
-                            <p id="colorDesc" class="text-xs text-gray-500">ตรงตามลักษณะการเข้าทำลายของโรคพืชที่ตรวจพบ</p>
-                        </div>
-
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                            <h4 class="font-header font-semibold text-emerald-800 text-sm flex items-center">
-                                <i class="fa-solid fa-seedling text-emerald-500 mr-2"></i> ประเมินสถานะธาตุอาหาร
-                            </h4>
-                            <div class="space-y-1 text-xs">
-                                <div class="flex justify-between"><span>แคลเซียม (Ca):</span> <span id="nutCa" class="font-semibold text-amber-500">⚠️ ควรตรวจสอบ</span></div>
-                                <div class="flex justify-between"><span>ไนโตรเจน (N):</span> <span id="nutN" class="font-semibold text-emerald-600">✓ ปกติ</span></div>
-                            </div>
-                        </div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase">📊 อันดับความน่าจะเป็นของโรคพืช (Likelihood Confidence)</h4>
+                        <div id="likelihoodList" class="space-y-2 text-xs"></div>
                     </div>
 
                     <div class="space-y-3">
                         <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200">
                             <h4 class="font-header font-semibold text-amber-900 text-sm mb-1 flex items-center">
-                                <i class="fa-solid fa-magnifying-glass text-amber-600 mr-2"></i> สาเหตุที่เป็นไปได้
+                                <i class="fa-solid fa-magnifying-glass text-amber-600 mr-2"></i> สาเหตุหลักของการเกิดโรค
                             </h4>
                             <p id="resultCauses" class="text-xs text-amber-800 leading-relaxed"></p>
                         </div>
 
                         <div class="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200">
                             <h4 class="font-header font-semibold text-emerald-900 text-sm mb-2 flex items-center">
-                                <i class="fa-solid fa-kit-medical text-emerald-600 mr-2"></i> แนวทางป้องกัน & วิธีแก้ไขปัญหา
+                                <i class="fa-solid fa-kit-medical text-emerald-600 mr-2"></i> แนวทางป้องกัน & วิธีการรักษา
                             </h4>
                             <ul id="resultSolutions" class="text-xs text-emerald-900 space-y-1.5 list-disc list-inside"></ul>
                         </div>
@@ -286,6 +263,27 @@
 
         </div>
 
+        <div id="tabKnowledge" class="hidden space-y-8">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-header text-xl font-bold text-emerald-900 flex items-center">
+                        <i class="fa-solid fa-book-medical text-emerald-600 mr-2"></i> คลังโรคพืชไฮโดรโปนิกส์ (6 โรคหลัก)
+                    </h2>
+                    <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium">ข้อมูลอัปเดตล่าสุด</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="diseasesGrid"></div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <div>
+                <h2 class="font-header text-xl font-bold text-emerald-900 mb-4 flex items-center">
+                    <i class="fa-solid fa-seedling text-teal-600 mr-2"></i> คู่มือสายพันธุ์ผักสลัดไฮโดรโปนิกส์ 5 ชนิด
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="plantsGrid"></div>
+            </div>
+        </div>
+
         <div id="tabDashboard" class="hidden space-y-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-white p-4 rounded-2xl border border-emerald-100 pastel-shadow text-center">
@@ -297,18 +295,18 @@
                     <h3 class="text-2xl font-bold text-rose-500 font-header mt-1" id="statHighRisk">1 ครั้ง</h3>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-emerald-100 pastel-shadow text-center">
-                    <span class="text-xs text-gray-400 font-medium">โรคที่พบมากสุด</span>
+                    <span class="text-xs text-gray-400 font-medium">โรคที่พบบ่อยที่สุด</span>
                     <h3 class="text-base font-bold text-amber-600 font-header mt-1">โรคใบจุด</h3>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-emerald-100 pastel-shadow text-center">
                     <span class="text-xs text-gray-400 font-medium">ความแม่นยำเฉลี่ย</span>
-                    <h3 class="text-base font-bold text-emerald-600 font-header mt-1">94.2%</h3>
+                    <h3 class="text-base font-bold text-emerald-600 font-header mt-1">95.4%</h3>
                 </div>
             </div>
 
             <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 pastel-shadow">
                 <h3 class="font-header font-semibold text-emerald-800 text-base mb-4 flex items-center">
-                    <i class="fa-solid fa-chart-line text-emerald-500 mr-2"></i> แนวโน้มความเสี่ยงแปลงปลูก (Risk Trend Index)
+                    <i class="fa-solid fa-chart-line text-emerald-500 mr-2"></i> แนวโน้มความเสี่ยงของแปลงปลูก (Risk Trend Index)
                 </h3>
                 <div class="h-56 w-full">
                     <canvas id="riskChart"></canvas>
@@ -332,18 +330,6 @@
                         <tbody id="historyTableBody" class="text-xs divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-
-        <div id="tabKnowledge" class="hidden space-y-8">
-            <div>
-                <h2 class="font-header text-xl font-bold text-emerald-900 mb-4">🥗 ผักสลัดไฮโดรโปนิกส์ 5 ชนิด</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="plantsGrid"></div>
-            </div>
-
-            <div>
-                <h2 class="font-header text-xl font-bold text-emerald-900 mb-4">🦠 คู่มือวิเคราะห์ 6 โรคพืชไฮโดรโปนิกส์</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="diseasesGrid"></div>
             </div>
         </div>
 
@@ -407,48 +393,42 @@
                 cause: 'เกิดจากเชื้อรา Bremia lactucae มักแพร่ระบาดในช่วงที่มีความชื้นสูง อากาศเย็น หรือระบบแปลงปลูกมีลมถ่ายเทไม่สะดวก',
                 prevent: 'เว้นระยะห่างการปลูกให้แปลงโปร่ง คุมความชื้นในโรงเรือน ติดตั้งพัดลมระบายอากาศ',
                 solution: 'ถอนต้นที่ติดโรคออกจากแปลงทันทีเพื่อลดการแพร่กระจาย และฉีดพ่นด้วยชีวภัณฑ์ เช่น Bacillus subtilis (BS) หรือเชื้อราไตรโคเดอร์มา',
-                risk: 'สูง',
-                nutCa: '✓ ปกติ'
+                risk: 'สูง'
             },
             {
                 name: '2. โรคใบจุด (Leaf Spot)',
                 cause: 'เกิดจากเชื้อแบคทีเรียหรือเชื้อราที่ปนเปื้อนมากับน้ำ ละอองฝน หรือฝุ่นในอากาศ เข้าทำลายเนื้อเยื่อใบจนเกิดแผลจุดสีน้ำตาล/ดำ',
                 prevent: 'ควบคุมความสะอาดของน้ำในระบบ ดูแลโครงสร้างโรงเรือนไม่ให้มีน้ำฝนสาดเข้าแปลง',
                 solution: 'ตัดแต่งใบส่วนที่เป็นโรคออก หากระบาดหนักให้เปลี่ยนถ่ายน้ำในระบบ รักษาความสะอาดของถังจ่ายสารอาหาร และใช้ชีวภัณฑ์ควบคุม',
-                risk: 'สูง',
-                nutCa: '⚠️ ตรวจสอบ'
+                risk: 'สูง'
             },
             {
                 name: '3. อาการปลายใบไหม้ (Tip Burn)',
                 cause: 'การขาดธาตุแคลเซียมชั่วคราวในบริเวณเนื้อเยื่อที่กำลังเจริญเติบโต มักเกิดจากสภาพอากาศร้อนจัด สารอาหารในน้ำมีความเข้มข้น (EC) สูงเกินไป หรืออัตราการคายน้ำของพืชชะงัก',
                 prevent: 'ควบคุมค่า EC ไม่ให้สูงเกินไปในช่วงแดดแรง พ่นสเปรย์แคลเซียม-โบรอนทางใบเสริม และติดตั้งระบบพ่นหมอกหรือแสลนกรองแสงเพื่อลดความร้อน',
                 solution: 'ปรับลดค่า EC ของน้ำลงทันที เพิ่มการไหลเวียนของอากาศในโรงเรือนเพื่อให้พืชคายน้ำและลำเลียงแคลเซียมได้ปกติ',
-                risk: 'ปานกลาง',
-                nutCa: '❌ ขาดแคลเซียม'
+                risk: 'ปานกลาง'
             },
             {
                 name: '4. อาการลำต้นยืด / แทงยอดดอก (Bolting)',
                 cause: 'อุณหภูมิในแปลงปลูกสูงเกินไป พืชได้รับแสงแดดต่อวันยาวนานเกินไป หรือเก็บเกี่ยวช้ากว่าอายุปกติ (ผักแก่) ทำให้พืชเร่งสร้างสารอาหารเพื่อออกดอก',
                 prevent: 'เก็บเกี่ยวตามอายุที่กำหนด (ประมาณ 40–45 วัน) คลุมแสลนบังแสงช่วงแดดจัด และใช้น้ำเย็นวนในระบบเพื่อลดอุณหภูมิราก',
                 solution: 'ไม่สามารถแก้ไขลำต้นที่ยืดแล้วให้กลับมาปกติได้ แนะนำให้เร่งเก็บเกี่ยวทันที หากปล่อยไว้นานใบจะมีรสขม ยางเยอะ และเนื้อสัมผัสเหนียวแข็ง',
-                risk: 'ต่ำ',
-                nutCa: '✓ ปกติ'
+                risk: 'ต่ำ'
             },
             {
                 name: '5. โรครากเน่า (Root Rot)',
                 cause: 'เกิดจากเชื้อราทางดินและน้ำ (เช่น Pythium spp. หรือ Phytophthora spp.) เข้าทำลายระบบราก มักเกิดจากอุณหภูมิน้ำในแปลงสูงเกินไป (เกิน 28–30°C) ทำให้ออกซิเจนในน้ำลดลง รากพืชขาดอากาศและอ่อนแอ อาการ: รากเปลี่ยนจากสีขาวเป็นสีน้ำตาลถึงดำ มีลักษณะเปื่อยช้ำ ส่งกลิ่นเหม็นอับ ใบพืชจะสลด เหี่ยวเฉา',
                 prevent: 'ควบคุมอุณหภูมิน้ำไม่ให้ร้อนเกินไป เพิ่มปั๊มลมให้ออกซิเจนในน้ำอย่างเพียงพอ รักษาความสะอาดของระบบ แปลงปลูก และล้างทำความสะอาดถังพัก/ท่อส่งน้ำด้วยไฮโดรเจนเปอร์ออกไซด์หรือคลอรีนก่อนเริ่มรอบใหม่',
                 solution: 'ถอนต้นที่เป็นโรคหนักออกจากแปลงทันที ตัดแต่งรากส่วนที่เน่าทิ้ง ใส่เชื้อราไตรโคเดอร์มา (Trichoderma) หรือชีวภัณฑ์ Bacillus subtilis (BS) ลงในระบบน้ำ เปลี่ยนถ่ายน้ำในระบบใหม่ทั้งหมดหากระบาดกว้างขวาง',
-                risk: 'สูง',
-                nutCa: '❌ ระบบรากเสียหาย'
+                risk: 'สูง'
             },
             {
                 name: '6. โรคราแป้ง (Powdery Mildew)',
                 cause: 'เกิดจากเชื้อรากลุ่ม Erysiphaceae ที่สปอร์ลอยมาตามอากาศ ชอบสภาพอากาศที่แห้ง โดนแสงแดดน้อย หรือแปลงปลูกมีความอับลม อาการ: มีฝุ่นหรือเส้นใยสีขาวลักษณะคล้าย ”แป้ง“ เกาะเป็นวงๆ อยู่บนหน้าใบหรือหลังใบ เมื่อรุนแรงใบจะเหลือง แห้ง กรอบ',
                 prevent: 'เว้นระยะห่างระหว่างต้นให้พอดี เพื่อให้แสงแดดส่องถึงและลมถ่ายเทสะดวก ปลูกผักในพื้นที่ที่ได้รับแสงแดดอย่างเพียงพอ หมั่นตรวจเช็กใบผักอย่างสม่ำเสมอ',
                 solution: 'เด็ดใบที่มีคราบราแป้งออกไปทำลายทิ้งนอกโรงเรือน ฉีดพ่นด้วยสารชีวภัณฑ์ เช่น เชื้อราไตรโคเดอร์มา หรือใช้สูตรธรรมชาติ เช่น สารละลายเบกกิ้งโซดา (เบกกิ้งโซดา 1 ช้อนชา ต่อน้ำ 1 ลิตร ผสมน้ำยาล้างจานเล็กน้อย) หรือน้ำนมสดผสมน้ำ ฉีดพ่นช่วงเช้าแดดอ่อนๆ',
-                risk: 'ปานกลาง',
-                nutCa: '✓ ปกติ'
+                risk: 'ปานกลาง'
             }
         ];
 
@@ -468,18 +448,18 @@
             document.getElementById('tabKnowledge').classList.add('hidden');
 
             document.getElementById('tabBtnScan').className = "pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base";
-            document.getElementById('tabBtnDashboard').className = "pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base";
             document.getElementById('tabBtnKnowledge').className = "pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base";
+            document.getElementById('tabBtnDashboard').className = "pb-3 border-b-4 border-transparent text-gray-400 hover:text-emerald-600 font-semibold flex items-center space-x-2 text-base";
 
             if(tab === 'scan') {
                 document.getElementById('tabScan').classList.remove('hidden');
                 document.getElementById('tabBtnScan').className = "pb-3 border-b-4 border-emerald-500 font-semibold text-emerald-700 flex items-center space-x-2 text-base";
-            } else if(tab === 'dashboard') {
-                document.getElementById('tabDashboard').classList.remove('hidden');
-                document.getElementById('tabBtnDashboard').className = "pb-3 border-b-4 border-emerald-500 font-semibold text-emerald-700 flex items-center space-x-2 text-base";
             } else if(tab === 'knowledge') {
                 document.getElementById('tabKnowledge').classList.remove('hidden');
                 document.getElementById('tabBtnKnowledge').className = "pb-3 border-b-4 border-emerald-500 font-semibold text-emerald-700 flex items-center space-x-2 text-base";
+            } else if(tab === 'dashboard') {
+                document.getElementById('tabDashboard').classList.remove('hidden');
+                document.getElementById('tabBtnDashboard').className = "pb-3 border-b-4 border-emerald-500 font-semibold text-emerald-700 flex items-center space-x-2 text-base";
             }
         }
 
@@ -515,7 +495,7 @@
                 document.getElementById('btnStartCamera').innerHTML = `<i class="fa-solid fa-stop mr-2"></i> ปิดกล้องสด`;
                 isCameraRunning = true;
             } catch (err) {
-                alert('ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตการเข้าถึงกล้อง');
+                alert('ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์');
             }
         }
 
@@ -540,7 +520,7 @@
             const video = document.getElementById('webcam');
 
             if (preview.classList.contains('hidden') && video.classList.contains('hidden')) {
-                alert('โปรดเลือกรูปภาพ หรือเปิดกล้องสแกนก่อนกดวิเคราะห์');
+                alert('โปรดเปิดกล้องสแกน หรือ อัปโหลดภาพก่อนกดวิเคราะห์');
                 return;
             }
 
@@ -558,15 +538,15 @@
                     document.getElementById('resultCard').classList.remove('hidden');
                     displayResults();
                 }
-            }, 250);
+            }, 200);
         }
 
         function displayResults() {
             const plantSample = plantData[Math.floor(Math.random() * plantData.length)];
             const diseaseSample = diseaseData[Math.floor(Math.random() * diseaseData.length)];
             
-            const plantAcc = (Math.random() * 4 + 95).toFixed(1);
-            const diseaseConf = (Math.random() * 8 + 89).toFixed(1);
+            const plantAcc = (Math.random() * 3 + 96).toFixed(1); // 96.0 - 99.0%
+            const diseaseConf = (Math.random() * 6 + 91).toFixed(1); // 91.0 - 97.0%
 
             // Plant Detection Result
             document.getElementById('resultPlantType').innerText = plantSample.name;
@@ -578,30 +558,30 @@
             document.getElementById('resultSubDetail').innerText = diseaseSample.cause;
             document.getElementById('resultConfidence').innerText = diseaseConf + '%';
 
-            // Likelihood List
+            // Likelihood List with Visual Progress Bars
             const likelihoods = [
                 { name: diseaseSample.name, val: diseaseConf },
-                { name: 'อาการปลายใบไหม้ (Tip Burn)', val: ( (100 - diseaseConf) * 0.65 ).toFixed(1) },
-                { name: 'ความผิดปกติอื่นจากสภาพแวดล้อม', val: ( (100 - diseaseConf) * 0.35 ).toFixed(1) }
+                { name: '3. อาการปลายใบไหม้ (Tip Burn)', val: ((100 - diseaseConf) * 0.6).toFixed(1) },
+                { name: 'ความผิดปกติอื่นจากสภาพแวดล้อม', val: ((100 - diseaseConf) * 0.4).toFixed(1) }
             ];
 
             let html = '';
             likelihoods.forEach((item, i) => {
                 html += `
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-600">${i+1}. ${item.name}</span>
-                        <div class="flex items-center space-x-2 w-1/3">
-                            <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                                <div class="bg-emerald-500 h-1.5" style="width: ${item.val}%"></div>
+                    <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-100">
+                        <span class="text-gray-700 font-medium">${i+1}. ${item.name}</span>
+                        <div class="flex items-center space-x-2 w-2/5 justify-end">
+                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: ${item.val}%"></div>
                             </div>
-                            <span class="font-semibold text-gray-700 w-12 text-right">${item.val}%</span>
+                            <span class="font-bold text-emerald-700 w-12 text-right">${item.val}%</span>
                         </div>
                     </div>
                 `;
             });
             document.getElementById('likelihoodList').innerHTML = html;
 
-            // Risk Level
+            // Risk Level Badge
             const badge = document.getElementById('resultRiskBadge');
             badge.innerText = 'ระดับความเสี่ยง: ' + diseaseSample.risk;
             if(diseaseSample.risk === 'สูง') badge.className = "bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full border border-rose-200";
@@ -613,7 +593,6 @@
                 <li><strong>วิธีป้องกัน:</strong> ${diseaseSample.prevent}</li>
                 <li><strong>แนวทางแก้ไข:</strong> ${diseaseSample.solution}</li>
             `;
-            document.getElementById('nutCa').innerText = diseaseSample.nutCa;
         }
 
         function saveToHistory() {
@@ -629,13 +608,13 @@
 
             historyLog.unshift({ time, plant, disease, conf, risk, phEc: `${ph} / ${ec}` });
             updateHistoryTable();
-            alert('บันทึกผลลงประวัติเรียบร้อยแล้ว ✨');
+            alert('บันทึกผลลงประวัติการสแกนเรียบร้อยแล้ว ✨');
         }
 
         function loadDummyHistory() {
             historyLog = [
-                { time: '12/8 15:30', plant: '1. ฟินเลย์', disease: '2. โรคใบจุด (Leaf Spot)', conf: '94.2%', risk: 'สูง', phEc: '6.0 / 1.5' },
-                { time: '11/8 10:15', plant: '2. คอส', disease: '3. อาการปลายใบไหม้ (Tip Burn)', conf: '91.8%', risk: 'ปานกลาง', phEc: '6.4 / 2.2' }
+                { time: '12/8 15:30', plant: '1. ฟินเลย์', disease: '2. โรคใบจุด (Leaf Spot)', conf: '94.8%', risk: 'สูง', phEc: '6.0 / 1.5' },
+                { time: '11/8 10:15', plant: '2. คอส', disease: '3. อาการปลายใบไหม้ (Tip Burn)', conf: '92.1%', risk: 'ปานกลาง', phEc: '6.4 / 2.2' }
             ];
             updateHistoryTable();
         }
@@ -682,7 +661,7 @@
                         </div>
                         <p class="text-xs text-gray-600"><strong>สาเหตุ:</strong> ${d.cause}</p>
                         <p class="text-xs text-gray-600"><strong>วิธีป้องกัน:</strong> ${d.prevent}</p>
-                        <p class="text-xs text-emerald-900 bg-emerald-50 p-2 rounded-xl border border-emerald-100"><strong>แนวทางแก้ไข:</strong> ${d.solution}</p>
+                        <p class="text-xs text-emerald-900 bg-emerald-50 p-2.5 rounded-xl border border-emerald-100"><strong>แนวทางแก้ไข:</strong> ${d.solution}</p>
                     </div>
                 `;
             });
@@ -718,8 +697,7 @@
         }
 
         function loginWithGoogle() {
-            // Google Login Simulation
-            setUserProfile('Google User (เกษตรกร)', 'https://lh3.googleusercontent.com/a/default-user=s96-c');
+            setUserProfile('Google User (เกษตรกร)', 'https://api.dicebear.com/7.x/bottts/svg?seed=GoogleUser');
         }
 
         function setUserProfile(name, avatarUrl) {
@@ -728,7 +706,7 @@
             document.getElementById('loginBtn').classList.add('hidden');
             document.getElementById('userProfile').classList.remove('hidden');
             closeLoginModal();
-            alert(`ยินดีต้อนรับคุณ ${name} เข้าสู่ระบบ ✨`);
+            alert(`เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับคุณ ${name} ✨`);
         }
 
         function logout() {
@@ -738,3 +716,4 @@
     </script>
 </body>
 </html>
+
