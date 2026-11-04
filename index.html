@@ -1,11 +1,223 @@
-function speak(message) {
-  const speech = new SpeechSynthesisUtterance(message);
 
-  speech.lang = "th-TH";
-  speech.rate = 1;
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Cane - ระบบแจ้งเตือน</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #eef5ff;
+      text-align: center;
+      padding: 20px;
+      color: #183153;
+    }
+    .container {
+      max-width: 420px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px #0002;
+    }
+    h1 { color: #1769aa; }
+    .distance {
+      font-size: 55px;
+      font-weight: bold;
+      margin: 20px;
+    }
+    .status {
+      font-size: 22px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #d9f7df;
+      margin: 15px 0;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 12px;
+      background: #1769aa;
+      color: white;
+      font-size: 18px;
+    }
+    button.stop { background: #d93025; }
+    input {
+      width: 90%;
+      padding: 12px;
+      font-size: 18px;
+      margin: 8px;
+    }
+  </style>
+</head>
+<body>
 
-  window.speechSynthesis.speak(speech);
-}
+<div class="container">
+  <h1>🦯 Smart Cane</h1>
+  <p>ระบบแจ้งเตือนสิ่งกีดขวางด้วยเสียง</p>
 
-// ทดลองให้โทรศัพท์พูด
-speak("พบสิ่งกีดขวางด้านหน้า");
+  <div>ระยะห่างจากสิ่งกีดขวาง</div>
+  <div class="distance" id="distance">-- cm</div>
+
+  <div class="status" id="status">
+    รอรับข้อมูลจากเซนเซอร์
+  </div>
+
+  <button onclick="enableVoice()">
+    🔊 เปิดใช้งานเสียง
+  </button>
+
+  <button onclick="testVoice()">
+    ทดลองเสียงแจ้งเตือน
+  </button>
+
+  <hr>
+
+  <h3>ทดลองป้อนระยะทาง</h3>
+  <input
+    type="number"
+    id="testDistance"
+    placeholder="ระยะทาง (cm)"
+    min="1"
+  >
+  <button onclick="simulateDistance()">
+    ทดสอบระยะทาง
+  </button>
+
+  <button class="stop" onclick="stopVoice()">
+    หยุดเสียง
+  </button>
+
+  <p id="connection">สถานะ: ยังไม่ได้เชื่อมต่อบอร์ด</p>
+</div>
+
+<script>
+  let voiceEnabled = false;
+  let lastAlert = "";
+  let lastAlertTime = 0;
+
+  function enableVoice() {
+    voiceEnabled = true;
+    speak("เปิดใช้งานระบบแจ้งเตือนแล้ว");
+  }
+
+  function speak(message) {
+    if (!voiceEnabled) return;
+
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang = "th-TH";
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    window.speechSynthesis.speak(speech);
+  }
+
+  function testVoice() {
+    voiceEnabled = true;
+    speak("ทดสอบระบบ พบสิ่งกีดขวางด้านหน้า โปรดระมัดระวัง");
+  }
+
+  function stopVoice() {
+    window.speechSynthesis.cancel();
+    document.getElementById("status").textContent =
+      "หยุดเสียงแล้ว";
+  }
+
+  function updateDistance(cm) {
+    cm = Number(cm);
+
+    if (!Number.isFinite(cm) || cm <= 0 || cm > 400) {
+      return;
+    }
+
+    document.getElementById("distance").textContent =
+      cm + " cm";
+
+    let message = "";
+    let status = "";
+
+    if (cm <= 50) {
+      message = "ระวังมาก สิ่งกีดขวางอยู่ใกล้มาก";
+      status = "⚠️ อันตราย: อยู่ใกล้มาก";
+    } else if (cm <= 100) {
+      message = "ระวัง พบสิ่งกีดขวางด้านหน้า";
+      status = "⚠️ พบสิ่งกีดขวาง";
+    } else if (cm <= 150) {
+      message = "พบสิ่งกีดขวางด้านหน้า";
+      status = "พบสิ่งกีดขวาง";
+    } else {
+      status = "ปกติ ไม่พบสิ่งกีดขวางในระยะเตือน";
+    }
+
+    document.getElementById("status").textContent =
+      status;
+
+    if (message && voiceEnabled) {
+      const now = Date.now();
+
+      // ป้องกันการพูดซ้ำถี่เกินไป
+      if (
+        message !== lastAlert ||
+        now - lastAlertTime > 5000
+      ) {
+        speak(message);
+        lastAlert = message;
+        lastAlertTime = now;
+      }
+    } else if (!message) {
+      lastAlert = "";
+    }
+  }
+
+  function simulateDistance() {
+    const value =
+      document.getElementById("testDistance").value;
+
+    if (!value) {
+      alert("กรุณากรอกระยะทาง");
+      return;
+    }
+
+    updateDistance(value);
+  }
+
+  // รับข้อมูลจากบอร์ดผ่าน WebSocket
+  // เปลี่ยน IP ให้ตรงกับบอร์ด ESP32
+  function connectBoard() {
+    const boardIP = "192.168.4.1";
+
+    const socket = new WebSocket(
+      "ws://" + boardIP + ":81"
+    );
+
+    socket.onopen = () => {
+      document.getElementById("connection").textContent =
+        "สถานะ: เชื่อมต่อบอร์ดแล้ว";
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      updateDistance(data.distance);
+    };
+
+    socket.onclose = () => {
+      document.getElementById("connection").textContent =
+        "สถานะ: ยังไม่ได้เชื่อมต่อบอร์ด";
+    };
+
+    socket.onerror = () => {
+      document.getElementById("connection").textContent =
+        "ไม่สามารถเชื่อมต่อบอร์ดได้";
+    };
+  }
+
+  // เรียก connectBoard() เมื่อพร้อมเชื่อมต่อ ESP32
+</script>
+
+</body>
+</html>
