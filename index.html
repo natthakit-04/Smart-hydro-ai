@@ -1,221 +1,314 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Smart Cane - ระบบแจ้งเตือน</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #eef5ff;
-      text-align: center;
-      padding: 20px;
-      color: #183153;
-    }
-    .container {
-      max-width: 420px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px #0002;
-    }
-    h1 { color: #1769aa; }
-    .distance {
-      font-size: 55px;
-      font-weight: bold;
-      margin: 20px;
-    }
-    .status {
-      font-size: 22px;
-      padding: 15px;
-      border-radius: 12px;
-      background: #d9f7df;
-      margin: 15px 0;
-    }
-    button {
-      width: 100%;
-      padding: 15px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 12px;
-      background: #1769aa;
-      color: white;
-      font-size: 18px;
-    }
-    button.stop { background: #d93025; }
-    input {
-      width: 90%;
-      padding: 12px;
-      font-size: 18px;
-      margin: 8px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Cane | ไม้เท้าอัจฉริยะ</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef4f8;
+  color: #183047;
+}
+
+header {
+  background: #075985;
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin-bottom: 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 25px auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px #00000012;
+  text-align: center;
+}
+
+.distance {
+  font-size: 65px;
+  font-weight: bold;
+  color: #075985;
+  margin: 15px 0;
+}
+
+.status {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #0284c7;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  opacity: 0.8;
+}
+
+.stop {
+  background: #dc2626;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.info {
+  text-align: left;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+}
+</style>
 </head>
+
 <body>
 
+<header>
+  <h1>🦯 SMART CANE</h1>
+  <p>ระบบไม้เท้าอัจฉริยะช่วยตรวจจับสิ่งกีดขวาง</p>
+</header>
+
 <div class="container">
-  <h1>🦯 Smart Cane</h1>
-  <p>ระบบแจ้งเตือนสิ่งกีดขวางด้วยเสียง</p>
 
-  <div>ระยะห่างจากสิ่งกีดขวาง</div>
-  <div class="distance" id="distance">-- cm</div>
+  <div class="card">
+    <h2>ระยะห่างจากสิ่งกีดขวาง</h2>
+    <div class="distance" id="distance">--</div>
+    <p>เซนติเมตร (cm)</p>
 
-  <div class="status" id="status">
-    รอรับข้อมูลจากเซนเซอร์
+    <div class="status" id="status">
+      กำลังรอข้อมูล
+    </div>
   </div>
 
-  <button onclick="enableVoice()">
-    🔊 เปิดใช้งานเสียง
-  </button>
+  <div class="card">
+    <h2>🔊 ระบบเสียงแจ้งเตือน</h2>
+    <p id="voiceStatus">ยังไม่ได้เปิดเสียง</p>
 
-  <button onclick="testVoice()">
-    ทดลองเสียงแจ้งเตือน
-  </button>
+    <button onclick="enableVoice()">
+      เปิดใช้งานเสียง
+    </button>
 
-  <hr>
+    <button onclick="testVoice()">
+      ทดลองเสียงภาษาไทย
+    </button>
 
-  <h3>ทดลองป้อนระยะทาง</h3>
-  <input
-    type="number"
-    id="testDistance"
-    placeholder="ระยะทาง (cm)"
-    min="1"
-  >
-  <button onclick="simulateDistance()">
-    ทดสอบระยะทาง
-  </button>
+    <button class="stop" onclick="stopVoice()">
+      หยุดเสียง
+    </button>
+  </div>
 
-  <button class="stop" onclick="stopVoice()">
-    หยุดเสียง
-  </button>
+  <div class="card">
+    <h2>🧪 ทดลองระบบ</h2>
+    <p>กรอกระยะทางเพื่อจำลองการตรวจจับ</p>
 
-  <p id="connection">สถานะ: ยังไม่ได้เชื่อมต่อบอร์ด</p>
+    <input
+      type="number"
+      id="distanceInput"
+      placeholder="กรอกระยะทาง เช่น 50"
+      min="1"
+      max="400"
+    >
+
+    <button onclick="simulate()">
+      จำลองการตรวจจับ
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>📡 การเชื่อมต่อ</h2>
+    <p id="connectionStatus">
+      ยังไม่ได้เชื่อมต่อกับไม้เท้า
+    </p>
+    <button onclick="connectESP32()">
+      เชื่อมต่อ ESP32
+    </button>
+  </div>
+
+  <div class="card info">
+    <h3>วิธีการทำงาน</h3>
+    <p>1. เซนเซอร์ตรวจจับสิ่งกีดขวาง</p>
+    <p>2. บอร์ดส่งข้อมูลระยะทางไปยังโทรศัพท์</p>
+    <p>3. เว็บไซต์ประมวลผลระยะทาง</p>
+    <p>4. โทรศัพท์พูดแจ้งเตือนเป็นภาษาไทย</p>
+  </div>
+
 </div>
 
+<footer>
+  SMART CANE PROJECT<br>
+  โครงงานไม้เท้าอัจฉริยะ
+</footer>
+
 <script>
-  let voiceEnabled = false;
-  let lastAlert = "";
-  let lastAlertTime = 0;
+let voiceEnabled = false;
+let lastMessage = "";
+let lastTime = 0;
 
-  function enableVoice() {
-    voiceEnabled = true;
-    speak("เปิดใช้งานระบบแจ้งเตือนแล้ว");
+function speak(message) {
+  if (!voiceEnabled) return;
+
+  window.speechSynthesis.cancel();
+
+  let speech = new SpeechSynthesisUtterance(message);
+  speech.lang = "th-TH";
+  speech.rate = 0.9;
+
+  window.speechSynthesis.speak(speech);
+}
+
+function enableVoice() {
+  voiceEnabled = true;
+
+  document.getElementById("voiceStatus").innerText =
+    "เปิดใช้งานเสียงแล้ว";
+
+  speak("เปิดใช้งานระบบแจ้งเตือนแล้ว");
+}
+
+function testVoice() {
+  voiceEnabled = true;
+  speak("ยินดีต้อนรับสู่ระบบไม้เท้าอัจฉริยะ");
+}
+
+function stopVoice() {
+  window.speechSynthesis.cancel();
+  document.getElementById("voiceStatus").innerText =
+    "หยุดเสียงแล้ว";
+}
+
+function updateDistance(cm) {
+  cm = Number(cm);
+
+  if (!Number.isFinite(cm) || cm <= 0 || cm > 400) return;
+
+  document.getElementById("distance").innerText = cm;
+
+  let message = "";
+  let status = "";
+
+  if (cm <= 50) {
+    message = "ระวัง สิ่งกีดขวางอยู่ใกล้มาก";
+    status = "⚠️ อันตราย อยู่ใกล้มาก";
+  }
+  else if (cm <= 100) {
+    message = "ระวัง พบสิ่งกีดขวางด้านหน้า";
+    status = "⚠️ พบสิ่งกีดขวาง";
+  }
+  else if (cm <= 150) {
+    message = "พบสิ่งกีดขวางด้านหน้า";
+    status = "พบสิ่งกีดขวาง";
+  }
+  else {
+    status = "ปกติ ไม่พบสิ่งกีดขวางในระยะเตือน";
   }
 
-  function speak(message) {
-    if (!voiceEnabled) return;
+  document.getElementById("status").innerText = status;
 
-    window.speechSynthesis.cancel();
+  if (message && voiceEnabled) {
+    let now = Date.now();
 
-    const speech = new SpeechSynthesisUtterance(message);
-    speech.lang = "th-TH";
-    speech.rate = 1;
-    speech.pitch = 1;
-
-    window.speechSynthesis.speak(speech);
-  }
-
-  function testVoice() {
-    voiceEnabled = true;
-    speak("ทดสอบระบบ พบสิ่งกีดขวางด้านหน้า โปรดระมัดระวัง");
-  }
-
-  function stopVoice() {
-    window.speechSynthesis.cancel();
-    document.getElementById("status").textContent =
-      "หยุดเสียงแล้ว";
-  }
-
-  function updateDistance(cm) {
-    cm = Number(cm);
-
-    if (!Number.isFinite(cm) || cm <= 0 || cm > 400) {
-      return;
-    }
-
-    document.getElementById("distance").textContent =
-      cm + " cm";
-
-    let message = "";
-    let status = "";
-
-    if (cm <= 50) {
-      message = "ระวังมาก สิ่งกีดขวางอยู่ใกล้มาก";
-      status = "⚠️ อันตราย: อยู่ใกล้มาก";
-    } else if (cm <= 100) {
-      message = "ระวัง พบสิ่งกีดขวางด้านหน้า";
-      status = "⚠️ พบสิ่งกีดขวาง";
-    } else if (cm <= 150) {
-      message = "พบสิ่งกีดขวางด้านหน้า";
-      status = "พบสิ่งกีดขวาง";
-    } else {
-      status = "ปกติ ไม่พบสิ่งกีดขวางในระยะเตือน";
-    }
-
-    document.getElementById("status").textContent =
-      status;
-
-    if (message && voiceEnabled) {
-      const now = Date.now();
-
-      // ป้องกันการพูดซ้ำถี่เกินไป
-      if (
-        message !== lastAlert ||
-        now - lastAlertTime > 5000
-      ) {
-        speak(message);
-        lastAlert = message;
-        lastAlertTime = now;
-      }
-    } else if (!message) {
-      lastAlert = "";
+    if (message !== lastMessage || now - lastTime > 5000) {
+      speak(message);
+      lastMessage = message;
+      lastTime = now;
     }
   }
 
-  function simulateDistance() {
-    const value =
-      document.getElementById("testDistance").value;
+  if (!message) {
+    lastMessage = "";
+  }
+}
 
-    if (!value) {
-      alert("กรุณากรอกระยะทาง");
-      return;
-    }
+function simulate() {
+  let value = document.getElementById("distanceInput").value;
 
-    updateDistance(value);
+  if (!value) {
+    alert("กรุณากรอกระยะทาง");
+    return;
   }
 
-  // รับข้อมูลจากบอร์ดผ่าน WebSocket
-  // เปลี่ยน IP ให้ตรงกับบอร์ด ESP32
-  function connectBoard() {
-    const boardIP = "192.168.4.1";
+  updateDistance(value);
+}
 
-    const socket = new WebSocket(
-      "ws://" + boardIP + ":81"
-    );
+// เชื่อมต่อ ESP32 ผ่าน WebSocket
+let socket;
 
-    socket.onopen = () => {
-      document.getElementById("connection").textContent =
-        "สถานะ: เชื่อมต่อบอร์ดแล้ว";
-    };
+function connectESP32() {
+  const ip = "192.168.4.1";
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+  socket = new WebSocket("ws://" + ip + ":81");
+
+  socket.onopen = function() {
+    document.getElementById("connectionStatus").innerText =
+      "เชื่อมต่อไม้เท้าสำเร็จ";
+  };
+
+  socket.onmessage = function(event) {
+    try {
+      let data = JSON.parse(event.data);
       updateDistance(data.distance);
-    };
+    } catch (error) {
+      console.log("ข้อมูลไม่ถูกต้อง", error);
+    }
+  };
 
-    socket.onclose = () => {
-      document.getElementById("connection").textContent =
-        "สถานะ: ยังไม่ได้เชื่อมต่อบอร์ด";
-    };
+  socket.onclose = function() {
+    document.getElementById("connectionStatus").innerText =
+      "การเชื่อมต่อถูกตัด";
+  };
 
-    socket.onerror = () => {
-      document.getElementById("connection").textContent =
-        "ไม่สามารถเชื่อมต่อบอร์ดได้";
-    };
-  }
-
-  // เรียก connectBoard() เมื่อพร้อมเชื่อมต่อ ESP32
+  socket.onerror = function() {
+    document.getElementById("connectionStatus").innerText =
+      "เชื่อมต่อไม่สำเร็จ";
+  };
+}
 </script>
 
 </body>
